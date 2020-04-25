@@ -1,0 +1,4 @@
+flask
+flask_cors
+flask_restful_swagger_2
+flask_swagger_ui
