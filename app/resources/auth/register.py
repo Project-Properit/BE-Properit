@@ -1,23 +1,24 @@
 import json
-import uuid
 
 from flask import request, jsonify
-from flask_restful_swagger_3 import Resource
+from flask_restful_swagger_3 import Resource, swagger
 from jwt import jwt
 from werkzeug.security import generate_password_hash
 
-from app.models.user import save, User
+from app.adapters.db_adapter import insert
+from app.models.user import User
+from app.resources.auth.auth_docs import register_post_doc
 
 token_manager = jwt.JWT()
 
 
 class Register(Resource):
-    # @swagger.doc()
+    @swagger.doc(register_post_doc)
     def post(self):
         data = json.loads(request.data)
         hashed_password = generate_password_hash(data['password'], method='sha256')
-        new_user = User(name=data['name'], password=hashed_password,
-                        admin=False, email=data['email'], phone=data['phone'], first_name=data['first_name'],
+        new_user = User(email=data['email'], password=hashed_password,
+                        admin=False, phone=data['phone'], first_name=data['first_name'],
                         last_name=data['last_name'])
-        save(new_user)
+        insert(new_user)
         return jsonify({'message': 'registered successfully'})
