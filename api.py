@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from flask_restful_swagger_3 import Api
 from flask_swagger_ui import get_swaggerui_blueprint
 
@@ -11,9 +12,22 @@ from app.resources.users.users import Users
 app = Flask('Properit')
 blueprint = get_swaggerui_blueprint('/docs', '/api/swagger.json')
 app.register_blueprint(blueprint, url_prefix='/docs')
-components = dict(securitySchemes=dict(UserSecurity=dict(type="http", scheme="basic")))
+CORS(app)
+components = \
+    {
+        'securitySchemes': {
+            'BasicAuth': {
+                'type': 'http',
+                'scheme': 'basic'
+            },
+            'ApiKeyAuth': {
+                'type': 'apiKey',
+                'in': 'header',
+                'name': 'x-access-tokens'}
+        }
+    }
 api = Api(app, description="Properit API", api_spec_url='/api/swagger', components=components,
-          security=dict(UserSecurity=[]))
+          security=[{'ApiKeyAuth': []}, {'BasicAuth': []}])
 
 db_connection = mongo_connection
 
