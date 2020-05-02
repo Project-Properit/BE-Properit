@@ -1,13 +1,8 @@
-from flask import Flask
-from flask_restful_swagger_3 import Api
-from flask_swagger_ui import get_swaggerui_blueprint
+from app import create_app
+from app.models import db
 
-app = Flask('Properit')
-blueprint = get_swaggerui_blueprint(api_url='', base_url='/docs')
-app.register_blueprint(blueprint, url_prefix='/docs')
-
-api = Api(app, description="Properit API")
-# api.add_resource(Users, "/users")
+app = create_app()
+db.create_all(app=app)
 
 if __name__ == '__main__':  # For Debugging
     app.run(host='0.0.0.0', port=8080, threaded=True)
