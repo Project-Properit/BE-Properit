@@ -30,16 +30,17 @@ prop_get_doc = {
 
 prop_post_doc = {
     'tags': ['Property'],
-    'description': 'New property',
-    'parameters': [
-        {
-            'name': 'property_parameters',
-            'description': 'Property parameters',
-            'in': 'query',
-            'required': True,
-            'schema': PropertyParameters
+    'description': 'New Property',
+    'requestBody': {
+        'description': 'Property parameters',
+        'required': True,
+        'content': {
+            'application/json': {
+                'schema': PropertyParameters
+            }
+
         }
-    ],
+    },
     'responses': {
         '200': {
             'description': 'Property added successfully'
@@ -55,19 +56,20 @@ prop_post_doc = {
 
 prop_put_doc = {
     'tags': ['Property'],
-    'description': 'Update property',
-    'parameters': [
-        {
-            'name': 'property_parameters',
-            'description': 'Property parameters',
-            'in': 'query',
-            'required': True,
-            'schema': PropertyParameters
+    'description': 'Update Property',
+    'requestBody': {
+        'description': 'Property parameters',
+        'required': True,
+        'content': {
+            'application/json': {
+                'schema': PropertyParameters
+            }
+
         }
-    ],
+    },
     'responses': {
         '200': {
-            'description': 'Property fetch successfully'
+            'description': 'Property added successfully'
         },
         '400': {
             'description': 'Missing or invalid parameters in request'

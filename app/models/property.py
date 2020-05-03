@@ -5,7 +5,7 @@ from app.models.user import User
 
 class Property(Document):
     address = StringField()
-    owner = User().user_id
+    owner = IntField()
     prop_type = StringField()
     room_num = IntField()
     tenants_list = ListField()
