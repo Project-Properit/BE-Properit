@@ -1,16 +1,14 @@
 from mongoengine import Document, StringField, DateTimeField, ListField, FloatField, FileField, IntField
 
-from app.models.user import User
 
-
-class Property(Document):
+class Asset(Document):
     address = StringField()
-    owner = IntField()
-    prop_type = StringField()
+    owner = StringField()
+    asset_type = StringField()
     room_num = IntField()
-    tenants_list = ListField()
     rent_fee = FloatField()
+    tenant_list = ListField()
     promissory = FileField()
     comments = StringField()
     creation_date = DateTimeField()
-    meta = {'collection': 'Properties'}
+    meta = {'collection': 'Assets'}

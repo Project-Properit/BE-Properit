@@ -1,4 +1,4 @@
-from app.resources.models import UserParameters
+from app.resources.schemas import UserParameters
 
 login_get_doc = {
     'tags': ['Auth'],

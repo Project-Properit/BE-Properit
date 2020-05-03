@@ -20,12 +20,12 @@ class UserParameters(ValidatedSchema):
     }
 
 
-class PropertyParameters(ValidatedSchema):
+class AssetParameters(ValidatedSchema):
     type = 'object'
     properties = {
         'address': {'type': 'string'},
-        'owner': {'type': 'number'},
-        'prop_type': {'type': 'string'},
+        'owner': {'type': 'string'},
+        'asset_type': {'type': 'string'},
         'room_num': {'type': 'number'},
         'rent_fee': {'type': 'number'},
         'comments': {'type': 'string'}
