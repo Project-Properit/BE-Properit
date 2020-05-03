@@ -5,3 +5,4 @@ mongoengine
 jsonschema
 jwt
 werkzeug
+bson
