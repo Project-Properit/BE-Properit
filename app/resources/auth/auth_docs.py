@@ -39,15 +39,16 @@ logout_post_doc = {
 register_post_doc = {
     'tags': ['Auth'],
     'description': 'Register',
-    'parameters': [
-        {
-            'name': 'user_parameters',
-            'description': 'User parameters',
-            'in': 'query',
-            'required': True,
-            'schema': UserParameters
+    'requestBody': {
+        'description': 'User parameters',
+        'required': True,
+        'content': {
+            'application/json': {
+                'schema': UserParameters
+            }
+
         }
-    ],
+    },
     'responses': {
         '200': {
             'description': 'Register successfully'
