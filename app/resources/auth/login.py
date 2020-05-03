@@ -7,7 +7,7 @@ from jwt.jwk import OctetJWK
 from werkzeug.security import check_password_hash
 
 from app.decorators.auth_decorators import requires_auth
-from app.models.user import User
+from app.models.usermodel import UserModel
 from app.resources.auth.auth_docs import login_get_doc
 from app.settings import APP_SECRET_KEY
 
@@ -19,7 +19,7 @@ class Login(Resource):
     @swagger.doc(login_get_doc)
     def get(self):
         auth = request.authorization
-        user = User.objects.get(email=auth.username)
+        user = UserModel.objects.get(email=auth.username)
         if check_password_hash(user.password, auth.password):
             expiration_time = datetime.now(timezone.utc) + timedelta(minutes=30)
             token = token_manager.encode(

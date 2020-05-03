@@ -7,7 +7,7 @@ from app.adapters.db_adapter import mongo_connection
 from app.resources.auth.login import Login
 from app.resources.auth.logout import Logout
 from app.resources.auth.register import Register
-from app.resources.users.users import Users
+from app.resources.users.user import User
 
 app = Flask('Properit')
 blueprint = get_swaggerui_blueprint('/docs', '/api/swagger.json')
@@ -33,7 +33,7 @@ db_connection = mongo_connection
 
 api.add_resource(Login, "/login")
 api.add_resource(Register, "/register")
-api.add_resource(Users, "/users")
+api.add_resource(User, "/users/<user_id>")
 api.add_resource(Logout, "/logout")
 
 if __name__ == '__main__':  # For Debugging

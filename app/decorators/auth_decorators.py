@@ -4,8 +4,7 @@ from flask import request, jsonify, make_response
 from jwt import jwt
 from jwt.jwk import OctetJWK
 
-from app.models.token import Token
-from app.models.user import User
+from app.models.tokenmodel import TokenModel
 from app.settings import APP_SECRET_KEY
 
 token_manager = jwt.JWT()
@@ -20,14 +19,13 @@ def token_required(f):
         if not token:
             return jsonify({'message': 'a valid token is missing'})
         try:
-            if Token.objects(token=token):
+            if TokenModel.objects(token=token):
                 raise
-            data = token_manager.decode(token, OctetJWK(APP_SECRET_KEY))
-            current_user = User.objects.get(email=data['email'])
+            token_manager.decode(token, OctetJWK(APP_SECRET_KEY))
         except:
             return jsonify({'message': 'token is invalid'})
 
-        return f(current_user, *args, **kwargs)
+        return f(*args, **kwargs)
 
     return decorator
 
