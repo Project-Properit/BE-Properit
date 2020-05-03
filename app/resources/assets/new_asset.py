@@ -5,7 +5,7 @@ from flask_restful_swagger_3 import Resource, swagger
 
 from app.adapters.db_adapter import insert
 from app.decorators.auth_decorators import requires_auth
-from app.models.asset import Asset
+from app.models.assetmodel import Asset
 from app.resources.assets.asset_docs import asset_post_doc
 
 
