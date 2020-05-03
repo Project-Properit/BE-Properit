@@ -6,7 +6,8 @@ from flask_restful_swagger_3 import Resource, swagger
 
 from app.adapters.db_adapter import insert, update, delete, to_json
 from app.models.assetmodel import Asset
-from app.resources.assets.asset_docs import asset_get_doc, asset_post_doc, asset_put_doc, asset_delete_doc
+from app.resources.assets.asset_docs import asset_get_doc, asset_post_doc, asset_put_doc, asset_delete_doc, \
+    asset_patch_tenants_doc
 
 
 class NewAssetResource(Resource):
@@ -38,6 +39,7 @@ class ManageAssetResource(Resource):
     def put(self, asset_id):
         asset = Asset.objects.get(id=ObjectId(asset_id))
         new_data = json.loads(request.data)
+        # Todo: Think of better way to update each property
         asset.address = new_data['address']
         asset.owner = new_data['owner']
         asset.asset_type = new_data['asset_type']
@@ -46,6 +48,17 @@ class ManageAssetResource(Resource):
         asset.comments = new_data['comments']
         update(asset)
         return jsonify({"updated asset_id": str(asset_id)})
+
+    # @requires_auth
+    @swagger.doc(asset_patch_tenants_doc)
+    def patch_tenants(self, asset_id):
+        asset = Asset.objects.get(id=ObjectId(asset_id))
+
+        # Todo: Ask Daniel about patch tenants list & promissory note
+        data = json.loads(request.data)
+        asset.tenant_list = data['tenant_list']
+
+        update(asset)
 
     # @requires_auth
     @swagger.doc(asset_delete_doc)

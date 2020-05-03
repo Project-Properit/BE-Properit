@@ -1,5 +1,5 @@
 from consts import ASSETS_SECTION, AUTH_SECTION
-from app.resources.schemas import AssetParameters
+from app.resources.schemas import AssetParameters, PatchAssetTenants
 
 asset_get_doc = {
     'tags': [ASSETS_SECTION],
@@ -8,6 +8,8 @@ asset_get_doc = {
         {
             'name': 'asset_id',
             'description': "Asset's ID to fetch",
+            # Todo: path or query?
+            # Todo: multiple query filters?
             'in': 'path',
             'required': True,
             'schema': {
@@ -84,6 +86,46 @@ asset_put_doc = {
     'responses': {
         '200': {
             'description': 'Asset updated successfully'
+        },
+        '400': {
+            'description': 'Missing or invalid parameters in request'
+        },
+        '404': {
+            'description': 'Asset not found'
+        },
+        '500': {
+            'description': 'Internal server error'
+        }
+    }
+}
+
+asset_patch_tenants_doc = {
+    'tags': [ASSETS_SECTION],
+    'description': "Patch asset's tenant list",
+    'parameters': [
+        {
+            'name': 'asset_id',
+            'description': "Asset's ID to patch its tenant list",
+            'in': 'path',
+            'required': True,
+            'schema': {
+                'type': 'string'
+            },
+        },
+    ],
+    'requestBody': {
+        'description': 'Asset parameters',
+        'required': True,
+        'content': {
+            'application/json': {
+                'schema': PatchAssetTenants
+            }
+
+        }
+    },
+    'responses': {
+        '200': {
+            'description': 'Asset fetch successfully'
         },
         '400': {
             'description': 'Missing or invalid parameters in request'

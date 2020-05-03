@@ -29,3 +29,11 @@ class AssetParameters(ValidatedSchema):
         'rent_fee': {'type': 'number'},
         'comments': {'type': 'string'}
     }
+
+
+class PatchAssetTenants(ValidatedSchema):
+    type = 'object'
+    properties = {
+        'tenant_list': {'type': 'array',
+                        'items': {'type': 'string'}}
+    }
