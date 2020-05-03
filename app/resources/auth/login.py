@@ -15,7 +15,7 @@ token_manager = jwt.JWT()
 
 
 class Login(Resource):
-    # @requires_auth
+    @requires_auth
     @swagger.doc(login_get_doc)
     def get(self):
         auth = request.authorization

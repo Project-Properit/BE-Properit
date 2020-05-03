@@ -18,6 +18,10 @@ def insert(document):
     return document.save()
 
 
+def delete(document):
+    document.delete()
+
+
 def to_json(document):
     task_json = document.to_mongo()
     task_json['id'] = str(document.id)

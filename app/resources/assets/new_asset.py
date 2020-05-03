@@ -10,7 +10,7 @@ from app.resources.assets.asset_docs import asset_post_doc
 
 
 class NewAssetResource(Resource):
-    # @requires_auth
+    @requires_auth
     @swagger.doc(asset_post_doc)
     def post(self):
         data = json.loads(request.data)
@@ -23,4 +23,4 @@ class NewAssetResource(Resource):
                           promissory=None,
                           comments=data['comments'])
         insert(new_asset)
-        return jsonify({"asset_id": str(new_asset.id)})
+        return jsonify({"new asset_id": str(new_asset.id)})

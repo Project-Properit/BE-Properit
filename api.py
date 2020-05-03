@@ -4,12 +4,13 @@ from flask_restful_swagger_3 import Api
 from flask_swagger_ui import get_swaggerui_blueprint
 
 from app.adapters.db_adapter import mongo_connection
+from app.resources.assets.new_asset import NewAssetResource
+from app.resources.assets.update_asset import UpdateAssetResource
+from app.resources.assets.delete_asset import DeleteAssetResource
 from app.resources.auth.login import Login
 from app.resources.auth.logout import Logout
 from app.resources.auth.register import Register
 from app.resources.users.user import User
-from app.resources.assets.new_asset import NewAssetResource
-from app.resources.assets.update_asset import UpdateAssetResource
 
 app = Flask('Properit')
 blueprint = get_swaggerui_blueprint('/docs', '/api/swagger.json')
@@ -35,11 +36,12 @@ db_connection = mongo_connection
 
 api.add_resource(Login, "/login")
 api.add_resource(Register, "/register")
-api.add_resource(User, "/users/<user_id>")
+api.add_resource(User, "/users/<string:user_id>")
 api.add_resource(Logout, "/logout")
 
-api.add_resource(NewAssetResource, "/assets")
-api.add_resource(UpdateAssetResource, "/assets/<string:asset_id>")
+api.add_resource(NewAssetResource, "/assets/create")
+api.add_resource(UpdateAssetResource, "/assets/<string:asset_id>/update")
+api.add_resource(DeleteAssetResource, "/assets/<string:asset_id>/delete")
 
 if __name__ == '__main__':  # For Debugging
     app.run(host='0.0.0.0', port=8080, threaded=True)

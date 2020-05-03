@@ -11,7 +11,7 @@ from app.resources.assets.asset_docs import asset_put_doc
 
 
 class UpdateAssetResource(Resource):
-    # @requires_auth
+    @requires_auth
     @swagger.doc(asset_put_doc)
     def put(self, asset_id):
         asset = Asset.objects.get(id=ObjectId(asset_id))
@@ -23,4 +23,4 @@ class UpdateAssetResource(Resource):
         asset.rent_fee = new_data['rent_fee']
         asset.comments = new_data['comments']
         update(asset)
-        return jsonify({"asset_id": str(asset.id)})
+        return jsonify({"updated asset_id": str(asset_id)})
