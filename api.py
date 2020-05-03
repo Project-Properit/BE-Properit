@@ -6,6 +6,7 @@ from app.adapters.db_adapter import mongo_connection
 from app.resources.auth.login import Login
 from app.resources.auth.logout import Logout
 from app.resources.auth.register import Register
+from app.resources.properties.prop_resource import PropertyResource
 from app.resources.users.users import Users
 
 app = Flask('Properit')
@@ -21,6 +22,8 @@ api.add_resource(Login, "/login")
 api.add_resource(Register, "/register")
 api.add_resource(Users, "/users")
 api.add_resource(Logout, "/logout")
+
+api.add_resource(PropertyResource, "/properties")
 
 if __name__ == '__main__':  # For Debugging
     app.run(host='0.0.0.0', port=8080, threaded=True)

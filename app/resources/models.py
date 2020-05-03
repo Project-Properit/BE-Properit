@@ -18,3 +18,15 @@ class UserParameters(ValidatedSchema):
         'first_name': {'type': 'string'},
         'last_name': {'type': 'string'}
     }
+
+
+class PropertyParameters(ValidatedSchema):
+    type = 'object'
+    properties = {
+        'address': {'type': 'string'},
+        'owner': {'type': 'number'},
+        'prop_type': {'type': 'string'},
+        'room_num': {'type': 'number'},
+        'rent_fee': {'type': 'number'},
+        'comments': {'type': 'string'}
+    }
