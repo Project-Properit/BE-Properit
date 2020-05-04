@@ -27,7 +27,7 @@ class Login(Resource):
                 token = token_manager.encode(
                     {'id': str(user.id), 'exp': int(expiration_time.timestamp())},
                     OctetJWK(APP_SECRET_KEY))
-                return jsonify({'token': token})
+                return jsonify({'token': token, 'user_id': str(user.id)})
 
             return make_response('Wrong password', 401)
         except DoesNotExist as e:

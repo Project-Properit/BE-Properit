@@ -31,5 +31,6 @@ class User(Resource):
             for value, key in data.items():
                 user[value] = key
             update(user)
+            return jsonify({'message': 'User update successfully'})
         else:
             return make_response('Wrong UserId', 400)

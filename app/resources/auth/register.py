@@ -18,11 +18,10 @@ class Register(Resource):
     def post(self):
         data = json.loads(request.data)
         hashed_password = generate_password_hash(data['password'], method='sha256')
-        new_user = UserModel(email=data['email'], password=hashed_password, rent_asset=None,
-                             owned_assets=[], phone=data['phone'], first_name=data['first_name'],
-                             last_name=data['last_name'])
+        new_user = UserModel(email=data['email'], password=hashed_password, phone=data['phone'],
+                             first_name=data['first_name'], last_name=data['last_name'])
         try:
             insert(new_user)
         except NotUniqueError as e:
             return make_response('User already exist.', 409)
-        return jsonify({'message': 'registered successfully'})
+            return jsonify({'message': 'registered successfully'})

@@ -7,7 +7,5 @@ class UserModel(Document):
     phone = StringField(required=True)
     email = EmailField(required=True, unique=True)
     password = StringField(required=True)
-    owned_assets = ListField(required=False)
-    rent_asset = StringField(required=False, null=True)
     creation_date = DateTimeField()
     meta = {'collection': 'Users'}
