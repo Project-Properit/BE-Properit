@@ -12,7 +12,7 @@ token_manager = jwt.JWT()
 
 class Logout(Resource):
     @swagger.doc(logout_post_doc)
-    @token_required(return_user=False)
+    @token_required()
     def post(self):
         token = request.headers['x-access-tokens']
         expired_token = TokenModel(token=token)
