@@ -18,7 +18,7 @@ asset_get_filters_doc = {
     ],
     'responses': {
         '200': {
-            'description': 'Asset added successfully'
+            'description': 'Asset fetched successfully'
         },
         '400': {
             'description': 'Missing or invalid parameters in request'

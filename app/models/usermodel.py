@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, DateTimeField, EmailField, ListField
+from mongoengine import Document, StringField, DateTimeField, EmailField
 
 
 class UserModel(Document):
