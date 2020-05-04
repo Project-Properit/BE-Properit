@@ -14,10 +14,14 @@ class AssetGeneral(Resource):
     def get(self):
         json_asset_list = []
         filters = request.args
-        owner_id = filters['owner_id']
-        user_asset_list = Asset.objects(owner=owner_id)
-        for asset in user_asset_list:
-            json_asset_list.append(to_json(asset))
+        if filters:
+            owner_id = filters['owner_id']
+            user_asset_list = Asset.objects(owner=owner_id)
+            for asset in user_asset_list:
+                json_asset_list.append(to_json(asset))
+        else:
+            for asset in Asset.objects():
+                json_asset_list.append(to_json(asset))
         return json_asset_list
 
     @requires_auth
