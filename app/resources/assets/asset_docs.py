@@ -1,7 +1,33 @@
 from app.resources.schemas import AssetParameters, PatchAssetTenants, PatchAssetPromissory
 from consts import ASSETS_SECTION
 
-# region new_asset
+# region asset_general
+
+asset_get_filters_doc = {
+    'tags': [ASSETS_SECTION],
+    'description': 'Get asset by filters',
+    'parameters': [
+        {
+            'name': 'owner_id',
+            'in': 'query',
+            'schema': {'type': 'string'},
+            'required': False,
+            'description': 'filter assets by their owner',
+            'allowReserved': True
+        },
+    ],
+    'responses': {
+        '200': {
+            'description': 'Asset added successfully'
+        },
+        '400': {
+            'description': 'Missing or invalid parameters in request'
+        },
+        '500': {
+            'description': 'Internal server error'
+        }
+    }
+}
 
 asset_post_doc = {
     'tags': [ASSETS_SECTION],
@@ -31,7 +57,7 @@ asset_post_doc = {
 
 # endregion
 
-# region asset_general
+# region asset_path_id
 
 asset_get_by_assetId_doc = {
     'tags': [ASSETS_SECTION],
@@ -125,40 +151,6 @@ asset_delete_doc = {
         },
         '404': {
             'description': 'Asset not found'
-        },
-        '500': {
-            'description': 'Internal server error'
-        }
-    }
-}
-
-# endregion
-
-# region asset_external_user
-
-asset_get_by_userId_doc = {
-    'tags': [ASSETS_SECTION],
-    'description': 'Get user owned assets',
-    'parameters': [
-        {
-            'name': 'user_id',
-            'description': "User's assets to fetch",
-            'in': 'path',
-            'required': True,
-            'schema': {
-                'type': 'string'
-            },
-        },
-    ],
-    'responses': {
-        '200': {
-            'description': 'User Asset list fetch successfully'
-        },
-        '400': {
-            'description': 'Missing or invalid parameters in request'
-        },
-        '404': {
-            'description': 'User not found'
         },
         '500': {
             'description': 'Internal server error'
