@@ -1,8 +1,9 @@
 import json
 
-from flask import request, jsonify
+from flask import request, jsonify, make_response
 from flask_restful_swagger_3 import Resource, swagger
 from jwt import jwt
+from mongoengine import NotUniqueError
 from werkzeug.security import generate_password_hash
 
 from app.adapters.db_adapter import insert
@@ -17,8 +18,11 @@ class Register(Resource):
     def post(self):
         data = json.loads(request.data)
         hashed_password = generate_password_hash(data['password'], method='sha256')
-        new_user = UserModel(email=data['email'], password=hashed_password, rent_asset=[],
+        new_user = UserModel(email=data['email'], password=hashed_password, rent_asset=None,
                              owned_assets=[], phone=data['phone'], first_name=data['first_name'],
                              last_name=data['last_name'])
-        insert(new_user)
+        try:
+            insert(new_user)
+        except NotUniqueError as e:
+            return make_response('User already exist.', 409)
         return jsonify({'message': 'registered successfully'})
