@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, DateTimeField, ListField, FloatField, FileField, IntField
+from mongoengine import Document, StringField, DateTimeField, ListField, FloatField, IntField
 
 
 class Asset(Document):
@@ -8,7 +8,7 @@ class Asset(Document):
     room_num = IntField()
     rent_fee = FloatField()
     tenant_list = ListField()
-    promissory = FileField()
+    promissory_note_url = StringField()
     comments = StringField()
     creation_date = DateTimeField()
     meta = {'collection': 'Assets'}

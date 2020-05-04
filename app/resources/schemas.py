@@ -35,5 +35,13 @@ class PatchAssetTenants(ValidatedSchema):
     type = 'object'
     properties = {
         'tenant_list': {'type': 'array',
-                        'items': {'type': 'string'}}
+                        'items': {'type': 'string'}},
+    }
+
+
+class PatchAssetPromissory(ValidatedSchema):
+    type = 'object'
+    properties = {
+        'promissory': {'type': 'string',
+                       'format': 'binary'}
     }
