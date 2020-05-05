@@ -1,6 +1,6 @@
 import json
 
-from flask import request, jsonify, make_response
+from flask import request, make_response
 from flask_restful_swagger_3 import Resource, swagger
 from jwt import jwt
 from mongoengine import NotUniqueError
@@ -24,4 +24,3 @@ class Register(Resource):
             insert(new_user)
         except NotUniqueError as e:
             return make_response('User already exist.', 409)
-            return jsonify({'message': 'registered successfully'})
