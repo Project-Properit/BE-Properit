@@ -1,5 +1,5 @@
 from app.resources.schemas import AssetParameters, PatchAssetTenants, PatchAssetPromissory
-from consts import ASSETS_SECTION
+from app.consts import ASSETS_SECTION
 
 # region asset_general
 
