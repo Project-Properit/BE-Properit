@@ -14,19 +14,6 @@ from app.resources.assets.asset_docs import asset_put_doc, asset_delete_doc
 
 
 class AssetPathId(Resource):
-    # @requires_auth
-    # @swagger.doc(asset_get_by_assetId_doc)
-    # def get(self, asset_id):
-    #     try:
-    #         asset = Asset.objects.get(id=ObjectId(asset_id))
-    #         return to_json(asset)
-    #     except InvalidId:
-    #         return make_response("Invalid asset ID", 400)
-    #     except DoesNotExist:
-    #         return make_response("Asset not found", 404)
-    #     except Exception as e:
-    #         return make_response("Internal Server Error: {}".format(e.__str__()), 500)
-
     @requires_auth
     @swagger.doc(asset_put_doc)
     def put(self, asset_id):

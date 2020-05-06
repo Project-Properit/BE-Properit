@@ -93,26 +93,6 @@ asset_post_doc = {
 
 # region asset_path_id
 
-# asset_get_by_assetId_doc = {
-#     'tags': [ASSETS_SECTION],
-#     'description': 'Get asset by asset ID',
-#     'parameters': [
-#         {
-#             'name': 'asset_id',
-#             'description': "Asset's ID to fetch",
-#             'in': 'path',
-#             'required': True,
-#             'schema': {'type': 'string'},
-#         },
-#     ],
-#     'responses': {
-#         '200': {'description': 'Asset fetched successfully'},
-#         '400': {'description': 'Missing or invalid parameters in request'},
-#         '404': {'description': 'Asset not found'},
-#         '500': {'description': 'Internal server error'}
-#     }
-# }
-
 asset_put_doc = {
     'tags': [ASSETS_SECTION],
     'description': 'Update asset general parameters',
@@ -159,37 +139,6 @@ asset_delete_doc = {
         '500': {'description': 'Internal server error'}
     }
 }
-
-# endregion
-
-# region asset_tenants
-
-# asset_patch_tenants_doc = {
-#     'tags': [ASSETS_SECTION],
-#     'description': "Patch asset tenants",
-#     'parameters': [
-#         {
-#             'name': 'asset_id',
-#             'description': "Asset ID to patch its tenants",
-#             'in': 'path',
-#             'required': True,
-#             'schema': {'type': 'string'},
-#         },
-#     ],
-#     'requestBody': {
-#         'description': 'Asset parameters',
-#         'required': True,
-#         'content': {
-#             'application/json': {'schema': PatchAssetTenants}
-#         }
-#     },
-#     'responses': {
-#         '200': {'description': 'Asset tenants patched successfully'},
-#         '400': {'description': 'Missing or invalid parameters in request'},
-#         '404': {'description': 'Asset not found'},
-#         '500': {'description': 'Internal server error'}
-#     }
-# }
 
 # endregion
 
