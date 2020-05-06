@@ -15,7 +15,7 @@ from app.resources.users.user_docs import user_get_doc, user_put_doc
 
 class User(Resource):
     @swagger.doc(user_get_doc)
-    @   token_required()
+    @token_required()
     def get(self, user_id):
         try:
             user = UserModel.objects.get(id=ObjectId(user_id))

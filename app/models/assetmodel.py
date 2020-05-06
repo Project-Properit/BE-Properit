@@ -2,8 +2,8 @@ from mongoengine import Document, StringField, DateTimeField, ListField, FloatFi
 
 
 class Asset(Document):
+    owner_id = StringField(required=True)
     address = StringField(required=True)
-    owner = StringField(required=True)
     asset_type = StringField(required=True)
     room_num = FloatField(required=True)
     rent_fee = FloatField(required=True)

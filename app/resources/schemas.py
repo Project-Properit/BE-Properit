@@ -22,21 +22,23 @@ class UserParameters(ValidatedSchema):
 class AssetParameters(ValidatedSchema):
     type = 'object'
     properties = {
+        'owner_id': {'type': 'string'},
         'address': {'type': 'string'},
-        'owner': {'type': 'string'},
         'asset_type': {'type': 'string'},
         'room_num': {'type': 'number'},
         'rent_fee': {'type': 'number'},
+        'tenant_list': {'type': 'array',
+                        'items': {'type': 'string'}},
         'comments': {'type': 'string'}
     }
 
 
-class PatchAssetTenants(ValidatedSchema):
-    type = 'object'
-    properties = {
-        'tenant_list': {'type': 'array',
-                        'items': {'type': 'string'}},
-    }
+# class PatchAssetTenants(ValidatedSchema):
+#     type = 'object'
+#     properties = {
+#         'tenant_list': {'type': 'array',
+#                         'items': {'type': 'string'}},
+#     }
 
 
 class PatchAssetPromissory(ValidatedSchema):
