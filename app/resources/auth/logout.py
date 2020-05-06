@@ -1,4 +1,4 @@
-from flask import request, jsonify
+from flask import request, jsonify, make_response
 from flask_restful_swagger_3 import Resource, swagger
 from jwt import jwt
 
@@ -14,7 +14,10 @@ class Logout(Resource):
     @swagger.doc(logout_post_doc)
     @token_required()
     def post(self):
-        token = request.headers['x-access-tokens']
-        expired_token = TokenModel(token=token)
-        insert(expired_token)
-        return jsonify({'message': 'logout successfully'})
+        try:
+            token = request.headers['x-access-tokens']
+            expired_token = TokenModel(token=token)
+            insert(expired_token)
+            return jsonify({'message': 'logout successfully'})
+        except Exception as e:
+            return make_response("Internal Server Error: {}".format(e.__str__()), 500)

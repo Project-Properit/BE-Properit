@@ -1,5 +1,5 @@
-from app.resources.schemas import AssetParameters, PatchAssetTenants, PatchAssetPromissory
 from app.consts import ASSETS_SECTION
+from app.resources.schemas import AssetParameters, PatchAssetTenants, PatchAssetPromissory
 
 # region asset_general
 
@@ -9,23 +9,18 @@ asset_get_filters_doc = {
     'parameters': [
         {
             'name': 'owner_id',
+            'description': 'filter assets by their owner',
             'in': 'query',
             'schema': {'type': 'string'},
             'required': False,
-            'description': 'filter assets by their owner',
             'allowReserved': True
         },
     ],
     'responses': {
-        '200': {
-            'description': 'Asset fetched successfully'
-        },
-        '400': {
-            'description': 'Missing or invalid parameters in request'
-        },
-        '500': {
-            'description': 'Internal server error'
-        }
+        '200': {'description': 'Asset fetched successfully'},
+        '400': {'description': 'Missing or invalid parameters in request'},
+        '404': {'description': 'Asset not found'},
+        '500': {'description': 'Internal server error'}
     }
 }
 
@@ -36,22 +31,13 @@ asset_post_doc = {
         'description': 'Asset parameters',
         'required': True,
         'content': {
-            'application/json': {
-                'schema': AssetParameters
-            }
-
+            'application/json': {'schema': AssetParameters}
         }
     },
     'responses': {
-        '200': {
-            'description': 'Asset added successfully'
-        },
-        '400': {
-            'description': 'Missing or invalid parameters in request'
-        },
-        '500': {
-            'description': 'Internal server error'
-        }
+        '201': {'description': 'Asset added successfully'},
+        '400': {'description': 'Missing or invalid parameters in request'},
+        '500': {'description': 'Internal server error'}
     }
 }
 
@@ -68,24 +54,14 @@ asset_get_by_assetId_doc = {
             'description': "Asset's ID to fetch",
             'in': 'path',
             'required': True,
-            'schema': {
-                'type': 'string'
-            },
+            'schema': {'type': 'string'},
         },
     ],
     'responses': {
-        '200': {
-            'description': 'Asset fetch successfully'
-        },
-        '400': {
-            'description': 'Missing or invalid parameters in request'
-        },
-        '404': {
-            'description': 'Asset not found'
-        },
-        '500': {
-            'description': 'Internal server error'
-        }
+        '200': {'description': 'Asset fetched successfully'},
+        '400': {'description': 'Missing or invalid parameters in request'},
+        '404': {'description': 'Asset not found'},
+        '500': {'description': 'Internal server error'}
     }
 }
 
@@ -95,36 +71,24 @@ asset_put_doc = {
     'parameters': [
         {
             'name': 'asset_id',
-            'description': "asset's ID to update",
+            'description': "Asset ID to update",
             'in': 'path',
             'required': True,
-            'schema': {
-                'type': 'string'
-            }
+            'schema': {'type': 'string'}
         }
     ],
     'requestBody': {
         'description': 'Asset parameters',
         'required': True,
         'content': {
-            'application/json': {
-                'schema': AssetParameters
-            }
+            'application/json': {'schema': AssetParameters}
         }
     },
     'responses': {
-        '200': {
-            'description': 'Asset updated successfully'
-        },
-        '400': {
-            'description': 'Missing or invalid parameters in request'
-        },
-        '404': {
-            'description': 'Asset not found'
-        },
-        '500': {
-            'description': 'Internal server error'
-        }
+        '200': {'description': 'Asset updated successfully'},
+        '400': {'description': 'Missing or invalid parameters in request'},
+        '404': {'description': 'Asset not found'},
+        '500': {'description': 'Internal server error'}
     }
 }
 
@@ -134,27 +98,17 @@ asset_delete_doc = {
     'parameters': [
         {
             'name': 'asset_id',
-            'description': "Asset's ID to delete",
+            'description': "Asset ID to delete",
             'in': 'path',
             'required': True,
-            'schema': {
-                'type': 'string'
-            }
+            'schema': {'type': 'string'}
         },
     ],
     'responses': {
-        '200': {
-            'description': 'Asset deleted successfully'
-        },
-        '400': {
-            'description': 'Missing or invalid parameters in request'
-        },
-        '404': {
-            'description': 'Asset not found'
-        },
-        '500': {
-            'description': 'Internal server error'
-        }
+        '200': {'description': 'Asset deleted successfully'},
+        '400': {'description': 'Missing or invalid parameters in request'},
+        '404': {'description': 'Asset not found'},
+        '500': {'description': 'Internal server error'}
     }
 }
 
@@ -164,40 +118,28 @@ asset_delete_doc = {
 
 asset_patch_tenants_doc = {
     'tags': [ASSETS_SECTION],
-    'description': "Patch asset",
+    'description': "Patch asset tenants",
     'parameters': [
         {
             'name': 'asset_id',
-            'description': "Asset's ID to patch",
+            'description': "Asset ID to patch its tenants",
             'in': 'path',
             'required': True,
-            'schema': {
-                'type': 'string'
-            },
+            'schema': {'type': 'string'},
         },
     ],
     'requestBody': {
         'description': 'Asset parameters',
         'required': True,
         'content': {
-            'application/json': {
-                'schema': PatchAssetTenants
-            }
+            'application/json': {'schema': PatchAssetTenants}
         }
     },
     'responses': {
-        '200': {
-            'description': 'Asset fetch successfully'
-        },
-        '400': {
-            'description': 'Missing or invalid parameters in request'
-        },
-        '404': {
-            'description': 'Asset not found'
-        },
-        '500': {
-            'description': 'Internal server error'
-        }
+        '200': {'description': 'Asset tenants patched successfully'},
+        '400': {'description': 'Missing or invalid parameters in request'},
+        '404': {'description': 'Asset not found'},
+        '500': {'description': 'Internal server error'}
     }
 }
 
@@ -207,40 +149,28 @@ asset_patch_tenants_doc = {
 
 asset_patch_promissory_doc = {
     'tags': [ASSETS_SECTION],
-    'description': "Patch asset",
+    'description': "Patch asset promissory note url",
     'parameters': [
         {
             'name': 'asset_id',
-            'description': "Asset's ID to patch",
+            'description': "Asset ID to patch its promissory note",
             'in': 'path',
             'required': True,
-            'schema': {
-                'type': 'string'
-            },
+            'schema': {'type': 'string'},
         },
     ],
     'requestBody': {
         'description': 'Asset parameters',
         'required': True,
         'content': {
-            'multipart/form-data:': {
-                'schema': PatchAssetPromissory
-            }
+            'multipart/form-data:': {'schema': PatchAssetPromissory}
         }
     },
     'responses': {
-        '200': {
-            'description': 'Asset fetch successfully'
-        },
-        '400': {
-            'description': 'Missing or invalid parameters in request'
-        },
-        '404': {
-            'description': 'Asset not found'
-        },
-        '500': {
-            'description': 'Internal server error'
-        }
+        '200': {'description': 'Asset promissory note patched successfully'},
+        '400': {'description': 'Missing or invalid parameters in request'},
+        '404': {'description': 'Asset not found'},
+        '500': {'description': 'Internal server error'}
     }
 }
 
