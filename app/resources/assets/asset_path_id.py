@@ -35,13 +35,6 @@ class AssetPathId(Resource):
             data = json.loads(request.data)
             for value, key in data.items():
                 asset[value] = key
-            # # Todo: Think of better way to update each property
-            # asset.address = data['address']
-            # asset.owner = data['owner']
-            # asset.asset_type = data['asset_type']
-            # asset.room_num = data['room_num']
-            # asset.rent_fee = data['rent_fee']
-            # asset.comments = data['comments']
             update(asset)
             return jsonify({"updated asset_id": str(asset_id)})
         except InvalidId:
