@@ -40,7 +40,6 @@ api.add_resource(Logout, "/logout")
 
 api.add_resource(AssetGeneral, "/api/assets")
 api.add_resource(AssetPathId, "/api/assets/<string:asset_id>")
-# api.add_resource(AssetTenants, "/api/assets/<string:asset_id>/tenants")
 
 if __name__ == '__main__':  # For Debugging
     app.run(host='0.0.0.0', port=8080, threaded=True)
