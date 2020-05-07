@@ -15,9 +15,5 @@ api_section = config['api_section']
 APP_SECRET_KEY = api_section['app_secret_key'].encode('UTF-8')
 
 
-import os
-ACCESS_KEY = 'ASIAQK5OE254EBTIPQ4D'
-SECRET_KEY = 'x/kiO9BkwkE1W7qq39/oJi8g3AVuhpuBOhAnP1tJ'
-AWS_TOKEN = 'FwoGZXIvYXdzEGYaDIIOiCobyRvlT/cPGiLGAXFKroT9XZo6SdhZrB2a5ROsR3DJNATEsVhKxkKCxaNcXX53PGhxOF5au++GR5Ndox0YNjn3J/wovRV2tKP5caiG7peV3oL53LxjHVvbzubZCpPYXIZRH3t8wWjfAL0wi3wyeH6fHg41uu98ydrMo+Vzr3iSHSFmbHL00CIH5BQl/mcKoaZxDt3auc586QWuzFuKq5iQCDd8FCtmV0+H1xUhTCZLMJiud9E+C5nuZCkEhtXPzm0nlHetl7s2SLrvST0ASUXhJyiUwMX1BTIt6wGCFMlXVaTeUE23N/GmrMSyCVmmnT1X+hTRcJfDm/Xog0ir6mbN/+gO2Bna'
-S3_LOCATION = 'http://{}.s3.amazonaws.com/'.format('properit-s3')
-BUCKET_NAME = 'properit-s3'
+# Dropbox
+DBX_ACCESS_TOKEN = 'Dg7EzFTjj3AAAAAAAAAAFUbFwgOfa3B4OSX-T23-_Wk0Ve7s8ynQ1IvIK161IFqg'
