@@ -1,7 +1,8 @@
+from app.consts import AUTH_SECTION
 from app.resources.schemas import UserParameters
 
 login_get_doc = {
-    'tags': ['Auth'],
+    'tags': [AUTH_SECTION],
     'description': 'Login',
     'responses': {
         '200': {
@@ -19,7 +20,7 @@ login_get_doc = {
     }
 }
 logout_post_doc = {
-    'tags': ['Auth'],
+    'tags': [AUTH_SECTION],
     'description': 'Logout',
     'responses': {
         '200': {
@@ -37,7 +38,7 @@ logout_post_doc = {
     }
 }
 register_post_doc = {
-    'tags': ['Auth'],
+    'tags': [AUTH_SECTION],
     'description': 'Register',
     'requestBody': {
         'description': 'User parameters',

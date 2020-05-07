@@ -28,7 +28,8 @@ class Login(Resource):
                     {'id': str(user.id), 'exp': int(expiration_time.timestamp())},
                     OctetJWK(APP_SECRET_KEY))
                 return jsonify({'token': token, 'user_id': str(user.id)})
-
             return make_response('Wrong password', 401)
-        except DoesNotExist as e:
+        except DoesNotExist:
             return make_response('User not registered', 404)
+        except Exception as e:
+            return make_response("Internal Server Error: {}".format(e.__str__()), 500)
