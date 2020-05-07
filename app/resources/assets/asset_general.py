@@ -6,7 +6,7 @@ from flask_restful_swagger_3 import Resource, swagger
 from mongoengine import DoesNotExist
 
 from app.adapters.db_adapter import insert, to_json
-from app.decorators.auth_decorators import requires_auth, token_required
+from app.decorators.auth_decorators import token_required
 from app.models.assetmodel import Asset
 from app.resources.assets.asset_docs import asset_post_doc, asset_get_filters_doc
 

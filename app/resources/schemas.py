@@ -19,6 +19,15 @@ class UserParameters(ValidatedSchema):
     }
 
 
+class UserUpdatableParameters(ValidatedSchema):
+    type = 'object'
+    properties = {
+        'phone': {'type': 'string'},
+        'first_name': {'type': 'string'},
+        'last_name': {'type': 'string'}
+    }
+
+
 class AssetParameters(ValidatedSchema):
     type = 'object'
     properties = {

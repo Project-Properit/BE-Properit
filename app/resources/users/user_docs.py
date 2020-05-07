@@ -1,4 +1,4 @@
-from app.resources.models import UserUpdatableParameters
+from app.resources.schemas import UserUpdatableParameters
 
 user_get_doc = {
     'tags': ['Users'],
