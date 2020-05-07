@@ -12,7 +12,7 @@ from app.resources.assets.asset_docs import asset_post_doc, asset_get_filters_do
 
 
 class AssetGeneral(Resource):
-    @requires_auth
+    @token_required()
     @swagger.doc(asset_get_filters_doc)
     def get(self):
         try:
@@ -34,7 +34,7 @@ class AssetGeneral(Resource):
         except Exception as e:
             return make_response("Internal Server Error: {}".format(e.__str__()), 500)
 
-    @requires_auth
+    @token_required()
     @swagger.doc(asset_post_doc)
     def post(self):
         try:

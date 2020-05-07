@@ -14,7 +14,7 @@ from app.resources.assets.asset_docs import asset_put_doc, asset_delete_doc
 
 
 class AssetPathId(Resource):
-    @requires_auth
+    @token_required()
     @swagger.doc(asset_put_doc)
     def put(self, asset_id):
         try:
@@ -37,7 +37,7 @@ class AssetPathId(Resource):
         except Exception as e:
             return make_response("Internal Server Error: {}".format(e.__str__()), 500)
 
-    @requires_auth
+    @token_required()
     @swagger.doc(asset_delete_doc)
     def delete(self, asset_id):
         try:
