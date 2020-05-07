@@ -18,6 +18,9 @@ class AssetPromissory(Resource):
         # modified_filename = secure_filename(promissory_file.filename)
         dbx_adapter = DropboxAdapter(DBX_ACCESS_TOKEN)
         dbx_filepath = '/{}/promissory.pdf'.format(asset_id)
-        asset.promissory_note_url = dbx_adapter.upload_file(promissory_file.read(), dbx_filepath)
-        update(asset)
+        if asset['promissory_note_url']:
+            dbx_adapter.update_file(promissory_file.read(), dbx_filepath)
+        else:
+            asset.promissory_note_url = dbx_adapter.upload_file(promissory_file.read(), dbx_filepath)
+            update(asset)
         return jsonify({"promissory note url:": asset.promissory_note_url})
