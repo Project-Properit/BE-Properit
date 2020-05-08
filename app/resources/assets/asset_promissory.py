@@ -17,10 +17,11 @@ class AssetPromissory(Resource):
         promissory_file = request.files['promissory']
         # modified_filename = secure_filename(promissory_file.filename)
         dbx_adapter = DropboxAdapter(DBX_ACCESS_TOKEN)
-        dbx_filepath = '/{}/promissory_note.pdf'.format(asset_id)
-        if asset['promissory_note_url']:
-            dbx_adapter.update_file(promissory_file.read(), dbx_filepath)
+        # dbx_filepath = '/{}/promissory_note.pdf'.format(asset_id)
+        dbx_filepath = '/{}/asd'.format(asset_id)
+        if dbx_adapter.check_file_existence(dbx_filepath):
+            asset.promissory_note_url = dbx_adapter.update_file(promissory_file.read(), dbx_filepath)
         else:
             asset.promissory_note_url = dbx_adapter.upload_file(promissory_file.read(), dbx_filepath)
-            update(asset)
+        update(asset)
         return jsonify({"promissory note url:": asset.promissory_note_url})
