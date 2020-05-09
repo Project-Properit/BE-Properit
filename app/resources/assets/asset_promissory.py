@@ -15,10 +15,10 @@ class AssetPromissory(Resource):
     def patch(self, asset_id):
         asset = Asset.objects.get(id=ObjectId(asset_id))
         promissory_file = request.files['promissory']
-        # modified_filename = secure_filename(promissory_file.filename)
+        # modified_filename = secure_filename(promissory_file.filename)  # Todo: use it .rsplit(".", 1)[1]
         dbx_adapter = DropboxAdapter(DBX_ACCESS_TOKEN)
         # dbx_filepath = '/{}/promissory_note.pdf'.format(asset_id)
-        dbx_filepath = '/{}/asd'.format(asset_id)
+        dbx_filepath = '/{}/asd'.format(asset_id)  # Todo: get file suffix by the filename split by "."
         if dbx_adapter.check_file_existence(dbx_filepath):
             asset.promissory_note_url = dbx_adapter.update_file(promissory_file.read(), dbx_filepath)
         else:
