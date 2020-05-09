@@ -18,7 +18,7 @@ def token_required(return_user=False):
             if 'x-access-tokens' in request.headers:
                 token = request.headers['x-access-tokens']
             if not token:
-                return jsonify('valid token is missing.', 403)
+                return make_response('valid token is missing.', 403)
             try:
                 if TokenModel.objects(token=token):
                     raise
@@ -26,7 +26,7 @@ def token_required(return_user=False):
                 if return_user:
                     kwargs['token_user_id'] = user['id']
             except:
-                return jsonify('token is invalid', 403)
+                return make_response('token is invalid', 403)
             return f(*args, **kwargs)
 
         return wrapper
