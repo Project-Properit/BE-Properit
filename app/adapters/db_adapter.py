@@ -1,11 +1,12 @@
 from datetime import datetime
+from urllib.parse import quote_plus
 
 from mongoengine import connect
 
-from app.settings import DATABASE_SERVER, DATABASE_USER, DATABASE_PASSWORD, DATABASE_AUTH
+from app.settings import DATABASE_SERVER, DATABASE_USER, DATABASE_PASSWORD, DATABASE_AUTH, DATABASE_PORT
 
 mongo_connection = connect(
-    host=f'mongodb://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_SERVER}/{DATABASE_AUTH}?retryWrites=true&w=majority')
+    host=f'mongodb://{DATABASE_USER}:{quote_plus(DATABASE_PASSWORD)}@{DATABASE_SERVER}:{DATABASE_PORT}/{DATABASE_AUTH}?retryWrites=true&w=majority')
 
 
 def update(document):
