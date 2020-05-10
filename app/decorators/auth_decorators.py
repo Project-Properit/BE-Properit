@@ -18,7 +18,7 @@ def token_required(return_user=False):
             if 'x-access-tokens' in request.headers:
                 token = request.headers['x-access-tokens']
             if not token:
-                return jsonify({'message': 'a valid token is missing'})
+                return make_response('valid token is missing.', 403)
             try:
                 if TokenModel.objects(token=token):
                     raise
@@ -26,7 +26,7 @@ def token_required(return_user=False):
                 if return_user:
                     kwargs['token_user_id'] = user['id']
             except:
-                return jsonify({'message': 'token is invalid'})
+                return make_response('token is invalid', 403)
             return f(*args, **kwargs)
 
         return wrapper
@@ -39,7 +39,7 @@ def requires_auth(f):
     def decorated(*args, **kwargs):
         auth = request.authorization
         if not auth or not auth.username or not auth.password:
-            return make_response('could not verify', 401, {'Basic realm': 'login required'})
+            return make_response('login required', 401)
         return f(*args, **kwargs)
 
     return decorated
