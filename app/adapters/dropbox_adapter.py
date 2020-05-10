@@ -1,23 +1,26 @@
 import dropbox
-from dropbox.cloud_docs import GetMetadataError
-from dropbox.exceptions import ApiError
 from dropbox.files import WriteMode
 
 
-class DropboxAdapter:
+class DropBoxAdapter:
     def __init__(self, access_token):
         self.access_token = access_token
         self.dbx = dropbox.Dropbox(self.access_token)
 
-    def upload_file(self, file_to_upload, upload_file_path):
-        self.dbx.files_upload(file_to_upload, upload_file_path, mode=WriteMode.overwrite)
-        return self.dbx.sharing_create_shared_link_with_settings(upload_file_path).url.replace('?dl=0', '?raw=1')
+    def upload_file(self, doc, dbx_filepath):
+        if self._check_file_existence(dbx_filepath):  # check if uploading file already exist
+            # Update existing file
+            self.dbx.files_upload(doc.read(), dbx_filepath, mode=WriteMode.overwrite)
+            return self.dbx.sharing_list_shared_links(dbx_filepath).links[0].url.replace('?dl=0', '?raw=1')
+        else:
+            # Upload new file
+            self.dbx.files_upload(doc.read(), dbx_filepath)
+            return self.dbx.sharing_create_shared_link_with_settings(dbx_filepath).url.replace('?dl=0', '?raw=1')
 
-    def update_file(self, file_to_upload, upload_file_path):
-        self.dbx.files_upload(file_to_upload, upload_file_path, mode=WriteMode.overwrite)
-        return self.dbx.sharing_list_shared_links(upload_file_path).links[0].url.replace('?dl=0', '?raw=1')
+    def get_download_link(self, upload_file_path):
+        return self.dbx.files_get_temporary_link(upload_file_path).link
 
-    def check_file_existence(self, upload_file_path):
+    def _check_file_existence(self, upload_file_path):
         try:
             if self.dbx.files_get_metadata(upload_file_path):
                 return True
@@ -26,13 +29,3 @@ class DropboxAdapter:
                 return False
             else:
                 raise
-        # except LookupError:
-        #     return False
-        # except GetMetadataError:
-        #     return False
-        # except ApiError:
-        #     return False
-
-    def get_download_link(self, upload_file_path):
-        return self.dbx.files_get_temporary_link(upload_file_path).link
-

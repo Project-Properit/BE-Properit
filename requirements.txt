@@ -1,10 +1,9 @@
-boto3
 mongoengine
 flask
 flask_restful_swagger_3
 flask_swagger_ui
-mongoengine
 jsonschema
 jwt
 werkzeug
 bson
+dropbox

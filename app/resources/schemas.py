@@ -42,9 +42,11 @@ class AssetParameters(ValidatedSchema):
     }
 
 
-class PatchAssetPromissory(ValidatedSchema):
+class PatchAssetDocument(ValidatedSchema):
     type = 'object'
     properties = {
         'promissory': {'type': 'string',
-                       'format': 'binary'}
+                       'format': 'binary'},
+        'rental_contract': {'type': 'string',
+                            'format': 'binary'}
     }

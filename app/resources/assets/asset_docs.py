@@ -1,5 +1,5 @@
 from app.consts import ASSETS_SECTION
-from app.resources.schemas import AssetParameters, PatchAssetPromissory
+from app.resources.schemas import AssetParameters, PatchAssetDocument
 
 # region asset_general
 
@@ -144,13 +144,13 @@ asset_delete_doc = {
 
 # region asset_promissory
 
-asset_patch_promissory_doc = {
+asset_patch_documents_doc = {
     'tags': [ASSETS_SECTION],
-    'description': "Patch asset promissory note url",
+    'description': "Patch asset documents",
     'parameters': [
         {
             'name': 'asset_id',
-            'description': "Asset ID to patch its promissory note",
+            'description': "Asset ID to patch its documents",
             'in': 'path',
             'required': True,
             'schema': {'type': 'string'},
@@ -160,11 +160,11 @@ asset_patch_promissory_doc = {
         'description': 'Asset parameters',
         'required': True,
         'content': {
-            'multipart/form-data:': {'schema': PatchAssetPromissory}
+            'multipart/form-data:': {'schema': PatchAssetDocument}
         }
     },
     'responses': {
-        '200': {'description': 'Asset promissory note patched successfully'},
+        '200': {'description': 'Asset documents patched successfully'},
         '400': {'description': 'Missing or invalid parameters in request'},
         '404': {'description': 'Asset not found'},
         '500': {'description': 'Internal server error'}
