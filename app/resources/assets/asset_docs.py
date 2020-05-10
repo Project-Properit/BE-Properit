@@ -140,10 +140,6 @@ asset_delete_doc = {
     }
 }
 
-# endregion
-
-# region asset_promissory
-
 asset_patch_documents_doc = {
     'tags': [ASSETS_SECTION],
     'description': "Patch asset documents",
