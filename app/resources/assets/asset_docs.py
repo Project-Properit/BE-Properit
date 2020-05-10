@@ -9,7 +9,7 @@ asset_get_filters_doc = {
     'parameters': [
         {
             'name': 'id',
-            'description': 'filter assets by their owner',
+            'description': 'filter assets by their id',
             'in': 'query',
             'schema': {'type': 'string'},
             'required': False,
@@ -25,7 +25,7 @@ asset_get_filters_doc = {
         },
         {
             'name': 'address',
-            'description': 'filter assets by their ID',
+            'description': 'filter assets by their address',
             'in': 'query',
             'schema': {'type': 'string'},
             'required': False,
@@ -33,7 +33,7 @@ asset_get_filters_doc = {
         },
         {
             'name': 'asset_type',
-            'description': 'filter assets by their ID',
+            'description': 'filter assets by their type',
             'in': 'query',
             'schema': {'type': 'string'},
             'required': False,
@@ -41,7 +41,7 @@ asset_get_filters_doc = {
         },
         {
             'name': 'room_num',
-            'description': 'filter assets by their ID',
+            'description': 'filter assets by their room number',
             'in': 'query',
             'schema': {'type': 'number'},
             'required': False,
@@ -49,7 +49,7 @@ asset_get_filters_doc = {
         },
         {
             'name': 'rent_fee',
-            'description': 'filter assets by their ID',
+            'description': 'filter assets by their rent fee',
             'in': 'query',
             'schema': {'type': 'number'},
             'required': False,
@@ -57,7 +57,7 @@ asset_get_filters_doc = {
         },
         {
             'name': 'comments',
-            'description': 'filter assets by their ID',
+            'description': 'filter assets by their comments',
             'in': 'query',
             'schema': {'type': 'string'},
             'required': False,
