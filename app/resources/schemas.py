@@ -48,3 +48,12 @@ class PatchAssetPromissory(ValidatedSchema):
         'promissory': {'type': 'string',
                        'format': 'binary'}
     }
+
+
+class GroupPaymentsParameters(ValidatedSchema):
+    type = 'object'
+    properties = {
+        'title': {'type': 'string'},
+        'description': {'type': 'string'},
+        'amount': {'type': 'number'}
+    }

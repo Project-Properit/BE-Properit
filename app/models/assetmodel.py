@@ -8,6 +8,7 @@ class Asset(Document):
     room_num = FloatField(required=True)
     rent_fee = FloatField(required=True)
     tenant_list = ListField()
+    group_payments = ListField()
     promissory_note_url = URLField()
     comments = StringField()
     creation_date = DateTimeField()

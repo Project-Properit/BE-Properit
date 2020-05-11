@@ -9,6 +9,8 @@ from app.resources.assets.asset_path_id import AssetPathId
 from app.resources.auth.login import Login
 from app.resources.auth.logout import Logout
 from app.resources.auth.register import Register
+from app.resources.group_payments.group_payments import GroupPayments
+from app.resources.group_payments.groups_payments import GroupsPayments
 from app.resources.users.user import User
 
 app = Flask('Properit')
@@ -40,6 +42,9 @@ api.add_resource(Logout, "/logout")
 
 api.add_resource(AssetGeneral, "/api/assets")
 api.add_resource(AssetPathId, "/api/assets/<string:asset_id>")
+
+api.add_resource(GroupsPayments, "/api/assets/<string:asset_id>/group-payments")
+api.add_resource(GroupPayments, "/api/assets/<string:asset_id>/group-payments/<string:group_payments_id>")
 
 if __name__ == '__main__':  # For Debugging
     app.run(host='0.0.0.0', port=8080, threaded=True)

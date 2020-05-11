@@ -1,2 +1,3 @@
 ASSETS_SECTION = "Assets"
 AUTH_SECTION = "Auth"
+GROUP_PAYMENTS_SECTION = 'Group Payments'
