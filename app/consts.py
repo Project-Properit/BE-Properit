@@ -1,3 +1,4 @@
-ASSETS_SECTION = "Assets"
-AUTH_SECTION = "Auth"
+ASSETS_SECTION = 'Assets'
+AUTH_SECTION = 'Auth'
 GROUP_PAYMENTS_SECTION = 'Group Payments'
+PAYMENTS_SECTION = 'Payments'

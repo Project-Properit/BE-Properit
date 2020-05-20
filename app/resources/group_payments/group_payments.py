@@ -6,7 +6,7 @@ from mongoengine import DoesNotExist
 
 from app.adapters.db_adapter import delete, update
 from app.decorators.auth_decorators import token_required
-from app.models.assetmodel import Asset
+from app.models.assetmodel import AssetModel
 from app.models.grouppaymentsmodel import GroupPaymentsModel
 from app.resources.group_payments.group_payments_docs import group_payments_get_docs
 
@@ -16,7 +16,7 @@ class GroupPayments(Resource):
     @token_required(return_user=True)
     def get(self, token_user_id, asset_id, group_payments_id):
         try:
-            asset = Asset.objects.get(id=ObjectId(asset_id))
+            asset = AssetModel.objects.get(id=ObjectId(asset_id))
         except InvalidId:
             return make_response("Invalid asset ID", 400)
         except DoesNotExist as e:
@@ -38,7 +38,7 @@ class GroupPayments(Resource):
     @token_required(return_user=True)
     def delete(self, token_user_id, asset_id, group_payments_id):
         try:
-            asset = Asset.objects.get(id=ObjectId(asset_id))
+            asset = AssetModel.objects.get(id=ObjectId(asset_id))
         except InvalidId:
             return make_response("Invalid asset ID", 400)
         except DoesNotExist as e:

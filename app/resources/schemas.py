@@ -57,3 +57,22 @@ class GroupPaymentsParameters(ValidatedSchema):
         'description': {'type': 'string'},
         'amount': {'type': 'number'}
     }
+
+
+class PaymentParameters(ValidatedSchema):
+    type = 'object'
+    properties = {
+        'pay_from': {'type': 'string'},
+        'pay_to': {'type': 'string'},
+        'amount': {'type': 'number'},
+        'method': {'type': 'string'}
+    }
+
+
+class PaymentUpdateableParameters(ValidatedSchema):
+    type = 'object'
+    properties = {
+        'amount': {'type': 'number'},
+        'method': {'type': 'string'},
+        'status': {'type': 'string'}
+    }

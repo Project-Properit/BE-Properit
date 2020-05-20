@@ -8,7 +8,7 @@ from mongoengine import DoesNotExist
 
 from app.adapters.db_adapter import insert, update
 from app.decorators.auth_decorators import token_required
-from app.models.assetmodel import Asset
+from app.models.assetmodel import AssetModel
 from app.models.grouppaymentsmodel import GroupPaymentsModel
 from app.resources.group_payments.groups_payments_docs import groups_payments_post_docs, groups_payments_get_docs
 
@@ -18,7 +18,7 @@ class GroupsPayments(Resource):
     @token_required(return_user=True)
     def post(self, token_user_id, asset_id):
         try:
-            asset = Asset.objects.get(id=ObjectId(asset_id))
+            asset = AssetModel.objects.get(id=ObjectId(asset_id))
         except InvalidId:
             return make_response("Invalid asset ID", 400)
         except DoesNotExist as e:
@@ -40,7 +40,7 @@ class GroupsPayments(Resource):
     @token_required(return_user=True)
     def get(self, token_user_id, asset_id):
         try:
-            asset = Asset.objects.get(id=ObjectId(asset_id))
+            asset = AssetModel.objects.get(id=ObjectId(asset_id))
         except InvalidId:
             return make_response("Invalid asset ID", 400)
         except DoesNotExist as e:
