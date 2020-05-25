@@ -45,7 +45,7 @@ class Assets(Resource):
                                    room_num=data['room_num'],
                                    rent_fee=data['rent_fee'],
                                    tenant_list=data['tenant_list'],
-                                   promissory_note_url=None,
+                                   documents=None,
                                    comments=data['comments'])
             insert(new_asset)
             return jsonify({"new asset_id": str(new_asset.id)})

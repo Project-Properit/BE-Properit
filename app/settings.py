@@ -13,3 +13,7 @@ DATABASE_AUTH = db_section['database_auth']
 
 api_section = config['api_section']
 APP_SECRET_KEY = api_section['app_secret_key'].encode('UTF-8')
+
+
+# Dropbox
+DBX_ACCESS_TOKEN = 'Dg7EzFTjj3AAAAAAAAAAFUbFwgOfa3B4OSX-T23-_Wk0Ve7s8ynQ1IvIK161IFqg'
