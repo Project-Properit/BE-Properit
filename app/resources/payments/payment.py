@@ -16,7 +16,7 @@ from app.resources.payments.payment_docs import payment_put_doc, payment_delete_
 class Payment(Resource):
     @token_required()
     @swagger.doc(payment_put_doc)
-    def put(self, payment_id):
+    def put(self, payment_id):  # Todo: who can edit payment?
         try:
             payment = PaymentModel.objects.get(id=ObjectId(payment_id))
             data = json.loads(request.data)
@@ -37,11 +37,13 @@ class Payment(Resource):
         except Exception as e:
             return make_response("Internal Server Error: {}".format(e.__str__()), 500)
 
-    @token_required()
+    @token_required(return_user=True)
     @swagger.doc(payment_delete_doc)
-    def delete(self, payment_id):
+    def delete(self, token_user_id, payment_id):
         try:
             payment = PaymentModel.objects.get(id=ObjectId(payment_id))
+            if token_user_id != payment.pay_to:
+                return make_response("Insufficient Permissions", 403)
             delete(payment)
             return jsonify({"deleted payment_id": str(payment_id)})
         except InvalidId:

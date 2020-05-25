@@ -37,11 +37,11 @@ api = Api(app, description="Properit API", api_spec_url='/api/swagger', componen
 
 db_connection = mongo_connection
 
-api.add_resource(Login, "/login")
-api.add_resource(Register, "/register")
-api.add_resource(Logout, "/logout")
+api.add_resource(Login, "/api/login")
+api.add_resource(Register, "/api/register")
+api.add_resource(Logout, "/api/logout")
 
-api.add_resource(User, "/users/<string:user_id>")
+api.add_resource(User, "/api/users/<string:user_id>")
 
 api.add_resource(Assets, "/api/assets")
 api.add_resource(Asset, "/api/assets/<string:asset_id>")
