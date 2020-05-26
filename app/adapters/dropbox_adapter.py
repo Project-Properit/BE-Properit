@@ -2,7 +2,7 @@ import dropbox
 from dropbox.files import WriteMode
 
 
-class DropBoxAdapter:
+class DropBoxAdapter:  # TODO: NOT FINISHED
     def __init__(self, access_token):
         self.access_token = access_token
         self.dbx = dropbox.Dropbox(self.access_token)

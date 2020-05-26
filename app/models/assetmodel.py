@@ -7,9 +7,9 @@ class AssetModel(Document):
     asset_type = StringField(required=True)
     room_num = FloatField(required=True)
     rent_fee = FloatField(required=True)
-    tenant_list = ListField()
-    documents = DictField()
-    group_payments = ListField()
+    tenant_list = ListField(default=None)
+    documents = DictField(default=None)
+    group_payments = ListField(default=None)
     comments = StringField()
     creation_date = DateTimeField()
     meta = {'collection': 'Assets'}

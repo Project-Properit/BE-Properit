@@ -47,7 +47,7 @@ class Asset(Resource):
     def patch(self, token_user_id, asset_id):
         try:
             dbx_adapter = DropBoxAdapter(DBX_ACCESS_TOKEN)
-            asset = Asset.objects.get(id=ObjectId(asset_id))
+            asset = AssetModel.objects.get(id=ObjectId(asset_id))
             if token_user_id != asset.owner_id:
                 return make_response("Insufficient Permissions", 403)
             if not request.files:

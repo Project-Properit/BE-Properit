@@ -39,13 +39,14 @@ class Assets(Resource):
     def post(self):
         try:
             data = json.loads(request.data)
-            new_asset = AssetModel(address=data['address'],
-                                   owner_id=data['owner_id'],
+            new_asset = AssetModel(owner_id=data['owner_id'],
+                                   address=data['address'],
                                    asset_type=data['asset_type'],
                                    room_num=data['room_num'],
                                    rent_fee=data['rent_fee'],
                                    tenant_list=data['tenant_list'],
-                                   documents=None,
+                                   documents={},
+                                   group_payments=[],
                                    comments=data['comments'])
             insert(new_asset)
             return jsonify({"new asset_id": str(new_asset.id)})
