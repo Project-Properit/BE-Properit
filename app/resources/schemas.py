@@ -50,15 +50,6 @@ class PatchAssetPromissory(ValidatedSchema):
     }
 
 
-class GroupPaymentsParameters(ValidatedSchema):
-    type = 'object'
-    properties = {
-        'title': {'type': 'string'},
-        'description': {'type': 'string'},
-        'amount': {'type': 'number'}
-    }
-
-
 class PaymentParameters(ValidatedSchema):
     type = 'object'
     properties = {
@@ -66,6 +57,21 @@ class PaymentParameters(ValidatedSchema):
         'pay_to': {'type': 'string'},
         'amount': {'type': 'number'},
         'method': {'type': 'string'}
+    }
+
+
+class PaymentsList(ValidatedSchema):
+    type = 'array'
+    items = PaymentParameters
+
+
+class GroupPaymentsParameters(ValidatedSchema):
+    type = 'object'
+    properties = {
+        'title': {'type': 'string'},
+        'description': {'type': 'string'},
+        'amount': {'type': 'number'},
+        'payments': PaymentsList
     }
 
 

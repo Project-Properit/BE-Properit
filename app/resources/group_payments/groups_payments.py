@@ -10,6 +10,7 @@ from app.adapters.db_adapter import insert, update, to_json
 from app.decorators.auth_decorators import token_required
 from app.models.assetmodel import AssetModel
 from app.models.grouppaymentsmodel import GroupPaymentsModel
+from app.models.paymentmodel import PaymentModel
 from app.resources.group_payments.groups_payments_docs import groups_payments_post_docs, groups_payments_get_docs
 
 
@@ -29,6 +30,13 @@ class GroupsPayments(Resource):
             data = json.loads(request.data)
             new_group_payments = GroupPaymentsModel(title=data['title'], description=data['description'],
                                                     amount=data['amount'], payments=[])
+            for payment in data['payments']:
+                payment_document = PaymentModel(pay_from=payment['pay_from'],
+                                                pay_to=payment['pay_to'],
+                                                amount=payment['amount'],
+                                                method=payment['method'])
+                new_payment = insert(payment_document)
+                new_group_payments.payments.append(new_payment.id)
             group_payments = insert(new_group_payments)
             asset.group_payments.append(str(group_payments.id))
             update(asset)
