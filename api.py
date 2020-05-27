@@ -37,7 +37,7 @@ api = Api(app, description="Properit API", api_spec_url='/api/swagger', componen
 
 db_connection = mongo_connection
 
-api.add_resource(Login, "/api/login")
+api.add_resource(Login, "/login")
 api.add_resource(Register, "/api/register")
 api.add_resource(Logout, "/api/logout")
 
