@@ -6,7 +6,7 @@ from flask import request, make_response, jsonify
 from flask_restful_swagger_3 import Resource, swagger
 from mongoengine import DoesNotExist
 
-from app.adapters.db_adapter import insert, update
+from app.adapters.db_adapter import insert, update, to_json
 from app.decorators.auth_decorators import token_required
 from app.models.assetmodel import Asset
 from app.models.grouppaymentsmodel import GroupPaymentsModel
@@ -48,6 +48,7 @@ class GroupsPayments(Resource):
         try:
             if token_user_id not in asset.tenant_list and token_user_id != asset.owner_id:
                 return make_response("Insufficient Permissions", 403)
-            return jsonify(asset.group_payments)
+            return jsonify([to_json(GroupPaymentsModel.objects.get(id=ObjectId(group_payments))) for group_payments in
+                            asset.group_payments])
         except Exception as e:
             return make_response("Internal Server Error: {}".format(e.__str__()), 500)

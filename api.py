@@ -43,8 +43,8 @@ api.add_resource(Logout, "/logout")
 api.add_resource(AssetGeneral, "/api/assets")
 api.add_resource(AssetPathId, "/api/assets/<string:asset_id>")
 
-api.add_resource(GroupsPayments, "/api/assets/<string:asset_id>/group-payments")
-api.add_resource(GroupPayments, "/api/assets/<string:asset_id>/group-payments/<string:group_payments_id>")
+api.add_resource(GroupsPayments, "/api/assets/<string:asset_id>/groups-payments")
+api.add_resource(GroupPayments, "/api/assets/<string:asset_id>/groups-payments/<string:group_payments_id>")
 
 if __name__ == '__main__':  # For Debugging
     app.run(host='0.0.0.0', port=8080, threaded=True)
