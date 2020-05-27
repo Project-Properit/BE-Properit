@@ -9,23 +9,23 @@ from mongoengine import DoesNotExist, ValidationError
 
 from app.adapters.db_adapter import update, delete
 from app.decorators.auth_decorators import token_required
-from app.models.assetmodel import Asset
-from app.resources.assets.asset_docs import asset_put_doc, asset_delete_doc
+from app.models.paymentmodel import PaymentModel
+from app.resources.payments.payment_docs import payment_put_doc, payment_delete_doc
 
 
-class AssetPathId(Resource):
+class Payment(Resource):
     @token_required()
-    @swagger.doc(asset_put_doc)
-    def put(self, asset_id):
+    @swagger.doc(payment_put_doc)
+    def put(self, payment_id):
         try:
-            asset = Asset.objects.get(id=ObjectId(asset_id))
+            payment = PaymentModel.objects.get(id=ObjectId(payment_id))
             data = json.loads(request.data)
             for value, key in data.items():
-                asset[value] = key
-            update(asset)
-            return jsonify({"updated asset_id": str(asset_id)})
+                payment[value] = key
+            update(payment)
+            return jsonify({"updated payment_id": str(payment_id)})
         except InvalidId:
-            return make_response("Invalid asset ID", 400)
+            return make_response("Invalid payment ID", 400)
         except JSONDecodeError as e:
             return make_response("Invalid JSON: {}".format(e.__str__()), 400)
         except KeyError as e:
@@ -33,20 +33,20 @@ class AssetPathId(Resource):
         except ValidationError as e:
             return make_response("Invalid json parameters: {}".format(e.__str__()), 400)
         except DoesNotExist:
-            return make_response("Asset not found", 404)
+            return make_response("Payment not found", 404)
         except Exception as e:
             return make_response("Internal Server Error: {}".format(e.__str__()), 500)
 
     @token_required()
-    @swagger.doc(asset_delete_doc)
-    def delete(self, asset_id):
+    @swagger.doc(payment_delete_doc)
+    def delete(self, payment_id):
         try:
-            asset = Asset.objects.get(id=ObjectId(asset_id))
-            delete(asset)
-            return jsonify({"deleted asset_id": str(asset_id)})
+            payment = PaymentModel.objects.get(id=ObjectId(payment_id))
+            delete(payment)
+            return jsonify({"deleted payment_id": str(payment_id)})
         except InvalidId:
-            return make_response("Invalid asset ID", 400)
+            return make_response("Invalid payment ID", 400)
         except DoesNotExist:
-            return make_response("Asset not found", 404)
+            return make_response("Payment not found", 404)
         except Exception as e:
             return make_response("Internal Server Error: {}".format(e.__str__()), 500)

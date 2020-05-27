@@ -1,7 +1,7 @@
 from mongoengine import Document, StringField, DateTimeField, ListField, FloatField, URLField
 
 
-class Asset(Document):
+class AssetModel(Document):
     owner_id = StringField(required=True)
     address = StringField(required=True)
     asset_type = StringField(required=True)

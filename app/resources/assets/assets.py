@@ -7,11 +7,11 @@ from mongoengine import DoesNotExist
 
 from app.adapters.db_adapter import insert, to_json
 from app.decorators.auth_decorators import token_required
-from app.models.assetmodel import Asset
+from app.models.assetmodel import AssetModel
 from app.resources.assets.asset_docs import asset_post_doc, asset_get_filters_doc
 
 
-class AssetGeneral(Resource):
+class Assets(Resource):
     @token_required()
     @swagger.doc(asset_get_filters_doc)
     def get(self):
@@ -20,11 +20,11 @@ class AssetGeneral(Resource):
             filters = request.args
             if filters:
                 filter_dict = {k: v for k, v in filters.items()}
-                user_asset_list = Asset.objects(**filter_dict)
-                for asset in user_asset_list:
+                asset_list = AssetModel.objects(**filter_dict)
+                for asset in asset_list:
                     json_asset_list.append(to_json(asset))
             else:
-                for asset in Asset.objects():
+                for asset in AssetModel.objects():
                     json_asset_list.append(to_json(asset))
             if not json_asset_list:
                 return make_response("No assets found by filters", 404)
@@ -39,14 +39,14 @@ class AssetGeneral(Resource):
     def post(self):
         try:
             data = json.loads(request.data)
-            new_asset = Asset(address=data['address'],
-                              owner_id=data['owner_id'],
-                              asset_type=data['asset_type'],
-                              room_num=data['room_num'],
-                              rent_fee=data['rent_fee'],
-                              tenant_list=data['tenant_list'],
-                              promissory_note_url=None,
-                              comments=data['comments'])
+            new_asset = AssetModel(address=data['address'],
+                                   owner_id=data['owner_id'],
+                                   asset_type=data['asset_type'],
+                                   room_num=data['room_num'],
+                                   rent_fee=data['rent_fee'],
+                                   tenant_list=data['tenant_list'],
+                                   promissory_note_url=None,
+                                   comments=data['comments'])
             insert(new_asset)
             return jsonify({"new asset_id": str(new_asset.id)})
         except JSONDecodeError as e:
