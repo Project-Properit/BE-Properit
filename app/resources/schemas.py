@@ -61,6 +61,17 @@ class GroupPaymentsParameters(ValidatedSchema):
     }
 
 
+class GroupPaymentsUpdateableParameters(ValidatedSchema):
+    type = 'object'
+    properties = {
+        'title': {'type': 'string'},
+        'description': {'type': 'string'},
+        'amount': {'type': 'number'},
+        'payments': {'type': 'array',
+                     'items': {'type': 'string'}}
+    }
+
+
 class PaymentParameters(ValidatedSchema):
     type = 'object'
     properties = {
