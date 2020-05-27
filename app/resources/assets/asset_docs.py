@@ -1,5 +1,5 @@
 from app.consts import ASSETS_SECTION
-from app.resources.schemas import AssetParameters, PatchAssetPromissory
+from app.resources.schemas import AssetParameters, PatchAssetDocument
 
 # region asset_general
 
@@ -9,7 +9,7 @@ asset_get_filters_doc = {
     'parameters': [
         {
             'name': 'id',
-            'description': 'filter assets by their owner',
+            'description': 'filter assets by their id',
             'in': 'query',
             'schema': {'type': 'string'},
             'required': False,
@@ -25,7 +25,7 @@ asset_get_filters_doc = {
         },
         {
             'name': 'address',
-            'description': 'filter assets by their ID',
+            'description': 'filter assets by their address',
             'in': 'query',
             'schema': {'type': 'string'},
             'required': False,
@@ -33,7 +33,7 @@ asset_get_filters_doc = {
         },
         {
             'name': 'asset_type',
-            'description': 'filter assets by their ID',
+            'description': 'filter assets by their type',
             'in': 'query',
             'schema': {'type': 'string'},
             'required': False,
@@ -41,7 +41,7 @@ asset_get_filters_doc = {
         },
         {
             'name': 'room_num',
-            'description': 'filter assets by their ID',
+            'description': 'filter assets by their room number',
             'in': 'query',
             'schema': {'type': 'number'},
             'required': False,
@@ -49,7 +49,7 @@ asset_get_filters_doc = {
         },
         {
             'name': 'rent_fee',
-            'description': 'filter assets by their ID',
+            'description': 'filter assets by their rent fee',
             'in': 'query',
             'schema': {'type': 'number'},
             'required': False,
@@ -57,7 +57,7 @@ asset_get_filters_doc = {
         },
         {
             'name': 'comments',
-            'description': 'filter assets by their ID',
+            'description': 'filter assets by their comments',
             'in': 'query',
             'schema': {'type': 'string'},
             'required': False,
@@ -140,17 +140,13 @@ asset_delete_doc = {
     }
 }
 
-# endregion
-
-# region asset_promissory
-
-asset_patch_promissory_doc = {
+asset_patch_documents_doc = {
     'tags': [ASSETS_SECTION],
-    'description': "Patch asset promissory note url",
+    'description': "Patch asset documents",
     'parameters': [
         {
             'name': 'asset_id',
-            'description': "Asset ID to patch its promissory note",
+            'description': "Asset ID to patch its documents",
             'in': 'path',
             'required': True,
             'schema': {'type': 'string'},
@@ -160,11 +156,11 @@ asset_patch_promissory_doc = {
         'description': 'Asset parameters',
         'required': True,
         'content': {
-            'multipart/form-data:': {'schema': PatchAssetPromissory}
+            'multipart/form-data:': {'schema': PatchAssetDocument}
         }
     },
     'responses': {
-        '200': {'description': 'Asset promissory note patched successfully'},
+        '200': {'description': 'Asset documents patched successfully'},
         '400': {'description': 'Missing or invalid parameters in request'},
         '404': {'description': 'Asset not found'},
         '500': {'description': 'Internal server error'}
