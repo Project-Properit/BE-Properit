@@ -13,6 +13,7 @@ from app.resources.auth.auth_docs import login_get_doc
 from app.settings import APP_SECRET_KEY
 
 token_manager = jwt.JWT()
+THREE_HOURS = 60 * 3
 
 
 class Login(Resource):
@@ -23,7 +24,7 @@ class Login(Resource):
             auth = request.authorization
             user = UserModel.objects.get(email=auth.username)
             if check_password_hash(user.password, auth.password):
-                expiration_time = datetime.now(timezone.utc) + timedelta(minutes=30)
+                expiration_time = datetime.now(timezone.utc) + timedelta(minutes=THREE_HOURS)
                 token = token_manager.encode(
                     {'id': str(user.id), 'exp': int(expiration_time.timestamp())},
                     OctetJWK(APP_SECRET_KEY))
