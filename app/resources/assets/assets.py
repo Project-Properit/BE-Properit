@@ -26,8 +26,8 @@ class Assets(Resource):
             else:
                 for asset in AssetModel.objects():
                     json_asset_list.append(to_json(asset))
-            if not json_asset_list:
-                return make_response("No assets found by filters", 404)
+            # if not json_asset_list:
+            #     return make_response("No assets found by filters", 200)
             return json_asset_list
         except DoesNotExist:
             return make_response("No assets available", 404)
