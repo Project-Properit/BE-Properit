@@ -1,6 +1,8 @@
 import dropbox
 from dropbox.files import WriteMode
 
+from app.errors import DbxFileNotFoundError
+
 
 class DropBoxAdapter:  # TODO: NOT FINISHED
     def __init__(self, access_token):
@@ -16,6 +18,12 @@ class DropBoxAdapter:  # TODO: NOT FINISHED
             # Upload new file
             self.dbx.files_upload(doc.read(), dbx_filepath)
             return self.dbx.sharing_create_shared_link_with_settings(dbx_filepath).url.replace('?dl=0', '?raw=1')
+
+    def delete_file(self, dbx_filepath):
+        if self._check_file_existence(dbx_filepath):
+            self.dbx.files_delete_v2(dbx_filepath)
+        else:
+            raise DbxFileNotFoundError
 
     def get_download_link(self, upload_file_path):
         return self.dbx.files_get_temporary_link(upload_file_path).link

@@ -47,10 +47,8 @@ class AssetParameters(ValidatedSchema):
 class PatchAssetDocument(ValidatedSchema):
     type = 'object'
     properties = {
-        'asset_img': {'type': 'string',
-                      'format': 'binary'},
-        'promissory_note': {'type': 'string',
-                            'format': 'binary'}
+        'doc_name': {'type': 'string',
+                     'format': 'binary'},
     }
 
 

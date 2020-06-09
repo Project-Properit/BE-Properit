@@ -1,5 +1,5 @@
 from app.consts import ASSETS_SECTION
-from app.resources.schemas import AssetParameters, PatchAssetDocument
+from app.resources.schemas import AssetParameters
 
 # region asset_general
 
@@ -140,31 +140,31 @@ asset_delete_doc = {
     }
 }
 
-asset_patch_documents_doc = {
-    'tags': [ASSETS_SECTION],
-    'description': "Patch asset documents",
-    'parameters': [
-        {
-            'name': 'asset_id',
-            'description': "Asset ID to patch its documents",
-            'in': 'path',
-            'required': True,
-            'schema': {'type': 'string'},
-        },
-    ],
-    'requestBody': {
-        'description': 'Asset parameters',
-        'required': True,
-        'content': {
-            'multipart/form-data:': {'schema': PatchAssetDocument}
-        }
-    },
-    'responses': {
-        '200': {'description': 'Asset documents patched successfully'},
-        '400': {'description': 'Missing or invalid parameters in request'},
-        '404': {'description': 'Asset not found'},
-        '500': {'description': 'Internal server error'}
-    }
-}
+# asset_patch_documents_doc = {
+#     'tags': [ASSETS_SECTION],
+#     'description': "Patch asset documents",
+#     'parameters': [
+#         {
+#             'name': 'asset_id',
+#             'description': "Asset ID to patch its documents",
+#             'in': 'path',
+#             'required': True,
+#             'schema': {'type': 'string'},
+#         },
+#     ],
+#     'requestBody': {
+#         'description': 'Asset parameters',
+#         'required': True,
+#         'content': {
+#             'multipart/form-data:': {'schema': PatchAssetDocument}
+#         }
+#     },
+#     'responses': {
+#         '200': {'description': 'Asset documents patched successfully'},
+#         '400': {'description': 'Missing or invalid parameters in request'},
+#         '404': {'description': 'Asset not found'},
+#         '500': {'description': 'Internal server error'}
+#     }
+# }
 
 # endregion

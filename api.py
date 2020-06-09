@@ -9,6 +9,8 @@ from app.resources.assets.asset import Asset
 from app.resources.auth.login import Login
 from app.resources.auth.logout import Logout
 from app.resources.auth.register import Register
+from app.resources.documents.doc import Doc
+from app.resources.documents.docs import Docs
 from app.resources.group_payments.group_payments import GroupPayments
 from app.resources.group_payments.groups_payments import GroupsPayments
 from app.resources.payments.payments import Payments
@@ -45,6 +47,9 @@ api.add_resource(User, "/api/users/<string:user_id>")
 
 api.add_resource(Assets, "/api/assets")
 api.add_resource(Asset, "/api/assets/<string:asset_id>")
+
+api.add_resource(Docs, "/api/assets/<string:asset_id>/documents")
+api.add_resource(Doc, "/api/assets/<string:asset_id>/documents/<string:document_id>")
 
 api.add_resource(GroupsPayments, "/api/assets/<string:asset_id>/group-payments")
 api.add_resource(GroupPayments, "/api/assets/<string:asset_id>/group-payments/<string:group_payments_id>")
