@@ -25,9 +25,9 @@ class Doc(Resource):
             if not request.files:
                 return make_response("Upload at least 1 file", 200)
             for key, doc in request.files.items():
-                dbx_filename = secure_filename(doc.filename)  # .rsplit(".", 1)[#]
-                dbx_filepath = '/{}/{}'.format(asset_id, dbx_filename)  # file name can be changed to 'key'
-                asset.documents[document_id] = {'name': key,
+                # dbx_filename = secure_filename(doc.filename)  # .rsplit(".", 1)[#]
+                dbx_filepath = '/{}/{}'.format(asset_id, key)  # dbx_filename can be changed to 'key'
+                asset.documents[document_id] = {'doc_name': key,
                                                 'dbx_url': dbx_adapter.upload_file(doc, dbx_filepath),
                                                 'dbx_path': dbx_filepath}
             update(asset)
