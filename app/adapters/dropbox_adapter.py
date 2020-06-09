@@ -22,8 +22,8 @@ class DropBoxAdapter:  # TODO: NOT FINISHED
     def delete_file(self, dbx_filepath):
         if self._check_file_existence(dbx_filepath):
             self.dbx.files_delete_v2(dbx_filepath)
-        else:
-            raise DbxFileNotFoundError
+        # else:
+        #     raise DbxFileNotFoundError
 
     def get_download_link(self, upload_file_path):
         return self.dbx.files_get_temporary_link(upload_file_path).link
