@@ -5,6 +5,7 @@ from bson.errors import InvalidId
 from flask import request, jsonify, make_response
 from flask_restful_swagger_3 import Resource, swagger
 from mongoengine import DoesNotExist
+from werkzeug.utils import secure_filename
 
 from app.adapters.db_adapter import update
 from app.adapters.dropbox_adapter import DropBoxAdapter
@@ -27,13 +28,13 @@ class Docs(Resource):
                 return make_response("Upload at least 1 file", 200)
             new_uuid = uuid.uuid4().hex
             for key, doc in request.files.items():
-                # dbx_filename = secure_filename(doc.filename)  # .rsplit(".", 1)[#]
-                dbx_filepath = '/{}/{}'.format(asset_id, key)  # dbx_filename can be changed to 'key'
+                dbx_filename = secure_filename(doc.filename)  # .rsplit(".", 1)[#]
+                dbx_filepath = '/{}/{}'.format(asset_id, dbx_filename)  # dbx_filename can be changed to 'key'
                 asset.documents[new_uuid] = {'doc_name': key,
                                              'dbx_url': dbx_adapter.upload_file(doc, dbx_filepath),
                                              'dbx_path': dbx_filepath}
             update(asset)
-            return jsonify({'document uuid': new_uuid})
+            return jsonify({'document_url': asset.documents[new_uuid]['dbx_url']})
         except InvalidId:
             return make_response("Invalid asset ID", 400)
         except DoesNotExist:
