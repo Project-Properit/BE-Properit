@@ -34,7 +34,7 @@ class Docs(Resource):
                                              'dbx_url': dbx_adapter.upload_file(doc, dbx_filepath),
                                              'dbx_path': dbx_filepath}
             update(asset)
-            return jsonify({'document_url': asset.documents[new_uuid]['dbx_url']})
+            return jsonify({'document_url': asset.documents[new_uuid]['dbx_url'], 'document_uuid': new_uuid})
         except InvalidId:
             return make_response("Invalid asset ID", 400)
         except DoesNotExist:
