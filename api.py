@@ -58,4 +58,4 @@ api.add_resource(Payments, "/api/payments")
 api.add_resource(Payment, "/api/payments/<string:payment_id>")
 
 if __name__ == '__main__':  # For Debugging
-    app.run(host='0.0.0.0', port=8080, threaded=True)
+    app.run(host='0.0.0.0', port=5000, threaded=True)
