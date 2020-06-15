@@ -10,3 +10,4 @@ jsonschema
 jwt
 werkzeug
 dropbox
+gunicorn
