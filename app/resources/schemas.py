@@ -89,3 +89,27 @@ class PaymentUpdateableParameters(ValidatedSchema):
         'method': {'type': 'string'},
         'status': {'type': 'string'}
     }
+
+
+class ServiceCallParameters(ValidatedSchema):
+    type = 'object'
+    properties = {
+        'name': {'type': 'string'},
+        'company': {'type': 'string'},
+        'phone': {'type': 'string'},
+        'price': {'type': 'number'},
+        'arrival_date': {'type': 'string'},
+        'group_payment_id': {'type': 'string'}
+    }
+
+
+class ServiceCallUpdateableParameters(ValidatedSchema):
+    type = 'object'
+    properties = {
+        'name': {'type': 'string'},
+        'company': {'type': 'string'},
+        'phone': {'type': 'string'},
+        'price': {'type': 'number'},
+        'arrival_date': {'type': 'string'},
+        'is_closed': {'type': 'boolean'}
+    }
