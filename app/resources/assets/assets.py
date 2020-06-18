@@ -47,6 +47,7 @@ class Assets(Resource):
                                    tenant_list=data['tenant_list'],
                                    documents={},
                                    group_payments=[],
+                                   service_calls=[],
                                    comments=data['comments'])
             insert(new_asset)
             return jsonify({"new asset_id": str(new_asset.id)})
