@@ -52,10 +52,10 @@ api.add_resource(Docs, "/api/assets/<string:asset_id>/documents")
 api.add_resource(Doc, "/api/assets/<string:asset_id>/documents/<string:document_id>")
 
 api.add_resource(GroupsPayments, "/api/assets/<string:asset_id>/groups-payments")
-api.add_resource(GroupPayments, "/api/assets/<string:asset_id>/group-payments/<string:group_payments_id>")
+api.add_resource(GroupPayments, "/api/assets/<string:asset_id>/groups-payments/<string:group_payments_id>")
 
 api.add_resource(Payments, "/api/payments")
 api.add_resource(Payment, "/api/payments/<string:payment_id>")
 
 if __name__ == '__main__':  # For Debugging
-    app.run(host='0.0.0.0', port=8080, threaded=True)
+    app.run(host='0.0.0.0', port=5000, threaded=True)

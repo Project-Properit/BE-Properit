@@ -8,6 +8,7 @@ from mongoengine import DoesNotExist
 from werkzeug.security import check_password_hash
 
 from app.decorators.auth_decorators import requires_auth
+from app.models.assetmodel import AssetModel
 from app.models.usermodel import UserModel
 from app.resources.auth.auth_docs import login_get_doc
 from app.settings import APP_SECRET_KEY
@@ -23,6 +24,13 @@ class Login(Resource):
         try:
             auth = request.authorization
             user = UserModel.objects.get(email=auth.username)
+
+            tenant_asset_id = None
+            for asset in AssetModel.objects():
+                if not tenant_asset_id:
+                    if str(user.id) in asset.tenant_list:
+                        tenant_asset_id = asset.id
+
             if check_password_hash(user.password, auth.password):
                 expiration_time = datetime.now(timezone.utc) + timedelta(minutes=THREE_HOURS)
                 token = token_manager.encode(
@@ -30,7 +38,8 @@ class Login(Resource):
                     OctetJWK(APP_SECRET_KEY))
                 return jsonify({'token': token,
                                 'user_id': str(user.id),
-                                'is_tenant': user.is_tenant, 'is_owner': user.is_owner})
+                                'is_tenant': user.is_tenant, 'is_owner': user.is_owner,
+                                'tenant_asset_id': str(tenant_asset_id)})
             return make_response('Wrong password', 401)
         except DoesNotExist:
             return make_response('User not registered', 404)
