@@ -13,4 +13,4 @@ class AssetModel(Document):
     service_calls = ListField(default=None)
     comments = StringField()
     creation_date = DateTimeField()
-    meta = {'collection': 'Assets_new'}
+    meta = {'collection': 'Assets'}

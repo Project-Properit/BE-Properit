@@ -29,7 +29,7 @@ class Login(Resource):
             for asset in AssetModel.objects():
                 if not tenant_asset_id:
                     if str(user.id) in asset.tenant_list:
-                        tenant_asset_id = asset.id
+                        tenant_asset_id = str(asset.id)
 
             if check_password_hash(user.password, auth.password):
                 expiration_time = datetime.now(timezone.utc) + timedelta(minutes=THREE_HOURS)
@@ -39,7 +39,7 @@ class Login(Resource):
                 return jsonify({'token': token,
                                 'user_id': str(user.id),
                                 'is_tenant': user.is_tenant, 'is_owner': user.is_owner,
-                                'tenant_asset_id': str(tenant_asset_id)})
+                                'tenant_asset_id': tenant_asset_id})
             return make_response('Wrong password', 401)
         except DoesNotExist:
             return make_response('User not registered', 404)
