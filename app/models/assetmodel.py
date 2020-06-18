@@ -10,7 +10,7 @@ class AssetModel(Document):
     tenant_list = ListField(default=None)
     documents = DictField(default=None)
     group_payments = ListField(default=None)
-    service_calls = ListField(default=None)
+    # service_calls = ListField(default=None)
     comments = StringField()
     creation_date = DateTimeField()
     meta = {'collection': 'Assets'}
