@@ -27,10 +27,11 @@ class Login(Resource):
 
             # ##
             tenant_asset_id = None
-            for asset in AssetModel.objects():
-                if not tenant_asset_id:
-                    if str(user.id) in asset.tenant_list:
-                        tenant_asset_id = str(asset.id)
+            if user.is_tenant:
+                for asset in AssetModel.objects():
+                    if not tenant_asset_id:
+                        if str(user.id) in asset.tenant_list:
+                            tenant_asset_id = str(asset.id)
             # ##
 
             if check_password_hash(user.password, auth.password):
@@ -40,6 +41,8 @@ class Login(Resource):
                     OctetJWK(APP_SECRET_KEY))
                 return jsonify({'token': token,
                                 'user_id': str(user.id),
+                                'first_name': user.first_name,
+                                'last_name': user.last_name,
                                 'is_tenant': user.is_tenant, 'is_owner': user.is_owner,
                                 'tenant_asset_id': tenant_asset_id})
             return make_response('Wrong password', 401)
