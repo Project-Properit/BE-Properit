@@ -11,6 +11,7 @@ from app.adapters.db_adapter import delete, update
 from app.decorators.auth_decorators import token_required
 from app.models.assetmodel import AssetModel
 from app.models.grouppaymentsmodel import GroupPaymentsModel
+from app.models.paymentmodel import PaymentModel
 from app.resources.group_payments.group_payments_docs import group_payments_get_docs, group_payments_put_doc
 
 
@@ -28,9 +29,23 @@ class GroupPayments(Resource):
             if token_user_id not in asset.tenant_list and token_user_id != asset.owner_id:
                 return make_response("Insufficient Permissions", 403)
             group_payments = GroupPaymentsModel.objects.get(id=ObjectId(group_payments_id))
+
+            # ##
+            payments_list = []
+            if group_payments.payments:
+                for payment_id in group_payments.payments:
+                    payment = PaymentModel.objects.get(id=ObjectId(payment_id))
+                    payments_list.append({'id': str(payment.id),
+                                          'pay_from': payment.pay_from,
+                                          'pay_to': payment.pay_to,
+                                          'amount': payment.amount,
+                                          'method': payment.method,
+                                          'status': payment.status})
+            # ##
+
             return jsonify(
                 dict(title=group_payments.title, description=group_payments.description, amount=group_payments.amount,
-                     payments=group_payments.payments))
+                     payments=payments_list))
         except InvalidId:
             return make_response("Invalid group payments ID", 400)
         except DoesNotExist as e:
