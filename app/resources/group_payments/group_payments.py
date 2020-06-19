@@ -12,6 +12,7 @@ from app.decorators.auth_decorators import token_required
 from app.models.assetmodel import AssetModel
 from app.models.grouppaymentsmodel import GroupPaymentsModel
 from app.models.paymentmodel import PaymentModel
+from app.models.usermodel import UserModel
 from app.resources.group_payments.group_payments_docs import group_payments_get_docs, group_payments_put_doc
 
 
@@ -35,9 +36,13 @@ class GroupPayments(Resource):
             if group_payments.payments:
                 for payment_id in group_payments.payments:
                     payment = PaymentModel.objects.get(id=ObjectId(payment_id))
+                    user_from = UserModel.objects.get(id=ObjectId(payment.pay_from))
+                    user_to = UserModel.objects.get(id=ObjectId(payment.pay_to))
                     payments_list.append({'id': str(payment.id),
-                                          'pay_from': payment.pay_from,
-                                          'pay_to': payment.pay_to,
+                                          'pay_from': {'first_name': user_from.first_name,
+                                                       'last_name': user_from.last_name},
+                                          'pay_to': {'first_name': user_to.first_name,
+                                                     'last_name': user_to.last_name},
                                           'amount': payment.amount,
                                           'method': payment.method,
                                           'status': payment.status})
