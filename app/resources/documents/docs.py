@@ -1,4 +1,6 @@
+import json
 import uuid
+from datetime import date
 
 from bson import ObjectId
 from bson.errors import InvalidId
@@ -20,6 +22,7 @@ class Docs(Resource):
     @swagger.doc(document_post_doc)
     def post(self, token_user_id, asset_id):
         try:
+            data = json.loads(request.data)
             dbx_adapter = DropBoxAdapter(DBX_ACCESS_TOKEN)
             asset = AssetModel.objects.get(id=ObjectId(asset_id))
             if token_user_id != asset.owner_id:
@@ -30,9 +33,12 @@ class Docs(Resource):
             for key, doc in request.files.items():
                 dbx_filename = secure_filename(doc.filename)  # .rsplit(".", 1)[#]
                 dbx_filepath = '/{}/{}'.format(asset_id, dbx_filename)  # dbx_filename can be changed to 'key'
-                asset.documents[new_uuid] = {'doc_name': key,
-                                             'dbx_url': dbx_adapter.upload_file(doc, dbx_filepath),
-                                             'dbx_path': dbx_filepath}
+                asset.documents.append({'doc_id': new_uuid,
+                                        'doc_name': key,
+                                        'url': dbx_adapter.upload_file(doc, dbx_filepath),
+                                        'dbx_path': dbx_filepath,
+                                        'creation_date': date.today().strftime('%d/%m/%Y'),
+                                        'users': data['users']})
             update(asset)
             return jsonify({'document_url': asset.documents[new_uuid]['dbx_url'], 'document_uuid': new_uuid})
         except InvalidId:

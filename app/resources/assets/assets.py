@@ -1,6 +1,7 @@
 import json
 from json.decoder import JSONDecodeError
 
+from bson import ObjectId
 from flask import request, jsonify, make_response
 from flask_restful_swagger_3 import Resource, swagger
 from mongoengine import DoesNotExist
@@ -8,6 +9,7 @@ from mongoengine import DoesNotExist
 from app.adapters.db_adapter import insert, to_json
 from app.decorators.auth_decorators import token_required
 from app.models.assetmodel import AssetModel
+from app.models.usermodel import UserModel
 from app.resources.assets.asset_docs import asset_post_doc, asset_get_filters_doc
 
 
@@ -16,12 +18,24 @@ class Assets(Resource):
     @swagger.doc(asset_get_filters_doc)
     def get(self):
         try:
+            asset_new_tenant_list = []  # ##
+
             json_asset_list = []
             filters = request.args
             if filters:
                 filter_dict = {k: v for k, v in filters.items()}
                 asset_list = AssetModel.objects(**filter_dict)
                 for asset in asset_list:
+                    # ##
+                    for tenant_id in asset.tenant_list:
+                        tenant = UserModel.objects.get(id=ObjectId(tenant_id))
+
+                        asset_new_tenant_list.append({'id': str(tenant.id),
+                                                      'first_name': tenant.first_name,
+                                                      'last_name': tenant.last_name})
+                    asset.tenant_list = asset_new_tenant_list
+                    # ##
+
                     json_asset_list.append(to_json(asset))
             else:
                 for asset in AssetModel.objects():

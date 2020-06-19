@@ -25,11 +25,13 @@ class Login(Resource):
             auth = request.authorization
             user = UserModel.objects.get(email=auth.username)
 
+            # ##
             tenant_asset_id = None
             for asset in AssetModel.objects():
                 if not tenant_asset_id:
                     if str(user.id) in asset.tenant_list:
                         tenant_asset_id = str(asset.id)
+            # ##
 
             if check_password_hash(user.password, auth.password):
                 expiration_time = datetime.now(timezone.utc) + timedelta(minutes=THREE_HOURS)
