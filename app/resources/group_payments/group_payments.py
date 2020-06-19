@@ -39,9 +39,11 @@ class GroupPayments(Resource):
                     user_from = UserModel.objects.get(id=ObjectId(payment.pay_from))
                     user_to = UserModel.objects.get(id=ObjectId(payment.pay_to))
                     payments_list.append({'id': str(payment.id),
-                                          'pay_from': {'first_name': user_from.first_name,
+                                          'pay_from': {'id': payment.pay_from,
+                                                       'first_name': user_from.first_name,
                                                        'last_name': user_from.last_name},
-                                          'pay_to': {'first_name': user_to.first_name,
+                                          'pay_to': {'id': payment.pay_to,
+                                                     'first_name': user_to.first_name,
                                                      'last_name': user_to.last_name},
                                           'amount': payment.amount,
                                           'method': payment.method,
