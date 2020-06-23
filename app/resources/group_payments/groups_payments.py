@@ -12,7 +12,7 @@ from app.models.grouppaymentsmodel import GroupPaymentsModel
 from app.models.paymentmodel import PaymentModel
 from app.resources.group_payments.group_payments_docs import groups_payments_post_docs, groups_payments_filter_get_docs
 from app.utils.auth_decorators import token_required
-from app.utils.data_manipulation import get_user_by_id, build_participants
+from app.utils.data_manipulation import get_user_by_id, build_participants, sort_list_of_dicts
 
 
 class GroupsPayments(Resource):
@@ -69,7 +69,8 @@ class GroupsPayments(Resource):
                             for par in participants:
                                 if pay_from_filter not in str(par['id']):
                                     participants.remove(par)
-                        final_obj['participants'] = participants
+                        sorted_participants = sort_list_of_dicts(participants, pay_from_filter)
+                        final_obj['participants'] = sorted_participants
                         final_obj['title'] = gp.title
                         final_obj['description'] = gp.description
                         final_obj['owner'] = get_user_by_id(gp.owner)
@@ -91,7 +92,8 @@ class GroupsPayments(Resource):
                             for p in gp.payments:
                                 payment = PaymentModel.objects.get(id=p)
                                 participants.append(build_participants(payment))
-                            final_obj['participants'] = participants
+                            sorted_participants = sort_list_of_dicts(participants, pay_to_filter)
+                            final_obj['participants'] = sorted_participants
                             final_obj['title'] = gp.title
                             final_obj['description'] = gp.description
                             final_obj['owner'] = get_user_by_id(gp.owner)
