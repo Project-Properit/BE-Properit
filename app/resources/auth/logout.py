@@ -3,7 +3,7 @@ from flask_restful_swagger_3 import Resource, swagger
 from jwt import jwt
 
 from app.adapters.db_adapter import insert
-from app.decorators.auth_decorators import token_required
+from app.utils.auth_decorators import token_required
 from app.models.tokenmodel import TokenModel
 from app.resources.auth.auth_docs import logout_post_doc
 

@@ -6,12 +6,13 @@ from flask import request, make_response, jsonify
 from flask_restful_swagger_3 import Resource, swagger
 from mongoengine import DoesNotExist
 
-from app.adapters.db_adapter import insert, update
-from app.decorators.auth_decorators import token_required
+from app.adapters.db_adapter import insert, update, to_json
 from app.models.assetmodel import AssetModel
-from app.models.grouppaymentsmockmodel import GroupPaymentsMockModel
 from app.models.grouppaymentsmodel import GroupPaymentsModel
-from app.resources.group_payments.groups_payments_docs import groups_payments_post_docs, groups_payments_get_docs
+from app.models.paymentmodel import PaymentModel
+from app.resources.group_payments.group_payments_docs import groups_payments_post_docs, groups_payments_filter_get_docs
+from app.utils.auth_decorators import token_required
+from app.utils.data_manipulation import get_user_by_id, build_participants
 
 
 class GroupsPayments(Resource):
@@ -37,19 +38,75 @@ class GroupsPayments(Resource):
         except Exception as e:
             return make_response("Internal Server Error: {}".format(e.__str__()), 500)
 
-    @swagger.doc(groups_payments_get_docs)
+    @swagger.doc(groups_payments_filter_get_docs)
     @token_required(return_user=True)
     def get(self, token_user_id, asset_id):
         try:
-            group_payment_mock = GroupPaymentsMockModel.objects.get(id="5ef1279924b668f7ddb48d1c")
-            return jsonify({
-                'participants': group_payment_mock.participants,
-                'name': group_payment_mock.name,
-                'description': group_payment_mock.description,
-                'total_amount': group_payment_mock.total_amount,
-                'owner':group_payment_mock.owner,
-                'creation_date': str(group_payment_mock.creation_date)
-            })
+            json_gp_list = []
+            filters = request.args
+            if filters:
+                filter_dict = {k: v for k, v in filters.items()}
+                gp_list = []
+
+                if 'pay_from' in filter_dict:
+                    pay_from_filter = filter_dict['pay_from']
+                    payment_list = PaymentModel.objects(pay_from=pay_from_filter)
+
+                    asset_group_payments_list = AssetModel.objects.get(id=asset_id)['group_payments']
+                    for gp in asset_group_payments_list:
+                        group_payment = GroupPaymentsModel.objects.get(id=ObjectId(gp))
+                        for p in payment_list:
+                            if str(p.id) in group_payment.payments:
+                                gp_list.append(group_payment)
+
+                    for gp in gp_list:
+                        participants = []
+                        final_obj = {}
+                        for p in gp.payments:
+                            payment = PaymentModel.objects.get(id=p)
+                            participants.append(build_participants(payment))
+                        if not gp.is_public:
+                            for par in participants:
+                                if pay_from_filter not in str(par['id']):
+                                    participants.remove(par)
+                        final_obj['participants'] = participants
+                        final_obj['title'] = gp.title
+                        final_obj['description'] = gp.description
+                        final_obj['owner'] = get_user_by_id(gp.owner)
+                        final_obj['creation_time'] = str(gp.creation_date)
+                        final_obj['id'] = str(gp.id)
+                        json_gp_list.append(final_obj)
+                    return json_gp_list
+
+                if 'pay_to' in filter_dict:
+                    pay_to_filter = filter_dict['pay_to']
+                    asset_group_payments_list = AssetModel.objects.get(id=asset_id)['group_payments']
+                    group_payment_list = []
+                    for gp in asset_group_payments_list:
+                        group_payment_list.append(GroupPaymentsModel.objects.get(id=ObjectId(gp)))
+                    for gp in group_payment_list:
+                        participants = []
+                        final_obj = {}
+                        if gp.owner in pay_to_filter:
+                            for p in gp.payments:
+                                payment = PaymentModel.objects.get(id=p)
+                                participants.append(build_participants(payment))
+                            final_obj['participants'] = participants
+                            final_obj['title'] = gp.title
+                            final_obj['description'] = gp.description
+                            final_obj['owner'] = get_user_by_id(gp.owner)
+                            final_obj['creation_time'] = str(gp.creation_date)
+                            final_obj['id'] = str(gp.id)
+                            json_gp_list.append(final_obj)
+                    return json_gp_list
+            else:
+                for gp in GroupPaymentsModel.objects():
+                    json_gp_list.append(to_json(gp))
+            if not json_gp_list:
+                return make_response("No group payment found by filters", 404)
+            return json_gp_list
+        except DoesNotExist:
+            return make_response("No payments available", 404)
         except Exception as e:
             return make_response("Internal Server Error: {}".format(e.__str__()), 500)
 

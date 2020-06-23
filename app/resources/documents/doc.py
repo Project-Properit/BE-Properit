@@ -7,7 +7,7 @@ from werkzeug.utils import secure_filename
 
 from app.adapters.db_adapter import update
 from app.adapters.dropbox_adapter import DropBoxAdapter
-from app.decorators.auth_decorators import token_required
+from app.utils.auth_decorators import token_required
 from app.models.assetmodel import AssetModel
 from app.resources.documents.documents_doc import document_patch_doc, document_delete_doc
 from app.settings import DBX_ACCESS_TOKEN

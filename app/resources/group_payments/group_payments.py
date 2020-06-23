@@ -8,16 +8,17 @@ from flask_restful_swagger_3 import Resource, swagger
 from mongoengine import DoesNotExist, ValidationError
 
 from app.adapters.db_adapter import delete, update
-from app.decorators.auth_decorators import token_required
 from app.models.assetmodel import AssetModel
 from app.models.grouppaymentsmodel import GroupPaymentsModel
 from app.models.paymentmodel import PaymentModel
 from app.models.usermodel import UserModel
-from app.resources.group_payments.group_payments_docs import group_payments_get_docs, group_payments_put_doc
+from app.resources.group_payments.group_payments_docs import groups_payments_filter_get_docs, group_payments_put_doc, \
+    group_payments_delete_docs
+from app.utils.auth_decorators import token_required
 
 
 class GroupPayments(Resource):
-    @swagger.doc(group_payments_get_docs)
+    @swagger.doc(groups_payments_filter_get_docs)
     @token_required(return_user=True)
     def get(self, token_user_id, asset_id, group_payments_id):
         try:
@@ -92,7 +93,7 @@ class GroupPayments(Resource):
         except Exception as e:
             return make_response("Internal Server Error: {}".format(e.__str__()), 500)
 
-    @swagger.doc(group_payments_get_docs)
+    @swagger.doc(group_payments_delete_docs)
     @token_required(return_user=True)
     def delete(self, token_user_id, asset_id, group_payments_id):
         try:
