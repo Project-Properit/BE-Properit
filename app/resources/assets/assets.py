@@ -59,7 +59,7 @@ class Assets(Resource):
                                    room_num=data['room_num'],
                                    rent_fee=data['rent_fee'],
                                    tenant_list=data['tenant_list'],
-                                   documents={},
+                                   documents=[],
                                    group_payments=[],
                                    service_calls=[],
                                    comments=data['comments'])

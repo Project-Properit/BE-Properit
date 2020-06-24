@@ -6,7 +6,7 @@ from flask import request, make_response, jsonify
 from flask_restful_swagger_3 import Resource, swagger
 from mongoengine import DoesNotExist
 
-from app.adapters.db_adapter import insert, update
+from app.adapters.db_adapter import insert, update, to_json
 from app.decorators.auth_decorators import token_required
 from app.models.assetmodel import AssetModel
 from app.models.grouppaymentsmockmodel import GroupPaymentsMockModel
@@ -42,12 +42,13 @@ class GroupsPayments(Resource):
     def get(self, token_user_id, asset_id):
         try:
             group_payment_mock = GroupPaymentsMockModel.objects.get(id="5ef1279924b668f7ddb48d1c")
+
             return jsonify({
                 'participants': group_payment_mock.participants,
-                'name': group_payment_mock.name,
+                'title': group_payment_mock.title,
                 'description': group_payment_mock.description,
-                'total_amount': group_payment_mock.total_amount,
-                'owner':group_payment_mock.owner,
+                'amount': group_payment_mock.amount,
+                'owner': group_payment_mock.owner,
                 'creation_date': str(group_payment_mock.creation_date)
             })
         except Exception as e:
