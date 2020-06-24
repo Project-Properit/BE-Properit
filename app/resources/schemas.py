@@ -55,17 +55,10 @@ class PatchAssetDocument(ValidatedSchema):
 class GroupPaymentsParameters(ValidatedSchema):
     type = 'object'
     properties = {
+        'owner': {'type': 'string'},
         'title': {'type': 'string'},
         'description': {'type': 'string'},
-        'amount': {'type': 'number'}
-    }
-
-
-class GroupPaymentsUpdateableParameters(ValidatedSchema):
-    type = 'object'
-    properties = {
-        'title': {'type': 'string'},
-        'description': {'type': 'string'},
+        'is_public': {'type': 'boolean'},
         'amount': {'type': 'number'},
         'payments': {'type': 'array',
                      'items': {'type': 'string'}}
@@ -85,8 +78,6 @@ class PaymentParameters(ValidatedSchema):
 class PaymentUpdateableParameters(ValidatedSchema):
     type = 'object'
     properties = {
-        'amount': {'type': 'number'},
-        'method': {'type': 'string'},
         'status': {'type': 'string'}
     }
 
@@ -106,10 +97,6 @@ class ServiceCallParameters(ValidatedSchema):
 class ServiceCallUpdateableParameters(ValidatedSchema):
     type = 'object'
     properties = {
-        'name': {'type': 'string'},
-        'company': {'type': 'string'},
-        'phone': {'type': 'string'},
-        'price': {'type': 'number'},
         'arrival_date': {'type': 'string'},
         'is_closed': {'type': 'boolean'}
     }

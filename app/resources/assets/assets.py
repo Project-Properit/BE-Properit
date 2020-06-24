@@ -59,12 +59,12 @@ class Assets(Resource):
                                    room_num=data['room_num'],
                                    rent_fee=data['rent_fee'],
                                    tenant_list=data['tenant_list'],
-                                   documents={},
+                                   documents=[],
                                    group_payments=[],
                                    service_calls=[],
                                    comments=data['comments'])
             insert(new_asset)
-            return jsonify({"new asset_id": str(new_asset.id)})
+            return jsonify({"asset_id": str(new_asset.id)})
         except JSONDecodeError as e:
             return make_response("Invalid JSON: {}".format(e.__str__()), 400)
         except KeyError as e:

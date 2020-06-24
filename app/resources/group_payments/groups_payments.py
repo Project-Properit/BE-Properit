@@ -29,8 +29,12 @@ class GroupsPayments(Resource):
             if token_user_id not in asset.tenant_list and token_user_id != asset.owner_id:
                 return make_response("Insufficient Permissions", 403)
             data = json.loads(request.data)
-            new_group_payments = GroupPaymentsModel(title=data['title'], description=data['description'],
-                                                    amount=data['amount'], payments=[])
+            new_group_payments = GroupPaymentsModel(owner=data['owner'],
+                                                    title=data['title'],
+                                                    description=data['description'],
+                                                    is_public=data['is_public'],
+                                                    amount=data['amount'],
+                                                    payments=data['payments'])
             group_payments = insert(new_group_payments)
             asset.group_payments.append(str(group_payments.id))
             update(asset)
@@ -61,15 +65,19 @@ class GroupsPayments(Resource):
 
                     for gp in gp_list:
                         participants = []
+                        filter_participants = []
                         final_obj = {}
                         for p in gp.payments:
                             payment = PaymentModel.objects.get(id=p)
                             participants.append(build_participants(payment))
                         if not gp.is_public:
                             for par in participants:
-                                if pay_from_filter not in str(par['id']):
-                                    participants.remove(par)
-                        sorted_participants = sort_list_of_dicts(participants, pay_from_filter)
+                                if pay_from_filter in str(par['id']):
+                                    filter_participants.append(par)
+                        if filter_participants:
+                            sorted_participants = sort_list_of_dicts(filter_participants, pay_from_filter)
+                        else:
+                            sorted_participants = sort_list_of_dicts(participants, pay_from_filter)
                         final_obj['participants'] = sorted_participants
                         final_obj['title'] = gp.title
                         final_obj['description'] = gp.description

@@ -1,5 +1,5 @@
 from app.consts import GROUP_PAYMENTS_SECTION
-from app.resources.schemas import GroupPaymentsParameters, GroupPaymentsUpdateableParameters
+from app.resources.schemas import GroupPaymentsParameters
 
 groups_payments_post_docs = {
     'tags': [GROUP_PAYMENTS_SECTION],
@@ -96,7 +96,7 @@ group_payments_put_doc = {
         'description': 'Asset parameters',
         'required': True,
         'content': {
-            'application/json': {'schema': GroupPaymentsUpdateableParameters}
+            'application/json': {'schema': GroupPaymentsParameters}
         }
     },
     'responses': {
