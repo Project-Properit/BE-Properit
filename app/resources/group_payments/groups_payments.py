@@ -83,6 +83,7 @@ class GroupsPayments(Resource):
                         final_obj['description'] = gp.description
                         final_obj['owner'] = get_user_by_id(gp.owner)
                         final_obj['creation_time'] = str(gp.creation_date)
+                        final_obj['amount'] = gp.amount
                         final_obj['id'] = str(gp.id)
                         json_gp_list.append(final_obj)
                     return json_gp_list
@@ -106,6 +107,7 @@ class GroupsPayments(Resource):
                             final_obj['description'] = gp.description
                             final_obj['owner'] = get_user_by_id(gp.owner)
                             final_obj['creation_time'] = str(gp.creation_date)
+                            final_obj['amount'] = gp.amount
                             final_obj['id'] = str(gp.id)
                             json_gp_list.append(final_obj)
                     return json_gp_list

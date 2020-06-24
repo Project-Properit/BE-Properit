@@ -48,7 +48,7 @@ class GroupPayments(Resource):
                                                      'last_name': user_to.last_name},
                                           'amount': payment.amount,
                                           'method': payment.method,
-                                          'status': payment.status})
+                                          'is_open': payment.is_open})
             # ##
 
             return jsonify(

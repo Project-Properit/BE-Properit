@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, DateTimeField, ListField, FloatField, URLField
+from mongoengine import Document, StringField, DateTimeField, ListField, FloatField, URLField, BooleanField
 
 
 class PaymentModel(Document):  # from the payer side
@@ -6,6 +6,6 @@ class PaymentModel(Document):  # from the payer side
     pay_to = StringField(required=True)
     amount = FloatField(required=True)
     method = StringField(required=True)
-    status = StringField(required=True, default='Pending')
+    is_open = BooleanField(required=True, default=False)
     creation_date = DateTimeField()
     meta = {'collection': 'Payments'}

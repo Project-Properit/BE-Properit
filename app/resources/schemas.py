@@ -78,7 +78,7 @@ class PaymentParameters(ValidatedSchema):
 class PaymentUpdateableParameters(ValidatedSchema):
     type = 'object'
     properties = {
-        'status': {'type': 'string'}
+        'is_open': {'type': 'boolean'}
     }
 
 

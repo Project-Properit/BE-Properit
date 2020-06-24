@@ -15,7 +15,7 @@ def update(document):
 
 def insert(document):
     if not document.creation_date:
-        document.creation_date = datetime.now()
+        document.creation_date = datetime.now().replace(microsecond=0)
     return document.save()
 
 

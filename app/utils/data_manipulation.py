@@ -13,24 +13,24 @@ def get_user_by_id(user_id):
 def build_participants(payment_obj):
     participant = get_user_by_id(payment_obj.pay_from)
     participant['amount'] = payment_obj.amount
-    participant['status'] = payment_obj.status
+    participant['is_open'] = payment_obj.is_open
     return participant
 
 
-def sort_list_of_dicts(list_of_dicts: List, user_id, status="pending"):
+def sort_list_of_dicts(list_of_dicts: List, user_id, is_open=True):
     new_list_of_dicts = []
     for d in list_of_dicts:
-        if d['id'] == user_id and d['status'] == status:
+        if d['id'] == user_id and d['is_open'] == is_open:
             i = list_of_dicts.index(d)
             new_list_of_dicts.append(d)
             list_of_dicts.pop(i)
     for d in list_of_dicts:
-        if d['status'] == status:
+        if d['is_open'] == is_open:
             i = list_of_dicts.index(d)
             new_list_of_dicts.append(d)
             list_of_dicts.pop(i)
     for d in list_of_dicts:
-        if d['id'] == user_id and d['status'] == 'payed':
+        if d['id'] == user_id and not d['is_open']:
             i = list_of_dicts.index(d)
             new_list_of_dicts.append(d)
             list_of_dicts.pop(i)
