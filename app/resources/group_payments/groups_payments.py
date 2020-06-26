@@ -109,7 +109,7 @@ class GroupsPayments(Resource):
                             for p in gp.payments:
                                 payment = PaymentModel.objects.get(id=p)
                                 participants.append(build_participants(payment))
-                            sorted_participants = sort_list_of_dicts(participants, pay_to_filter, get_my_payment=True)
+                            sorted_participants = sort_list_of_dicts(participants, pay_to_filter, get_my_payment=False)
                             final_obj['participants'] = sorted_participants
                             final_obj['title'] = gp.title
                             final_obj['description'] = gp.description
