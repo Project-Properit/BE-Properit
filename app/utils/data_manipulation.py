@@ -17,8 +17,9 @@ def build_participants(payment_obj):
     return participant
 
 
-def sort_list_of_dicts(list_of_dicts: List, user_id, is_open=True):
+def sort_list_of_dicts(list_of_dicts: List, user_id, is_open=True, get_my_payment=False):
     new_list_of_dicts = []
+    user_id_payment = None
     for d in list_of_dicts:
         if d['id'] == user_id and d['is_open'] == is_open:
             i = list_of_dicts.index(d)
@@ -36,6 +37,15 @@ def sort_list_of_dicts(list_of_dicts: List, user_id, is_open=True):
             list_of_dicts.pop(i)
     for d in list_of_dicts:
         new_list_of_dicts.append(d)
+
+    # pop out user_id payment #
+    if get_my_payment:
+        for d in new_list_of_dicts:
+            if d['id'] == user_id:
+                i = new_list_of_dicts.index(d)
+                user_id_payment = new_list_of_dicts.pop(i)
+                break
+        return user_id_payment, new_list_of_dicts
     return new_list_of_dicts
 
 

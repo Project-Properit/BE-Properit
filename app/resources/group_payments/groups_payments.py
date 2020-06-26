@@ -67,18 +67,20 @@ class GroupsPayments(Resource):
                         participants = []  # Todo
                         filter_participants = []
                         final_obj = {}  # Todo
-                        for p in gp.payments:  # Todo: DIFFERENCE
-                            payment = PaymentModel.objects.get(id=p)  # Todo: DIFFERENCE
-                            participants.append(build_participants(payment))  # Todo: DIFFERENCE
-                        if not gp.is_public:  # Todo: DIFFERENCE
-                            for par in participants:  # Todo: DIFFERENCE
-                                if pay_from_filter in str(par['id']):  # Todo: DIFFERENCE
-                                    filter_participants.append(par)  # Todo: DIFFERENCE
-                        if filter_participants:  # Todo: DIFFERENCE
-                            sorted_participants = sort_list_of_dicts(filter_participants,
-                                                                     pay_from_filter)  # Todo: DIFFERENCE
+                        for p in gp.payments:
+                            payment = PaymentModel.objects.get(id=p)
+                            participants.append(build_participants(payment))
+                        if not gp.is_public:
+                            for par in participants:
+                                if pay_from_filter in str(par['id']):
+                                    filter_participants.append(par)
+                        if filter_participants:
+                            my_payment, sorted_participants = sort_list_of_dicts(filter_participants,
+                                                                                 pay_from_filter, get_my_payment=True)
                         else:  # Todo
-                            sorted_participants = sort_list_of_dicts(participants, pay_from_filter)  # Todo
+                            my_payment, sorted_participants = sort_list_of_dicts(participants, pay_from_filter,
+                                                                                 get_my_payment=True)  # Todo
+                        final_obj['myself'] = my_payment
                         final_obj['participants'] = sorted_participants
                         final_obj['title'] = gp.title
                         final_obj['description'] = gp.description
@@ -86,6 +88,7 @@ class GroupsPayments(Resource):
                         final_obj['creation_time'] = str(gp.creation_date)
                         final_obj['amount'] = gp.amount
                         final_obj['id'] = str(gp.id)
+                        final_obj['is_public'] = gp.is_public
                         json_gp_list.append(final_obj)
 
                     # reorder group payments #
@@ -106,18 +109,19 @@ class GroupsPayments(Resource):
                             for p in gp.payments:
                                 payment = PaymentModel.objects.get(id=p)
                                 participants.append(build_participants(payment))
-                            sorted_participants = sort_list_of_dicts(participants, pay_to_filter)
+                            sorted_participants = sort_list_of_dicts(participants, pay_to_filter, get_my_payment=True)
                             final_obj['participants'] = sorted_participants
                             final_obj['title'] = gp.title
                             final_obj['description'] = gp.description
                             final_obj['owner'] = get_user_by_id(gp.owner)
                             final_obj['creation_time'] = str(gp.creation_date)
                             final_obj['amount'] = gp.amount
+                            final_obj['is_public'] = gp.is_public
                             final_obj['id'] = str(gp.id)
                             json_gp_list.append(final_obj)
 
                             # reorder group payments #
-                    ordered_json_gp_list = reorder_group_payment(json_gp_list, pay_from_filter)
+                    ordered_json_gp_list = reorder_group_payment(json_gp_list, pay_to_filter)
                     return ordered_json_gp_list
             else:
                 for gp in GroupPaymentsModel.objects():
