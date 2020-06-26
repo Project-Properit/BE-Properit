@@ -24,7 +24,7 @@ class Asset(Resource):
             for value, key in data.items():
                 asset[value] = key
             update(asset)
-            return jsonify({"updated asset_id": str(asset_id)})
+            return jsonify({"asset_id": str(asset_id)})
         except InvalidId:
             return make_response("Invalid asset ID", 400)
         except JSONDecodeError as e:

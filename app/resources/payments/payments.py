@@ -17,7 +17,7 @@ class Payments(Resource):
     def get(self):
         try:
             json_payment_list = []
-            filters = request.args
+            filters = request.args  # Todo: bool filter get as str
             if filters:
                 filter_dict = {k: v for k, v in filters.items()}
                 payments_list = PaymentModel.objects(**filter_dict)

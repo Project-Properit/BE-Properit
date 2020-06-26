@@ -15,6 +15,8 @@ def build_participants(payment_obj):
     participant['amount'] = payment_obj.amount
     participant['is_open'] = payment_obj.is_open
     participant['payment_id'] = str(payment_obj.id)
+    if not payment_obj.is_open:
+        participant['when_payed'] = str(payment_obj.when_payed)
     return participant
 
 

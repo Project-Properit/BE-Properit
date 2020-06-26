@@ -24,7 +24,7 @@ class Payment(Resource):
             payment.is_open = False
             payment.when_payed = datetime.now().replace(microsecond=0)
             update(payment)
-            return jsonify({"updated payment_id": str(payment_id)})
+            return jsonify({"payment_id": str(payment_id)})
         except InvalidId:
             return make_response("Invalid payment ID", 400)
         except JSONDecodeError as e:
