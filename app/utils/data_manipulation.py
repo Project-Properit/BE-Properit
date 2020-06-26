@@ -37,3 +37,16 @@ def sort_list_of_dicts(list_of_dicts: List, user_id, is_open=True):
     for d in list_of_dicts:
         new_list_of_dicts.append(d)
     return new_list_of_dicts
+
+
+def reorder_group_payment(gp_list, user_id):
+    new_gp_list = []
+    for gp in gp_list:
+        for par in gp['participants']:
+            if par['id'] == user_id and par['is_open']:
+                i = gp_list.index(gp)
+                new_gp_list.append(gp)
+                gp_list.pop(i)
+    for gp in gp_list:
+        new_gp_list.append(gp)
+    return new_gp_list

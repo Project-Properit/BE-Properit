@@ -12,7 +12,7 @@ from app.models.grouppaymentsmodel import GroupPaymentsModel
 from app.models.paymentmodel import PaymentModel
 from app.resources.group_payments.group_payments_docs import groups_payments_post_docs, groups_payments_filter_get_docs
 from app.utils.auth_decorators import token_required
-from app.utils.data_manipulation import get_user_by_id, build_participants, sort_list_of_dicts
+from app.utils.data_manipulation import get_user_by_id, build_participants, sort_list_of_dicts, reorder_group_payment
 
 
 class GroupsPayments(Resource):
@@ -75,7 +75,8 @@ class GroupsPayments(Resource):
                                 if pay_from_filter in str(par['id']):  # Todo: DIFFERENCE
                                     filter_participants.append(par)  # Todo: DIFFERENCE
                         if filter_participants:  # Todo: DIFFERENCE
-                            sorted_participants = sort_list_of_dicts(filter_participants, pay_from_filter)  # Todo: DIFFERENCE
+                            sorted_participants = sort_list_of_dicts(filter_participants,
+                                                                     pay_from_filter)  # Todo: DIFFERENCE
                         else:  # Todo
                             sorted_participants = sort_list_of_dicts(participants, pay_from_filter)  # Todo
                         final_obj['participants'] = sorted_participants
@@ -86,7 +87,10 @@ class GroupsPayments(Resource):
                         final_obj['amount'] = gp.amount
                         final_obj['id'] = str(gp.id)
                         json_gp_list.append(final_obj)
-                    return json_gp_list
+
+                    # reorder group payments #
+                    ordered_json_gp_list = reorder_group_payment(json_gp_list, pay_from_filter)
+                    return ordered_json_gp_list
 
                 if 'pay_to' in filter_dict:
                     pay_to_filter = filter_dict['pay_to']
@@ -111,7 +115,10 @@ class GroupsPayments(Resource):
                             final_obj['amount'] = gp.amount
                             final_obj['id'] = str(gp.id)
                             json_gp_list.append(final_obj)
-                    return json_gp_list
+
+                            # reorder group payments #
+                    ordered_json_gp_list = reorder_group_payment(json_gp_list, pay_from_filter)
+                    return ordered_json_gp_list
             else:
                 for gp in GroupPaymentsModel.objects():
                     json_gp_list.append(to_json(gp))
