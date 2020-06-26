@@ -6,7 +6,7 @@ from flask_restful_swagger_3 import Resource, swagger
 from mongoengine import DoesNotExist
 
 from app.adapters.db_adapter import insert, to_json
-from app.decorators.auth_decorators import token_required
+from app.utils.auth_decorators import token_required
 from app.models.paymentmodel import PaymentModel
 from app.resources.payments.payment_docs import payment_get_filters_doc, payment_post_doc
 
@@ -44,7 +44,7 @@ class Payments(Resource):
                                        amount=data['amount'],
                                        method=data['method'])
             insert(new_payment)
-            return jsonify({"new payment_id": str(new_payment.id)})
+            return jsonify({"payment_id": str(new_payment.id)})
         except JSONDecodeError as e:
             return make_response("Invalid JSON: {}".format(e.__str__()), 400)
         except KeyError as e:

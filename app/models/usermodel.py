@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, DateTimeField, EmailField, BooleanField
+from mongoengine import Document, StringField, DateTimeField, EmailField, BooleanField, DictField
 
 
 class UserModel(Document):
@@ -7,7 +7,8 @@ class UserModel(Document):
     phone = StringField(required=True)
     email = EmailField(required=True, unique=True)
     password = StringField(required=True)
-    is_tenant = BooleanField(default=False)
+    payment_details = DictField(required=False)
+    is_tenant = BooleanField()
     is_owner = BooleanField(default=False)
     creation_date = DateTimeField()
     meta = {'collection': 'Users'}

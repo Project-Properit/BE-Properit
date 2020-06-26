@@ -20,8 +20,13 @@ class Register(Resource):
         try:
             data = json.loads(request.data)
             hashed_password = generate_password_hash(data['password'], method='sha256')
-            new_user = UserModel(email=data['email'], password=hashed_password, phone=data['phone'],
-                                 first_name=data['first_name'], last_name=data['last_name'], is_tenant=data['is_tenant'],
+            new_user = UserModel(email=data['email'],
+                                 password=hashed_password,
+                                 phone=data['phone'],
+                                 first_name=data['first_name'],
+                                 last_name=data['last_name'],
+                                 payment_details=data['payment_details'],
+                                 is_tenant=data['is_tenant'],
                                  is_owner=data['is_owner'])
             insert(new_user)
         except NotUniqueError:

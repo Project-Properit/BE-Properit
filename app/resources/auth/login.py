@@ -7,7 +7,7 @@ from jwt.jwk import OctetJWK
 from mongoengine import DoesNotExist
 from werkzeug.security import check_password_hash
 
-from app.decorators.auth_decorators import requires_auth
+from app.utils.auth_decorators import requires_auth
 from app.models.assetmodel import AssetModel
 from app.models.usermodel import UserModel
 from app.resources.auth.auth_docs import login_get_doc

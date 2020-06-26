@@ -7,7 +7,7 @@ from flask_restful_swagger_3 import Resource, swagger
 from mongoengine import DoesNotExist
 
 from app.adapters.db_adapter import insert, to_json
-from app.decorators.auth_decorators import token_required
+from app.utils.auth_decorators import token_required
 from app.models.assetmodel import AssetModel
 from app.models.usermodel import UserModel
 from app.resources.assets.asset_docs import asset_post_doc, asset_get_filters_doc
@@ -64,7 +64,7 @@ class Assets(Resource):
                                    service_calls=[],
                                    comments=data['comments'])
             insert(new_asset)
-            return jsonify({"new asset_id": str(new_asset.id)})
+            return jsonify({"asset_id": str(new_asset.id)})
         except JSONDecodeError as e:
             return make_response("Invalid JSON: {}".format(e.__str__()), 400)
         except KeyError as e:

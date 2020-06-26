@@ -9,7 +9,7 @@ from mongoengine import DoesNotExist, ValidationError
 
 from app.adapters.db_adapter import delete
 from app.adapters.db_adapter import update
-from app.decorators.auth_decorators import token_required
+from app.utils.auth_decorators import token_required
 from app.models.assetmodel import AssetModel
 from app.resources.assets.asset_docs import asset_put_doc, asset_delete_doc
 

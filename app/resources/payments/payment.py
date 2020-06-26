@@ -8,7 +8,7 @@ from flask_restful_swagger_3 import Resource, swagger
 from mongoengine import DoesNotExist, ValidationError
 
 from app.adapters.db_adapter import update, delete
-from app.decorators.auth_decorators import token_required
+from app.utils.auth_decorators import token_required
 from app.models.paymentmodel import PaymentModel
 from app.resources.payments.payment_docs import payment_put_doc, payment_delete_doc
 

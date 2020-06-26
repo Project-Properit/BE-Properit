@@ -65,10 +65,10 @@ payment_get_filters_doc = {
             'allowReserved': True
         },
         {
-            'name': 'status',
+            'name': 'is_open',
             'description': 'filter payments by their status',
             'in': 'query',
-            'schema': {'type': 'string'},
+            'schema': {'type': 'boolean'},
             'required': False,
             'allowReserved': True
         }

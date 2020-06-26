@@ -1,9 +1,41 @@
 from app.consts import GROUP_PAYMENTS_SECTION
-from app.resources.schemas import GroupPaymentsParameters, GroupPaymentsUpdateableParameters
+from app.resources.schemas import GroupPaymentsParameters
 
-group_payments_get_docs = {
+groups_payments_post_docs = {
     'tags': [GROUP_PAYMENTS_SECTION],
-    'description': 'Get Asset group payments',
+    'description': 'Create group payments',
+    'parameters': [
+        {
+            'in': 'path',
+            'name': 'asset_id',
+            'required': True
+        }
+    ],
+    'requestBody': {
+        'description': 'Group payment parameters',
+        'required': True,
+        'content': {
+            'application/json': {'schema': GroupPaymentsParameters}
+        }
+    },
+    'responses': {
+        '201': {
+            'description': 'Group payments created successfully',
+        },
+        '400': {
+            'description': 'Missing or invalid parameters in request'
+        },
+        '404': {
+            'description': 'Object not found'
+        },
+        '500': {
+            'description': 'Internal server error'
+        }
+    }
+}
+groups_payments_filter_get_docs = {
+    'tags': [GROUP_PAYMENTS_SECTION],
+    'description': 'Get Asset groups payments',
     'parameters': [
         {
             'in': 'path',
@@ -11,15 +43,23 @@ group_payments_get_docs = {
             'required': True
         },
         {
-            'in': 'path',
-            'name': 'group_payments_id',
-            'required': True
-        }
+            'name': 'pay_to',
+            'in': 'query',
+            'schema': {'type': 'string'},
+            'required': False,
+            'allowReserved': True
+        },
+        {
+            'name': 'pay_from',
+            'in': 'query',
+            'schema': {'type': 'string'},
+            'required': False,
+            'allowReserved': True
+        },
     ],
     'responses': {
         '200': {
-            'description': 'Get group payments successfully',
-
+            'description': 'Get groups payments successfully',
         },
         '400': {
             'description': 'Missing or invalid parameters in request'
@@ -56,7 +96,7 @@ group_payments_put_doc = {
         'description': 'Asset parameters',
         'required': True,
         'content': {
-            'application/json': {'schema': GroupPaymentsUpdateableParameters}
+            'application/json': {'schema': GroupPaymentsParameters}
         }
     },
     'responses': {
@@ -66,7 +106,6 @@ group_payments_put_doc = {
         '500': {'description': 'Internal server error'}
     }
 }
-
 
 group_payments_delete_docs = {
     'tags': [GROUP_PAYMENTS_SECTION],
