@@ -49,7 +49,7 @@ def sort_list_of_dicts(list_of_dicts: List, user_id, is_open=True, get_my_paymen
     return new_list_of_dicts
 
 
-def reorder_group_payment(gp_list, user_id):
+def reorder_group_payment(gp_list: List, user_id):
     new_gp_list = []
     for gp in gp_list:
         for par in gp['participants']:
@@ -57,6 +57,7 @@ def reorder_group_payment(gp_list, user_id):
                 i = gp_list.index(gp)
                 new_gp_list.append(gp)
                 gp_list.pop(i)
+    gp_list.sort(key=lambda x: x['creation_time'])
     for gp in gp_list:
         new_gp_list.append(gp)
     return new_gp_list
