@@ -50,34 +50,34 @@ class GroupsPayments(Resource):
             filters = request.args
             if filters:
                 filter_dict = {k: v for k, v in filters.items()}
-                gp_list = []
+                gp_list = []  # Todo
 
                 if 'pay_from' in filter_dict:
-                    pay_from_filter = filter_dict['pay_from']
-                    payment_list = PaymentModel.objects(pay_from=pay_from_filter)
+                    pay_from_filter = filter_dict['pay_from']  # Todo
+                    payment_list = PaymentModel.objects(pay_from=pay_from_filter)  # Todo: remove?
 
-                    asset_group_payments_list = AssetModel.objects.get(id=asset_id)['group_payments']
-                    for gp in asset_group_payments_list:
-                        group_payment = GroupPaymentsModel.objects.get(id=ObjectId(gp))
+                    asset_group_payments_list = AssetModel.objects.get(id=asset_id)['group_payments']  # Todo
+                    for gp in asset_group_payments_list:  # Todo
+                        group_payment = GroupPaymentsModel.objects.get(id=ObjectId(gp))  # Todo
                         for p in payment_list:
                             if str(p.id) in group_payment.payments:
                                 gp_list.append(group_payment)
 
-                    for gp in gp_list:
-                        participants = []
+                    for gp in gp_list:  # Todo
+                        participants = []  # Todo
                         filter_participants = []
-                        final_obj = {}
-                        for p in gp.payments:
-                            payment = PaymentModel.objects.get(id=p)
-                            participants.append(build_participants(payment))
-                        if not gp.is_public:
-                            for par in participants:
-                                if pay_from_filter in str(par['id']):
-                                    filter_participants.append(par)
-                        if filter_participants:
-                            sorted_participants = sort_list_of_dicts(filter_participants, pay_from_filter)
-                        else:
-                            sorted_participants = sort_list_of_dicts(participants, pay_from_filter)
+                        final_obj = {}  # Todo
+                        for p in gp.payments:  # Todo: DIFFERENCE
+                            payment = PaymentModel.objects.get(id=p)  # Todo: DIFFERENCE
+                            participants.append(build_participants(payment))  # Todo: DIFFERENCE
+                        if not gp.is_public:  # Todo: DIFFERENCE
+                            for par in participants:  # Todo: DIFFERENCE
+                                if pay_from_filter in str(par['id']):  # Todo: DIFFERENCE
+                                    filter_participants.append(par)  # Todo: DIFFERENCE
+                        if filter_participants:  # Todo: DIFFERENCE
+                            sorted_participants = sort_list_of_dicts(filter_participants, pay_from_filter)  # Todo: DIFFERENCE
+                        else:  # Todo
+                            sorted_participants = sort_list_of_dicts(participants, pay_from_filter)  # Todo
                         final_obj['participants'] = sorted_participants
                         final_obj['title'] = gp.title
                         final_obj['description'] = gp.description
@@ -97,6 +97,7 @@ class GroupsPayments(Resource):
                     for gp in group_payment_list:
                         participants = []
                         final_obj = {}
+
                         if gp.owner in pay_to_filter:
                             for p in gp.payments:
                                 payment = PaymentModel.objects.get(id=p)
