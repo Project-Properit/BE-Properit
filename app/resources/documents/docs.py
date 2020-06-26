@@ -37,7 +37,7 @@ class Docs(Resource):
                                         'doc_name': key,
                                         'url': dbx_adapter.upload_file(doc, dbx_filepath),
                                         'dbx_path': dbx_filepath,
-                                        'creation_date': datetime.now().replace(microsecond=0)})
+                                        'creation_date': str(datetime.now().replace(microsecond=0))})
                                         # 'users': data['users']})
             update(asset)
             for doc in asset.documents:

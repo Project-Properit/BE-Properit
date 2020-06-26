@@ -42,7 +42,7 @@ class Assets(Resource):
                     json_asset_list.append(to_json(asset))
             # if not json_asset_list:
             #     return make_response("No assets found by filters", 200)
-            return json_asset_list
+            return jsonify(json_asset_list)
         except DoesNotExist:
             return make_response("No assets available", 404)
         except Exception as e:
