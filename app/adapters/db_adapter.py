@@ -28,5 +28,7 @@ def to_json(document):
     task_json['id'] = str(document.id)
     if document.creation_date:
         task_json['creation_date'] = str(document.creation_date)
+    if document.when_payed:
+        task_json['when_payed'] = str(document.when_payed)
     del task_json['_id']
     return task_json

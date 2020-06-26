@@ -14,6 +14,7 @@ def build_participants(payment_obj):
     participant = get_user_by_id(payment_obj.pay_from)
     participant['amount'] = payment_obj.amount
     participant['is_open'] = payment_obj.is_open
+    participant['payment_id'] = str(payment_obj.id)
     return participant
 
 

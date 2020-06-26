@@ -1,16 +1,17 @@
-import json
+import time
+from datetime import datetime
 from json.decoder import JSONDecodeError
 
 from bson import ObjectId
 from bson.errors import InvalidId
-from flask import request, jsonify, make_response
+from flask import jsonify, make_response
 from flask_restful_swagger_3 import Resource, swagger
 from mongoengine import DoesNotExist, ValidationError
 
 from app.adapters.db_adapter import update, delete
-from app.utils.auth_decorators import token_required
 from app.models.paymentmodel import PaymentModel
 from app.resources.payments.payment_docs import payment_put_doc, payment_delete_doc
+from app.utils.auth_decorators import token_required
 
 
 class Payment(Resource):
@@ -19,9 +20,9 @@ class Payment(Resource):
     def put(self, payment_id):  # Todo: who can edit payment?
         try:
             payment = PaymentModel.objects.get(id=ObjectId(payment_id))
-            data = json.loads(request.data)
-            for value, key in data.items():
-                payment[value] = key
+            time.sleep(5)  # pay #
+            payment.is_open = False
+            payment.when_payed = datetime.now().replace(microsecond=0)
             update(payment)
             return jsonify({"updated payment_id": str(payment_id)})
         except InvalidId:

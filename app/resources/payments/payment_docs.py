@@ -97,13 +97,13 @@ payment_put_doc = {
             'schema': {'type': 'string'}
         }
     ],
-    'requestBody': {
-        'description': 'Payment parameters',
-        'required': True,
-        'content': {
-            'application/json': {'schema': PaymentUpdateableParameters}
-        }
-    },
+    # 'requestBody': {
+    #     'description': 'Payment parameters',
+    #     'required': True,
+    #     'content': {
+    #         'application/json': {'schema': PaymentUpdateableParameters}
+    #     }
+    # },
     'responses': {
         '200': {'description': 'Payment updated successfully'},
         '400': {'description': 'Missing or invalid parameters in request'},

@@ -6,6 +6,7 @@ class PaymentModel(Document):  # from the payer side
     pay_to = StringField(required=True)
     amount = FloatField(required=True)
     method = StringField(required=True)
-    is_open = BooleanField(required=True, default=False)
+    is_open = BooleanField(default=True)
+    when_payed = DateTimeField(default=None)
     creation_date = DateTimeField()
     meta = {'collection': 'Payments'}
