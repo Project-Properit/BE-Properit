@@ -1,6 +1,6 @@
 import json
 import uuid
-from datetime import date
+from datetime import date, datetime
 
 from bson import ObjectId
 from bson.errors import InvalidId
@@ -18,15 +18,15 @@ from app.settings import DBX_ACCESS_TOKEN
 
 
 class Docs(Resource):
-    @token_required(return_user=True)
+    @token_required()
     @swagger.doc(document_post_doc)
-    def post(self, token_user_id, asset_id):
+    def post(self, asset_id):
         try:
-            data = json.loads(request.data)
+            # data = json.loads(request.data)
             dbx_adapter = DropBoxAdapter(DBX_ACCESS_TOKEN)
             asset = AssetModel.objects.get(id=ObjectId(asset_id))
-            if token_user_id != asset.owner_id:
-                return make_response("Insufficient Permissions", 403)
+            # if token_user_id != asset.owner_id:
+            #     return make_response("Insufficient Permissions", 403)
             if not request.files:
                 return make_response("Upload at least 1 file", 200)
             new_uuid = uuid.uuid4().hex
@@ -37,10 +37,13 @@ class Docs(Resource):
                                         'doc_name': key,
                                         'url': dbx_adapter.upload_file(doc, dbx_filepath),
                                         'dbx_path': dbx_filepath,
-                                        'creation_date': date.today().strftime('%d/%m/%Y'),
-                                        'users': data['users']})
+                                        'creation_date': datetime.now().replace(microsecond=0)})
+                                        # 'users': data['users']})
             update(asset)
-            return jsonify({'document_url': asset.documents[new_uuid]['dbx_url'], 'document_uuid': new_uuid})
+            for doc in asset.documents:
+                if doc['doc_id'] == new_uuid:
+                    return jsonify({'doc_url': doc['url'], 'doc_id': new_uuid})
+            return make_response("try again later", 500)
         except InvalidId:
             return make_response("Invalid asset ID", 400)
         except DoesNotExist:
