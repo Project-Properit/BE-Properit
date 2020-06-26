@@ -16,6 +16,8 @@ class UserParameters(ValidatedSchema):
         'phone': {'type': 'string'},
         'first_name': {'type': 'string'},
         'last_name': {'type': 'string'},
+        'payment_details': {'type': 'object',
+                            'additionalProperties': {'type': 'string'}},
         'is_tenant': {'type': 'boolean'},
         'is_owner': {'type': 'boolean'}
     }

@@ -20,7 +20,14 @@ class User(Resource):
         try:
             user = UserModel.objects.get(id=ObjectId(user_id))
             return jsonify(
-                {'first_name': user.first_name, 'last_name': user.last_name, 'phone': user.phone, 'email': user.email})
+                {'first_name': user.first_name,
+                 'last_name': user.last_name,
+                 'phone': user.phone,
+                 'email': user.email,
+                 'payment_details': user.payment_details,
+                 'is_tenant': user.is_tenant,
+                 'is_owner': user.is_owner,
+                 'creation_date': user.creation_date})
         except InvalidId:
             return make_response("Invalid user ID", 400)
         except DoesNotExist as e:
