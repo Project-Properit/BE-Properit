@@ -15,16 +15,18 @@ from app.utils.auth_decorators import token_required
 
 
 class Asset(Resource):
-    @token_required()
+    @token_required(return_user=True)
     @swagger.doc(asset_put_doc)
-    def put(self, asset_id):
+    def put(self, token_user_id, asset_id):
         try:
             asset = AssetModel.objects.get(id=ObjectId(asset_id))
+            if token_user_id != asset.owner_id:
+                return make_response("Insufficient Permissions", 403)
             data = json.loads(request.data)
             for value, key in data.items():
                 asset[value] = key
             update(asset)
-            return jsonify({"asset_id": str(asset_id)})
+            return jsonify(asset_id=str(asset_id))
         except InvalidId:
             return make_response("Invalid asset ID", 400)
         except JSONDecodeError as e:
@@ -46,7 +48,7 @@ class Asset(Resource):
             if token_user_id != asset.owner_id:
                 return make_response("Insufficient Permissions", 403)
             delete(asset)
-            return jsonify({"deleted asset_id": str(asset_id)})
+            return jsonify(asset_id=str(asset_id))
         except InvalidId:
             return make_response("Invalid asset ID", 400)
         except DoesNotExist:

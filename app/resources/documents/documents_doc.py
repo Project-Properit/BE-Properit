@@ -37,7 +37,7 @@ document_delete_doc = {
             'schema': {'type': 'string'}
         },
         {
-            'name': 'document_id',
+            'name': 'doc_id',
             'in': 'path',
             'required': True,
             'schema': {'type': 'string'}

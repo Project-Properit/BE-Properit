@@ -1,6 +1,7 @@
 from datetime import datetime
 from urllib.parse import quote_plus
 
+import bson
 from mongoengine import connect
 
 from app.settings import DATABASE_SERVER, DATABASE_USER, DATABASE_PASSWORD, DATABASE_AUTH, DATABASE_PORT
@@ -25,8 +26,8 @@ def delete(document):
 
 def to_json(document):
     task_json = document.to_mongo()
-    task_json['id'] = str(document.id)
-    if document.creation_date:
-        task_json['creation_date'] = str(document.creation_date)
-    del task_json['_id']
+    for k, v in task_json.items():
+        if isinstance(v, (datetime, bson.objectid.ObjectId)):
+            task_json[k] = str(v)
+    task_json['id'] = task_json.pop('_id')
     return task_json

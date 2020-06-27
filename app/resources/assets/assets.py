@@ -1,48 +1,41 @@
 import json
 from json.decoder import JSONDecodeError
 
-from bson import ObjectId
 from flask import request, jsonify, make_response
 from flask_restful_swagger_3 import Resource, swagger
 from mongoengine import DoesNotExist
 
 from app.adapters.db_adapter import insert, to_json
-from app.utils.auth_decorators import token_required
 from app.models.assetmodel import AssetModel
-from app.models.usermodel import UserModel
 from app.resources.assets.asset_docs import asset_post_doc, asset_get_filters_doc
+from app.utils.auth_decorators import token_required
+from app.utils.data_manipulation import get_user_by_id
 
 
 class Assets(Resource):
-    @token_required()
+    @token_required(return_user=True)
     @swagger.doc(asset_get_filters_doc)
-    def get(self):
+    def get(self, token_user_id):
         try:
-            asset_new_tenant_list = []  # ##
-
-            json_asset_list = []
+            asset_list = list()
+            asset_user_list = list()
             filters = request.args
             if filters:
                 filter_dict = {k: v for k, v in filters.items()}
-                asset_list = AssetModel.objects(**filter_dict)
-                for asset in asset_list:
-                    # ##
-                    for tenant_id in asset.tenant_list:
-                        tenant = UserModel.objects.get(id=ObjectId(tenant_id))
-
-                        asset_new_tenant_list.append({'id': str(tenant.id),
-                                                      'first_name': tenant.first_name,
-                                                      'last_name': tenant.last_name})
-                    asset.tenant_list = asset_new_tenant_list
-                    # ##
-
-                    json_asset_list.append(to_json(asset))
+                asset_objs_list = AssetModel.objects(**filter_dict)
             else:
-                for asset in AssetModel.objects():
-                    json_asset_list.append(to_json(asset))
-            # if not json_asset_list:
-            #     return make_response("No assets found by filters", 200)
-            return jsonify(json_asset_list)
+                asset_objs_list = AssetModel.objects()
+
+            for asset in asset_objs_list:
+                if token_user_id not in asset.tenant_list and token_user_id != asset.owner_id:
+                    continue
+                for tenant_id in asset.tenant_list:
+                    asset_user_list.append(get_user_by_id(tenant_id))
+                asset.tenant_list = asset_user_list
+                asset_list.append(to_json(asset))
+            if not asset_list:
+                return make_response("No assets available for user / filters", 200)
+            return jsonify(asset_list)
         except DoesNotExist:
             return make_response("No assets available", 404)
         except Exception as e:
@@ -63,7 +56,7 @@ class Assets(Resource):
                                    service_calls=[],
                                    comments=data['comments'])
             insert(new_asset)
-            return jsonify({"asset_id": str(new_asset.id)})
+            return jsonify(asset_id=str(new_asset.id))
         except JSONDecodeError as e:
             return make_response("Invalid JSON: {}".format(e.__str__()), 400)
         except KeyError as e:

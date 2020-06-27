@@ -17,7 +17,7 @@ from app.utils.auth_decorators import token_required
 class Payment(Resource):
     @token_required()
     @swagger.doc(payment_put_doc)
-    def put(self, payment_id):  # Todo: who can edit payment?
+    def patch(self, payment_id):
         try:
             payment = PaymentModel.objects.get(id=ObjectId(payment_id))
             time.sleep(5)  # pay #

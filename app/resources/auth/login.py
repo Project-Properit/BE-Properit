@@ -7,11 +7,11 @@ from jwt.jwk import OctetJWK
 from mongoengine import DoesNotExist
 from werkzeug.security import check_password_hash
 
-from app.utils.auth_decorators import requires_auth
-from app.models.assetmodel import AssetModel
 from app.models.usermodel import UserModel
 from app.resources.auth.auth_docs import login_get_doc
 from app.settings import APP_SECRET_KEY
+from app.utils.auth_decorators import requires_auth
+from app.utils.data_manipulation import get_user_asset_as_tenant
 
 token_manager = jwt.JWT()
 THREE_HOURS = 60 * 3
@@ -24,28 +24,20 @@ class Login(Resource):
         try:
             auth = request.authorization
             user = UserModel.objects.get(email=auth.username)
-
-            # ##
-            tenant_asset_id = None
-            if user.is_tenant:
-                for asset in AssetModel.objects():
-                    if not tenant_asset_id:
-                        if str(user.id) in asset.tenant_list:
-                            tenant_asset_id = str(asset.id)
-            # ##
-
+            tenant_asset_id = get_user_asset_as_tenant(user)
             if check_password_hash(user.password, auth.password):
                 expiration_time = datetime.now(timezone.utc) + timedelta(minutes=THREE_HOURS)
                 token = token_manager.encode(
                     {'id': str(user.id), 'exp': int(expiration_time.timestamp())},
                     OctetJWK(APP_SECRET_KEY))
-                return jsonify({'token': token,
-                                'user_id': str(user.id),
-                                'first_name': user.first_name,
-                                'last_name': user.last_name,
-                                'is_tenant': user.is_tenant, 'is_owner': user.is_owner,
-                                'tenant_asset_id': tenant_asset_id})
-            return make_response('Wrong password', 401)
+                return jsonify(token=token,
+                               user_id=str(user.id),
+                               first_name=user.first_name,
+                               last_name=user.last_name,
+                               is_tenant=user.is_tenant,
+                               is_owner=user.is_owner,
+                               tenant_asset_id=tenant_asset_id)
+            return make_response('Wrong credentials', 401)
         except DoesNotExist:
             return make_response('User not registered', 404)
         except Exception as e:

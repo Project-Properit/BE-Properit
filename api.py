@@ -51,7 +51,7 @@ api.add_resource(Assets, "/api/assets")
 api.add_resource(Asset, "/api/assets/<string:asset_id>")
 
 api.add_resource(Docs, "/api/assets/<string:asset_id>/documents")
-api.add_resource(Doc, "/api/assets/<string:asset_id>/documents/<string:document_id>")
+api.add_resource(Doc, "/api/assets/<string:asset_id>/documents/<string:doc_id>")
 
 api.add_resource(GroupsPayments, "/api/assets/<string:asset_id>/groups-payments")
 api.add_resource(GroupPayments, "/api/assets/<string:asset_id>/groups-payments/<string:group_payments_id>")

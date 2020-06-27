@@ -1,7 +1,7 @@
 import json
 from json.decoder import JSONDecodeError
 
-from flask import request, make_response
+from flask import request, make_response, jsonify
 from flask_restful_swagger_3 import Resource, swagger
 from jwt import jwt
 from mongoengine import NotUniqueError, ValidationError
@@ -29,6 +29,7 @@ class Register(Resource):
                                  is_tenant=data['is_tenant'],
                                  is_owner=data['is_owner'])
             insert(new_user)
+            return jsonify(message='logout successfully')
         except NotUniqueError:
             return make_response('User already exist.', 409)
         except JSONDecodeError as e:

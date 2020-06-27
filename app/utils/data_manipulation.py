@@ -1,5 +1,6 @@
 from typing import List
 
+from app.models.assetmodel import AssetModel
 from app.models.usermodel import UserModel
 
 
@@ -64,3 +65,15 @@ def reorder_group_payment(gp_list: List, user_id):
     for gp in gp_list:
         new_gp_list.append(gp)
     return new_gp_list
+
+
+def get_user_asset_as_tenant(user):
+    for asset in AssetModel.objects():
+        if str(user.id) in asset.tenant_list:
+            return str(asset.id)
+
+
+def get_asset_doc(asset, doc_id):
+    for doc in asset.documents:
+        if doc['doc_id'] == doc_id:
+            return doc
