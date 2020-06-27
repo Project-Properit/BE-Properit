@@ -48,17 +48,16 @@ class Assets(Resource):
         except Exception as e:
             return make_response("Internal Server Error: {}".format(e.__str__()), 500)
 
-    @token_required()
+    @token_required(return_user=True)
     @swagger.doc(asset_post_doc)
-    def post(self):
+    def post(self, token_user_id):
         try:
             data = json.loads(request.data)
-            new_asset = AssetModel(owner_id=data['owner_id'],
+            new_asset = AssetModel(owner_id=token_user_id,
                                    address=data['address'],
-                                   asset_type=data['asset_type'],
                                    room_num=data['room_num'],
                                    rent_fee=data['rent_fee'],
-                                   tenant_list=data['tenant_list'],
+                                   tenant_list=[],
                                    documents=[],
                                    group_payments=[],
                                    service_calls=[],
