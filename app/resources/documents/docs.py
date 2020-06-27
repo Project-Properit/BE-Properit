@@ -18,15 +18,15 @@ from app.settings import DBX_ACCESS_TOKEN
 
 
 class Docs(Resource):
-    @token_required()
+    @token_required(return_user=True)
     @swagger.doc(document_post_doc)
-    def post(self, asset_id):
+    def post(self, token_user_id, asset_id):
         try:
             # data = json.loads(request.data)
             dbx_adapter = DropBoxAdapter(DBX_ACCESS_TOKEN)
             asset = AssetModel.objects.get(id=ObjectId(asset_id))
-            # if token_user_id != asset.owner_id:
-            #     return make_response("Insufficient Permissions", 403)
+            if token_user_id != asset.owner_id:
+                return make_response("Insufficient Permissions", 403)
             if not request.files:
                 return make_response("Upload at least 1 file", 200)
             new_uuid = uuid.uuid4().hex

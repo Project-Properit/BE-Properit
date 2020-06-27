@@ -3,7 +3,7 @@ from app.resources.schemas import ServiceCallParameters, ServiceCallUpdateablePa
 
 sc_post_docs = {
     'tags': [SERVICE_CALL_SECTION],
-    'description': 'Create group payments',
+    'description': 'Create service call',
     'parameters': [
         {
             'in': 'path',
@@ -12,35 +12,24 @@ sc_post_docs = {
         }
     ],
     'requestBody': {
-        'description': 'Group payment parameters',
         'required': True,
         'content': {
             'application/json': {'schema': ServiceCallParameters}
         }
     },
     'responses': {
-        '201': {
-            'description': 'Group payments created successfully',
-        },
-        '400': {
-            'description': 'Missing or invalid parameters in request'
-        },
-        '404': {
-            'description': 'Object not found'
-        },
-        '500': {
-            'description': 'Internal server error'
-        }
+        '200': {'description': 'Object created successfully'},
+        '400': {'description': 'Missing or invalid parameters in request'},
+        '500': {'description': 'Internal server error'}
     }
 }
 
 sc_get_filters_doc = {
     'tags': [SERVICE_CALL_SECTION],
-    'description': 'Get asset by filters',
+    'description': 'get with filters',
     'parameters': [
         {
             'name': 'id',
-            'description': 'filter assets by their id',
             'in': 'query',
             'schema': {'type': 'string'},
             'required': False,
@@ -48,7 +37,6 @@ sc_get_filters_doc = {
         },
         {
             'name': 'company',
-            'description': 'filter assets by their owner',
             'in': 'query',
             'schema': {'type': 'string'},
             'required': False,
@@ -56,7 +44,6 @@ sc_get_filters_doc = {
         },
         {
             'name': 'phone',
-            'description': 'filter assets by their address',
             'in': 'query',
             'schema': {'type': 'string'},
             'required': False,
@@ -64,7 +51,6 @@ sc_get_filters_doc = {
         },
         {
             'name': 'price',
-            'description': 'filter assets by their type',
             'in': 'query',
             'schema': {'type': 'string'},
             'required': False,
@@ -72,7 +58,6 @@ sc_get_filters_doc = {
         },
         {
             'name': 'arrival_date',
-            'description': 'filter assets by their room number',
             'in': 'query',
             'schema': {'type': 'number'},
             'required': False,
@@ -80,7 +65,6 @@ sc_get_filters_doc = {
         },
         {
             'name': 'is_closed',
-            'description': 'filter assets by their rent fee',
             'in': 'query',
             'schema': {'type': 'number'},
             'required': False,
@@ -88,7 +72,6 @@ sc_get_filters_doc = {
         },
         {
             'name': 'group_payment_id',
-            'description': 'filter assets by their comments',
             'in': 'query',
             'schema': {'type': 'string'},
             'required': False,
@@ -96,50 +79,47 @@ sc_get_filters_doc = {
         },
     ],
     'responses': {
-        '200': {'description': 'Asset fetched successfully'},
+        '200': {'description': 'Object fetched successfully'},
         '400': {'description': 'Missing or invalid parameters in request'},
-        '404': {'description': 'Asset not found'},
+        '404': {'description': 'Object not found'},
         '500': {'description': 'Internal server error'}
     }
 }
 
 sc_put_doc = {
     'tags': [SERVICE_CALL_SECTION],
-    'description': 'Update asset general parameters',
+    'description': 'Update service-call parameters',
     'parameters': [
         {
             'name': 'asset_id',
-            'description': "Asset ID to update",
             'in': 'path',
             'required': True,
             'schema': {'type': 'string'}
         },
         {
             'name': 'service_call_id',
-            'description': "Group payment ID to update",
             'in': 'path',
             'required': True,
             'schema': {'type': 'string'}
         }
     ],
     'requestBody': {
-        'description': 'Asset parameters',
         'required': True,
         'content': {
             'application/json': {'schema': ServiceCallUpdateableParameters}
         }
     },
     'responses': {
-        '200': {'description': 'Asset updated successfully'},
+        '200': {'description': 'Object updated successfully'},
         '400': {'description': 'Missing or invalid parameters in request'},
-        '404': {'description': 'Asset not found'},
+        '404': {'description': 'Object not found'},
         '500': {'description': 'Internal server error'}
     }
 }
 
 sc_delete_docs = {
     'tags': [SERVICE_CALL_SECTION],
-    'description': 'Delete Asset group payments',
+    'description': 'Delete service call',
     'parameters': [
         {
             'in': 'path',
@@ -153,18 +133,9 @@ sc_delete_docs = {
         }
     ],
     'responses': {
-        '200': {
-            'description': 'Deleted group payments successfully',
-
-        },
-        '400': {
-            'description': 'Missing or invalid parameters in request'
-        },
-        '404': {
-            'description': 'Object not found'
-        },
-        '500': {
-            'description': 'Internal server error'
-        }
+        '200': {'description': 'Object deleted successfully'},
+        '400': {'description': 'Missing or invalid parameters in request'},
+        '404': {'description': 'Object not found'},
+        '500': {'description': 'Internal server error'}
     }
 }

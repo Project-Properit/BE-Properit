@@ -2,7 +2,6 @@ from app.resources.schemas import UserUpdatableParameters
 
 user_get_doc = {
     'tags': ['Users'],
-    'description': 'Get user',
     'parameters': [
         {
             'in': 'path',
@@ -11,20 +10,13 @@ user_get_doc = {
         }
     ],
     'responses': {
-        '200': {
-            'description': 'Get user successfully',
-        },
-        '404': {
-            'description': 'User not found'
-        },
-        '500': {
-            'description': 'Internal server error'
-        }
+        '200': {'description': 'Object fetched successfully'},
+        '404': {'description': 'Object not found'},
+        '500': {'description': 'Internal server error'}
     }
 }
 user_put_doc = {
     'tags': ['Users'],
-    'description': 'Put user',
     'parameters': [
         {
             'in': 'path',
@@ -33,7 +25,6 @@ user_put_doc = {
         }
     ],
     'requestBody': {
-        'description': 'User updatble parameters',
         'required': True,
         'content': {
             'application/json': {
@@ -43,14 +34,8 @@ user_put_doc = {
         }
     },
     'responses': {
-        '200': {
-            'description': 'Update user successfully',
-        },
-        '400': {
-            'description': 'Missing or invalid parameters in request'
-        },
-        '500': {
-            'description': 'Internal server error'
-        }
+        '200': {'description': 'Object updated successfully'},
+        '400': {'description': 'Missing or invalid parameters in request'},
+        '500': {'description': 'Internal server error'}
     }
 }

@@ -1,15 +1,12 @@
 from app.consts import ASSETS_SECTION
 from app.resources.schemas import AssetParameters
 
-# region asset_general
-
 asset_get_filters_doc = {
     'tags': [ASSETS_SECTION],
-    'description': 'Get asset by filters',
+    'description': 'get with filters',
     'parameters': [
         {
             'name': 'id',
-            'description': 'filter assets by their id',
             'in': 'query',
             'schema': {'type': 'string'},
             'required': False,
@@ -17,7 +14,6 @@ asset_get_filters_doc = {
         },
         {
             'name': 'owner_id',
-            'description': 'filter assets by their owner',
             'in': 'query',
             'schema': {'type': 'string'},
             'required': False,
@@ -25,7 +21,6 @@ asset_get_filters_doc = {
         },
         {
             'name': 'address',
-            'description': 'filter assets by their address',
             'in': 'query',
             'schema': {'type': 'string'},
             'required': False,
@@ -33,7 +28,6 @@ asset_get_filters_doc = {
         },
         {
             'name': 'asset_type',
-            'description': 'filter assets by their type',
             'in': 'query',
             'schema': {'type': 'string'},
             'required': False,
@@ -41,7 +35,6 @@ asset_get_filters_doc = {
         },
         {
             'name': 'room_num',
-            'description': 'filter assets by their room number',
             'in': 'query',
             'schema': {'type': 'number'},
             'required': False,
@@ -49,7 +42,6 @@ asset_get_filters_doc = {
         },
         {
             'name': 'rent_fee',
-            'description': 'filter assets by their rent fee',
             'in': 'query',
             'schema': {'type': 'number'},
             'required': False,
@@ -57,7 +49,6 @@ asset_get_filters_doc = {
         },
         {
             'name': 'comments',
-            'description': 'filter assets by their comments',
             'in': 'query',
             'schema': {'type': 'string'},
             'required': False,
@@ -65,9 +56,9 @@ asset_get_filters_doc = {
         },
     ],
     'responses': {
-        '200': {'description': 'Asset fetched successfully'},
+        '200': {'description': 'Object fetched successfully'},
         '400': {'description': 'Missing or invalid parameters in request'},
-        '404': {'description': 'Asset not found'},
+        '404': {'description': 'Object not found'},
         '500': {'description': 'Internal server error'}
     }
 }
@@ -76,46 +67,39 @@ asset_post_doc = {
     'tags': [ASSETS_SECTION],
     'description': 'Add new asset',
     'requestBody': {
-        'description': 'Asset parameters',
         'required': True,
         'content': {
             'application/json': {'schema': AssetParameters}
         }
     },
     'responses': {
-        '201': {'description': 'Asset added successfully'},
+        '200': {'description': 'Object added successfully'},
         '400': {'description': 'Missing or invalid parameters in request'},
         '500': {'description': 'Internal server error'}
     }
 }
 
-# endregion
-
-# region asset_path_id
-
 asset_put_doc = {
     'tags': [ASSETS_SECTION],
-    'description': 'Update asset general parameters',
+    'description': 'Update asset parameters',
     'parameters': [
         {
             'name': 'asset_id',
-            'description': "Asset ID to update",
             'in': 'path',
             'required': True,
             'schema': {'type': 'string'}
         }
     ],
     'requestBody': {
-        'description': 'Asset parameters',
         'required': True,
         'content': {
             'application/json': {'schema': AssetParameters}
         }
     },
     'responses': {
-        '200': {'description': 'Asset updated successfully'},
+        '200': {'description': 'Object updated successfully'},
         '400': {'description': 'Missing or invalid parameters in request'},
-        '404': {'description': 'Asset not found'},
+        '404': {'description': 'Object not found'},
         '500': {'description': 'Internal server error'}
     }
 }
@@ -126,45 +110,15 @@ asset_delete_doc = {
     'parameters': [
         {
             'name': 'asset_id',
-            'description': "Asset ID to delete",
             'in': 'path',
             'required': True,
             'schema': {'type': 'string'}
         },
     ],
     'responses': {
-        '200': {'description': 'Asset deleted successfully'},
+        '200': {'description': 'Object deleted successfully'},
         '400': {'description': 'Missing or invalid parameters in request'},
-        '404': {'description': 'Asset not found'},
+        '404': {'description': 'Object not found'},
         '500': {'description': 'Internal server error'}
     }
 }
-
-# asset_patch_documents_doc = {
-#     'tags': [ASSETS_SECTION],
-#     'description': "Patch asset documents",
-#     'parameters': [
-#         {
-#             'name': 'asset_id',
-#             'description': "Asset ID to patch its documents",
-#             'in': 'path',
-#             'required': True,
-#             'schema': {'type': 'string'},
-#         },
-#     ],
-#     'requestBody': {
-#         'description': 'Asset parameters',
-#         'required': True,
-#         'content': {
-#             'multipart/form-data:': {'schema': PatchAssetDocument}
-#         }
-#     },
-#     'responses': {
-#         '200': {'description': 'Asset documents patched successfully'},
-#         '400': {'description': 'Missing or invalid parameters in request'},
-#         '404': {'description': 'Asset not found'},
-#         '500': {'description': 'Internal server error'}
-#     }
-# }
-
-# endregion
