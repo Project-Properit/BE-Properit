@@ -1,7 +1,7 @@
 from app.consts import GROUP_PAYMENTS_SECTION
 from app.resources.schemas import GroupPaymentsParameters
 
-groups_payments_post_docs = {
+group_payments_post_docs = {
     'tags': [GROUP_PAYMENTS_SECTION],
     'description': 'Create group payments',
     'parameters': [
@@ -24,9 +24,9 @@ groups_payments_post_docs = {
         '500': {'description': 'Internal server error'}
     }
 }
-groups_payments_filter_get_docs = {
+group_payments_filter_get_docs = {
     'tags': [GROUP_PAYMENTS_SECTION],
-    'description': 'Get groups payments',
+    'description': 'Get with filters',
     'parameters': [
         {
             'in': 'path',

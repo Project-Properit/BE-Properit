@@ -23,26 +23,28 @@ class Docs(Resource):
     def patch(self, token_user_id, asset_id):
         try:
             # data = json.loads(request.data)
+            uploaded_docs = list()
             asset = AssetModel.objects.get(id=ObjectId(asset_id))
             if token_user_id != asset.owner_id:
                 return make_response("Insufficient Permissions", 403)
             if not request.files:
                 return make_response("Upload at least 1 file", 200)
             dbx_adapter = DropBoxAdapter(DBX_ACCESS_TOKEN)
-            new_uuid = uuid.uuid4().hex
-            for key, doc in request.files.items():
+            for key, doc in request.files.items():  # Todo: Multi-select file upload (FE)
+                new_uuid = uuid.uuid1().hex
                 dbx_filename = secure_filename(doc.filename)  # .rsplit(".", 1)[#]
                 dbx_filepath = '/{}/{}'.format(asset_id, dbx_filename)  # dbx_filename can be changed to 'key'
+                url = dbx_adapter.upload_file(doc, dbx_filepath)  # Todo: Check file existence?
                 asset.documents.append({'doc_id': new_uuid,
                                         'doc_name': key,
-                                        'url': dbx_adapter.upload_file(doc, dbx_filepath),
+                                        'url': url,
                                         'dbx_path': dbx_filepath,
                                         'creation_date': datetime.now().replace(microsecond=0)})
-            #                           'users': data['users']})
+            #                           'users': data['users']})  # Todo: user permissions
+                uploaded_docs.append(dict(doc_url=url,
+                                          doc_id=new_uuid))
             update(asset)
-            new_doc = get_asset_doc(asset, new_uuid)
-            return jsonify(doc_url=new_doc['url'],
-                           doc_id=new_uuid)
+            return jsonify(uploaded_docs)
         except InvalidId:
             return make_response("Invalid asset ID", 400)
         except DoesNotExist:

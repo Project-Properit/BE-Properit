@@ -22,11 +22,11 @@ class Assets(Resource):
             filters = request.args
             if filters:
                 filter_dict = {k: v for k, v in filters.items()}
-                asset_objs_list = AssetModel.objects(**filter_dict)
+                asset_obj_list = AssetModel.objects(**filter_dict)
             else:
-                asset_objs_list = AssetModel.objects()
+                asset_obj_list = AssetModel.objects()
 
-            for asset in asset_objs_list:
+            for asset in asset_obj_list:
                 if token_user_id not in asset.tenant_list and token_user_id != asset.owner_id:
                     continue
                 for tenant_id in asset.tenant_list:

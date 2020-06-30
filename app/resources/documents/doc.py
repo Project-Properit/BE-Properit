@@ -28,9 +28,8 @@ class Doc(Resource):
             doc = get_asset_doc(asset, doc_id)
             if not doc:
                 return make_response("Document not found", 404)
-            doc_index = asset.documents.index(doc)
             dbx_adapter.delete_file(doc['dbx_path'])
-            del asset.documents[doc_index]
+            asset.documents.remove(doc)
             update(asset)
             return jsonify(document_id=doc_id)
         except InvalidId:

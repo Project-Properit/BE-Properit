@@ -8,7 +8,7 @@ class UserModel(Document):
     email = EmailField(required=True, unique=True)
     password = StringField(required=True)
     payment_details = DictField(required=False)
-    is_tenant = BooleanField()
+    is_tenant = BooleanField(default=False)
     is_owner = BooleanField(default=False)
     creation_date = DateTimeField()
     meta = {'collection': 'Users'}

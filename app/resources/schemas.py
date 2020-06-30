@@ -18,8 +18,10 @@ class UserParameters(ValidatedSchema):
         'last_name': {'type': 'string'},
         'payment_details': {'type': 'object',
                             'additionalProperties': {'type': 'string'}},
-        'is_tenant': {'type': 'boolean'},
-        'is_owner': {'type': 'boolean'}
+        'is_tenant': {'type': 'boolean',
+                      'default': False},
+        'is_owner': {'type': 'boolean',
+                     'default': False}
     }
 
 
@@ -53,7 +55,6 @@ class PatchAssetDocument(ValidatedSchema):
 class GroupPaymentsParameters(ValidatedSchema):
     type = 'object'
     properties = {
-        'owner': {'type': 'string'},
         'title': {'type': 'string'},
         'description': {'type': 'string'},
         'is_public': {'type': 'boolean'},

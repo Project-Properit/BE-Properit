@@ -28,8 +28,8 @@ class Register(Resource):
                                  payment_details=data['payment_details'],
                                  is_tenant=data['is_tenant'],
                                  is_owner=data['is_owner'])
-            insert(new_user)
-            return jsonify(message='logout successfully')
+            new_user_id = insert(new_user)
+            return jsonify(user_id=new_user_id)
         except NotUniqueError:
             return make_response('User already exist.', 409)
         except JSONDecodeError as e:

@@ -1,5 +1,6 @@
 from typing import List
 
+from app.adapters.db_adapter import to_json
 from app.models.assetmodel import AssetModel
 from app.models.usermodel import UserModel
 
@@ -21,50 +22,66 @@ def build_participants(payment_obj):
     return participant
 
 
-def sort_list_of_dicts(list_of_dicts: List, user_id, is_open=True, get_my_payment=False):
-    new_list_of_dicts = []
-    user_id_payment = None
-    for d in list_of_dicts:
-        if d['id'] == user_id and d['is_open'] == is_open:
-            i = list_of_dicts.index(d)
-            new_list_of_dicts.append(d)
-            list_of_dicts.pop(i)
-    for d in list_of_dicts:
-        if d['is_open'] == is_open:
-            i = list_of_dicts.index(d)
-            new_list_of_dicts.append(d)
-            list_of_dicts.pop(i)
-    for d in list_of_dicts:
-        if d['id'] == user_id and not d['is_open']:
-            i = list_of_dicts.index(d)
-            new_list_of_dicts.append(d)
-            list_of_dicts.pop(i)
-    for d in list_of_dicts:
-        new_list_of_dicts.append(d)
-
-    # pop out user_id payment #
-    if get_my_payment:
-        for d in new_list_of_dicts:
-            if d['id'] == user_id:
-                i = new_list_of_dicts.index(d)
-                user_id_payment = new_list_of_dicts.pop(i)
-                break
-        return user_id_payment, new_list_of_dicts
-    return new_list_of_dicts
+# def sort_list_of_dicts(list_of_dicts: List, user_id, is_open=True, get_my_payment=False):
+#     new_list_of_dicts = []
+#     user_id_payment = None
+#     for d in list_of_dicts:
+#         if d['id'] == user_id and d['is_open'] == is_open:
+#             i = list_of_dicts.index(d)
+#             new_list_of_dicts.append(d)
+#             list_of_dicts.pop(i)
+#     for d in list_of_dicts:
+#         if d['is_open'] == is_open:
+#             i = list_of_dicts.index(d)
+#             new_list_of_dicts.append(d)
+#             list_of_dicts.pop(i)
+#     for d in list_of_dicts:
+#         if d['id'] == user_id and not d['is_open']:
+#             i = list_of_dicts.index(d)
+#             new_list_of_dicts.append(d)
+#             list_of_dicts.pop(i)
+#     for d in list_of_dicts:
+#         new_list_of_dicts.append(d)
+#
+#     # pop out user_id payment #
+#     return None, new_list_of_dicts
 
 
-def reorder_group_payment(gp_list: List, user_id):
-    new_gp_list = []
-    for gp in gp_list:
-        for par in gp['participants']:
-            if par['id'] == user_id and par['is_open']:
-                i = gp_list.index(gp)
-                new_gp_list.append(gp)
-                gp_list.pop(i)
-    gp_list.sort(key=lambda x: x['creation_time'])
-    for gp in gp_list:
-        new_gp_list.append(gp)
-    return new_gp_list
+def sort_participants(participants: List, user_id):
+    participants.sort(key=lambda k: (not k['is_open'], k['id'] != user_id))
+
+
+def get_my_payment(participants, user_id):
+    for index, par in enumerate(participants):
+        if par['id'] == user_id:
+            return participants.pop(index)
+
+
+def build_gp_object(gp_obj, participants, my_payment):
+    gp = to_json(gp_obj)
+    gp['participants'] = participants.copy()
+    if my_payment:
+        gp['my_payment'] = my_payment
+    gp['owner'] = get_user_by_id(gp_obj.owner)
+    return gp
+
+
+def check_user_in_participants(participants, user_id):
+    for par in participants:
+        if par['id'] == user_id:
+            return True
+    return False
+
+
+def reorder_group_payment(gp_list: List, filter_by, filter_value):
+    if filter_by == 'pay_from':
+        gp_list.sort(key=lambda k: (not k['my_payment']['is_open'], k['creation_date']))
+    elif filter_by == 'pay_to':
+        gp_copy = gp_list.copy()
+        gp_list.clear()
+        gp_list += [item for item in gp_copy if item['owner']['id'] == filter_value]
+        gp_list.sort(key=lambda k: (not k['participants'][0]['is_open'] if k['participants'] else bool(k)))
+        # gp_list.sort(key=lambda k: (not k['status']))  # Todo: Group payment status ?
 
 
 def get_user_asset_as_tenant(user):

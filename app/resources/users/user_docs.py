@@ -1,22 +1,50 @@
-from app.resources.schemas import UserUpdatableParameters
+from app.consts import USERS_SECTION
+from app.resources.schemas import UserUpdatableParameters, UserParameters
 
-user_get_doc = {
-    'tags': ['Users'],
+user_get_filters_doc = {
+    'tags': [USERS_SECTION],
+    'description': 'get with filters',
     'parameters': [
         {
-            'in': 'path',
-            'name': 'user_id',
-            'required': True
-        }
+            'name': 'id',
+            'in': 'query',
+            'schema': {'type': 'string'},
+            'required': False,
+            'allowReserved': True
+        },
+        {
+            'name': 'email',
+            'in': 'query',
+            'schema': {'type': 'string'},
+            'required': False,
+            'allowReserved': True
+        },
+        {
+            'name': 'is_tenant',
+            'in': 'query',
+            'schema': {'type': 'boolean'},
+            'required': False,
+            'allowReserved': True
+        },
+        {
+            'name': 'is_owner',
+            'in': 'query',
+            'schema': {'type': 'boolean'},
+            'required': False,
+            'allowReserved': True
+        },
     ],
     'responses': {
         '200': {'description': 'Object fetched successfully'},
+        '400': {'description': 'Missing or invalid parameters in request'},
         '404': {'description': 'Object not found'},
         '500': {'description': 'Internal server error'}
     }
 }
+
+
 user_put_doc = {
-    'tags': ['Users'],
+    'tags': [USERS_SECTION],
     'parameters': [
         {
             'in': 'path',
@@ -28,7 +56,7 @@ user_put_doc = {
         'required': True,
         'content': {
             'application/json': {
-                'schema': UserUpdatableParameters
+                'schema': UserParameters
             }
 
         }

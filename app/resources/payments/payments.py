@@ -12,23 +12,24 @@ from app.resources.payments.payment_docs import payment_get_filters_doc, payment
 
 
 class Payments(Resource):
-    @token_required()
+    @token_required(return_user=True)
     @swagger.doc(payment_get_filters_doc)
-    def get(self):
+    def get(self, token_user_id):
         try:
-            json_payment_list = []
+            payments_list = list()
             filters = request.args  # Todo: bool filter get as str
             if filters:
                 filter_dict = {k: v for k, v in filters.items()}
-                payments_list = PaymentModel.objects(**filter_dict)
-                for payment in payments_list:
-                    json_payment_list.append(to_json(payment))
+                payment_obj_list = PaymentModel.objects(**filter_dict)
             else:
-                for payment in PaymentModel.objects():
-                    json_payment_list.append(to_json(payment))
-            if not json_payment_list:
-                return make_response("No payment found by filters", 404)
-            return json_payment_list
+                payment_obj_list = PaymentModel.objects()
+            for payment in payment_obj_list:
+                if token_user_id not in [payment.pay_to, payment.pay_from]:
+                    continue
+                payments_list.append(to_json(payment))
+            if not payments_list:
+                return make_response("No payment found by filters", 200)
+            return payments_list
         except DoesNotExist:
             return make_response("No payments available", 404)
         except Exception as e:
