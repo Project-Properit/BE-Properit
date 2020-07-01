@@ -54,7 +54,7 @@ class GroupPayments(Resource):
             filters = request.args
             if filters:
                 if filters.__len__() > 1:
-                    return make_response("Only one filter", 400)
+                    return make_response("use only one filter", 400)
                 filter_key, filter_value = next(iter(filters.items()))
                 asset_gp_list = asset_obj['group_payments']
 
@@ -81,7 +81,7 @@ class GroupPayments(Resource):
                 for gp in GroupPaymentModel.objects():
                     gp_list.append(to_json(gp))
             if not gp_list:
-                return make_response("No group payment found by filters", 404)
+                return make_response("No group payment found by filters", 200)
 
             return jsonify(gp_list)
 
