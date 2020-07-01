@@ -10,7 +10,7 @@ from app.models.assetmodel import AssetModel
 from app.resources.documents.documents_doc import document_delete_doc
 from app.settings import DBX_ACCESS_TOKEN
 from app.utils.auth_decorators import token_required
-from app.utils.data_manipulation import get_asset_doc
+from app.utils.manipulator import get_asset_doc
 
 
 # from werkzeug.utils import secure_filename

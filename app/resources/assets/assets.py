@@ -9,7 +9,7 @@ from app.adapters.db_adapter import insert, to_json
 from app.models.assetmodel import AssetModel
 from app.resources.assets.asset_docs import asset_post_doc, asset_get_filters_doc
 from app.utils.auth_decorators import token_required
-from app.utils.data_manipulation import get_user_by_id
+from app.utils.manipulator import get_user_by_id
 
 
 class Assets(Resource):

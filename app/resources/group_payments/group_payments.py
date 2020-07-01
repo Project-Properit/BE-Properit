@@ -12,7 +12,7 @@ from app.models.grouppaymentmodel import GroupPaymentModel
 from app.models.paymentmodel import PaymentModel
 from app.resources.group_payments.group_payment_docs import group_payments_post_docs, group_payments_filter_get_docs
 from app.utils.auth_decorators import token_required
-from app.utils.data_manipulation import build_participants_obj, sort_group_payments, \
+from app.utils.manipulator import build_participants_obj, sort_group_payments, \
     sort_participants, get_user_payment, build_gp_object, check_user_in_participants
 
 

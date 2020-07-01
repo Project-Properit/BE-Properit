@@ -11,7 +11,7 @@ from app.models.usermodel import UserModel
 from app.resources.auth.auth_docs import login_get_doc
 from app.settings import APP_SECRET_KEY
 from app.utils.auth_decorators import requires_auth
-from app.utils.data_manipulation import get_user_asset_as_tenant
+from app.utils.manipulator import get_user_asset_as_tenant
 
 token_manager = jwt.JWT()
 THREE_HOURS = 60 * 3
