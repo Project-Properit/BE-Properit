@@ -53,6 +53,8 @@ class GroupPayments(Resource):
             gp_list = list()
             filters = request.args
             if filters:
+                if filters.__len__() > 1:
+                    return make_response("Only one filter", 400)
                 filter_key, filter_value = next(iter(filters.items()))
                 asset_gp_list = asset_obj['group_payments']
 
