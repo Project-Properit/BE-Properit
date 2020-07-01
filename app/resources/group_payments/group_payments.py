@@ -48,8 +48,8 @@ class GroupPayments(Resource):
     def get(self, token_user_id, asset_id):
         try:
             asset_obj = AssetModel.objects.get(id=asset_id)
-            # if token_user_id not in asset_obj.tenant_list and token_user_id != asset_obj.owner_id:
-            #     return make_response("Insufficient Permissions", 403)
+            if token_user_id not in asset_obj.tenant_list and token_user_id != asset_obj.owner_id:
+                return make_response("Insufficient Permissions", 403)
             gp_list = list()
             filters = request.args
             if filters:
