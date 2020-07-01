@@ -15,8 +15,6 @@ from app.resources.group_payments.group_payment import GroupPayment
 from app.resources.group_payments.group_payments import GroupPayments
 from app.resources.payments.payment import Payment
 from app.resources.payments.payments import Payments
-from app.resources.service_call.service_call import ServiceCall
-from app.resources.service_call.service_calls import ServiceCalls
 from app.resources.users.user import User
 from app.resources.users.users import Users
 
@@ -61,8 +59,8 @@ api.add_resource(GroupPayment, "/api/assets/<string:asset_id>/group-payments/<st
 api.add_resource(Payments, "/api/payments")
 api.add_resource(Payment, "/api/payments/<string:payment_id>")
 
-api.add_resource(ServiceCalls, "/api/assets/<string:asset_id>/service-calls")
-api.add_resource(ServiceCall, "/api/assets/<string:asset_id>/service-calls/<string:service_call_id>")
+# api.add_resource(ServiceCalls, "/api/assets/<string:asset_id>/service-calls")
+# api.add_resource(ServiceCall, "/api/assets/<string:asset_id>/service-calls/<string:service_call_id>")
 
 if __name__ == '__main__':  # For Debugging
     app.run(host='0.0.0.0', port=5000, threaded=True)

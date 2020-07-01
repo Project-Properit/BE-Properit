@@ -23,7 +23,7 @@ class Login(Resource):
     def get(self):
         try:
             auth = request.authorization
-            user = UserModel.objects.get(email=auth.username)
+            user = UserModel.objects.get(email=auth.username.lower())
             tenant_asset_id = get_user_asset_as_tenant(user)
             if check_password_hash(user.password, auth.password):
                 expiration_time = datetime.now(timezone.utc) + timedelta(minutes=THREE_HOURS)

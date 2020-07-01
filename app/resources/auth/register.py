@@ -20,16 +20,16 @@ class Register(Resource):
         try:
             data = json.loads(request.data)
             hashed_password = generate_password_hash(data['password'], method='sha256')
-            new_user = UserModel(email=data['email'],
+            new_user = UserModel(email=data['email'].lower(),
                                  password=hashed_password,
                                  phone=data['phone'],
-                                 first_name=data['first_name'],
-                                 last_name=data['last_name'],
+                                 first_name=data['first_name'].lower(),
+                                 last_name=data['last_name'].lower(),
                                  payment_details=data['payment_details'],
                                  is_tenant=data['is_tenant'],
                                  is_owner=data['is_owner'])
-            new_user_id = insert(new_user)
-            return jsonify(user_id=new_user_id)
+            new_user = insert(new_user)
+            return jsonify(user_id=str(new_user.id))
         except NotUniqueError:
             return make_response('User already exist.', 409)
         except JSONDecodeError as e:

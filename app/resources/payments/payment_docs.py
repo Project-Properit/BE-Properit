@@ -62,7 +62,8 @@ payment_get_filters_doc = {
             'in': 'query',
             'schema': {'type': 'boolean'},
             'required': False,
-            'allowReserved': True
+            'allowReserved': True,
+            'allowEmptyValue': True
         }
     ],
     'responses': {
