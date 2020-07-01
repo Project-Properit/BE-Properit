@@ -25,15 +25,6 @@ class UserParameters(ValidatedSchema):
     }
 
 
-class UserUpdatableParameters(ValidatedSchema):
-    type = 'object'
-    properties = {
-        'phone': {'type': 'string'},
-        'first_name': {'type': 'string'},
-        'last_name': {'type': 'string'}
-    }
-
-
 class AssetParameters(ValidatedSchema):
     type = 'object'
     properties = {
@@ -71,13 +62,6 @@ class PaymentParameters(ValidatedSchema):
         'pay_to': {'type': 'string'},
         'amount': {'type': 'number'},
         'method': {'type': 'string'}
-    }
-
-
-class PaymentUpdateableParameters(ValidatedSchema):
-    type = 'object'
-    properties = {
-        'is_open': {'type': 'boolean'}
     }
 
 

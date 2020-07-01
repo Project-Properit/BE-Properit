@@ -1,5 +1,5 @@
 from app.consts import USERS_SECTION
-from app.resources.schemas import UserUpdatableParameters, UserParameters
+from app.resources.schemas import UserParameters
 
 user_get_filters_doc = {
     'tags': [USERS_SECTION],
@@ -41,7 +41,6 @@ user_get_filters_doc = {
         '500': {'description': 'Internal server error'}
     }
 }
-
 
 user_put_doc = {
     'tags': [USERS_SECTION],

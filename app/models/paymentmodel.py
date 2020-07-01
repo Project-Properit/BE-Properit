@@ -1,7 +1,7 @@
-from mongoengine import Document, StringField, DateTimeField, ListField, FloatField, URLField, BooleanField
+from mongoengine import Document, StringField, DateTimeField, FloatField, BooleanField
 
 
-class PaymentModel(Document):  # from the payer side
+class PaymentModel(Document):
     pay_from = StringField(required=True)
     pay_to = StringField(required=True)
     amount = FloatField(required=True)

@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, DateTimeField, ListField, FloatField, DictField
+from mongoengine import Document, StringField, DateTimeField, ListField, FloatField
 
 
 class AssetModel(Document):

@@ -7,10 +7,10 @@ from flask_restful_swagger_3 import Resource, swagger
 from mongoengine import DoesNotExist
 
 from app.adapters.db_adapter import insert, update, to_json
-from app.utils.auth_decorators import token_required
 from app.models.assetmodel import AssetModel
 from app.models.servicecallmodel import ServiceCallModel
 from app.resources.service_call.service_call_docs import sc_post_docs, sc_get_filters_doc
+from app.utils.auth_decorators import token_required
 
 
 class ServiceCalls(Resource):

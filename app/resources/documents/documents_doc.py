@@ -50,34 +50,3 @@ document_delete_doc = {
         '500': {'description': 'Internal server error'}
     }
 }
-
-document_patch_doc = {
-    'tags': [DOCUMENTS_SECTION],
-    'description': "Patch documents",
-    'parameters': [
-        {
-            'name': 'asset_id',
-            'in': 'path',
-            'required': True,
-            'schema': {'type': 'string'},
-        },
-        {
-            'name': 'document_id',
-            'in': 'path',
-            'required': True,
-            'schema': {'type': 'string'},
-        },
-    ],
-    'requestBody': {
-        'required': True,
-        'content': {
-            'multipart/form-data:': {'schema': PatchAssetDocument}
-        }
-    },
-    'responses': {
-        '200': {'description': 'Object patched successfully'},
-        '400': {'description': 'Missing or invalid parameters in request'},
-        '404': {'description': 'Object not found'},
-        '500': {'description': 'Internal server error'}
-    }
-}

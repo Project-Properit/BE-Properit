@@ -12,7 +12,7 @@ def get_user_by_id(user_id):
             'last_name': user.last_name}
 
 
-def build_participants(payment_obj):
+def build_participants_obj(payment_obj):
     participant = get_user_by_id(payment_obj.pay_from)
     participant['amount'] = payment_obj.amount
     participant['is_open'] = payment_obj.is_open
@@ -20,41 +20,6 @@ def build_participants(payment_obj):
     if not payment_obj.is_open:
         participant['when_payed'] = str(payment_obj.when_payed)
     return participant
-
-
-# def sort_list_of_dicts(list_of_dicts: List, user_id, is_open=True, get_my_payment=False):
-#     new_list_of_dicts = []
-#     user_id_payment = None
-#     for d in list_of_dicts:
-#         if d['id'] == user_id and d['is_open'] == is_open:
-#             i = list_of_dicts.index(d)
-#             new_list_of_dicts.append(d)
-#             list_of_dicts.pop(i)
-#     for d in list_of_dicts:
-#         if d['is_open'] == is_open:
-#             i = list_of_dicts.index(d)
-#             new_list_of_dicts.append(d)
-#             list_of_dicts.pop(i)
-#     for d in list_of_dicts:
-#         if d['id'] == user_id and not d['is_open']:
-#             i = list_of_dicts.index(d)
-#             new_list_of_dicts.append(d)
-#             list_of_dicts.pop(i)
-#     for d in list_of_dicts:
-#         new_list_of_dicts.append(d)
-#
-#     # pop out user_id payment #
-#     return None, new_list_of_dicts
-
-
-def sort_participants(participants: List, user_id):
-    participants.sort(key=lambda k: (not k['is_open'], k['id'] != user_id))
-
-
-def get_my_payment(participants, user_id):
-    for index, par in enumerate(participants):
-        if par['id'] == user_id:
-            return participants.pop(index)
 
 
 def build_gp_object(gp_obj, participants, my_payment):
@@ -66,6 +31,16 @@ def build_gp_object(gp_obj, participants, my_payment):
     return gp
 
 
+def sort_participants(participants: List, user_id):
+    participants.sort(key=lambda k: (not k['is_open'], k['id'] != user_id))
+
+
+def get_user_payment(participants, user_id):
+    for index, par in enumerate(participants):
+        if par['id'] == user_id:
+            return participants.pop(index)
+
+
 def check_user_in_participants(participants, user_id):
     for par in participants:
         if par['id'] == user_id:
@@ -73,7 +48,7 @@ def check_user_in_participants(participants, user_id):
     return False
 
 
-def reorder_group_payment(gp_list: List, filter_by, filter_value):
+def sort_group_payments(gp_list: List, filter_by, filter_value):
     if filter_by == 'pay_from':
         gp_list.sort(key=lambda k: (not k['my_payment']['is_open'], k['creation_date']))
     elif filter_by == 'pay_to':

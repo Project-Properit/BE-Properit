@@ -12,8 +12,8 @@ from app.models.grouppaymentmodel import GroupPaymentModel
 from app.models.paymentmodel import PaymentModel
 from app.resources.group_payments.group_payment_docs import group_payments_post_docs, group_payments_filter_get_docs
 from app.utils.auth_decorators import token_required
-from app.utils.data_manipulation import build_participants, reorder_group_payment, \
-    sort_participants, get_my_payment, build_gp_object, check_user_in_participants
+from app.utils.data_manipulation import build_participants_obj, sort_group_payments, \
+    sort_participants, get_user_payment, build_gp_object, check_user_in_participants
 
 
 class GroupPayments(Resource):
@@ -55,6 +55,7 @@ class GroupPayments(Resource):
             if filters:
                 filter_key, filter_value = next(iter(filters.items()))
                 asset_gp_list = asset_obj['group_payments']
+
                 for gp_id in asset_gp_list:
                     my_payment = None
                     participants = list()
@@ -62,22 +63,25 @@ class GroupPayments(Resource):
                     gp_payment_list = gp_obj.payments
                     for payment_id in gp_payment_list:
                         payment_obj = PaymentModel.objects.get(id=ObjectId(payment_id))
-                        participants.append(build_participants(payment_obj))
-                    if check_user_in_participants(participants, filter_value):
-                        my_payment = get_my_payment(participants, filter_value)
+                        participants.append(build_participants_obj(payment_obj))
+
+                    if check_user_in_participants(participants, filter_value):  # == pay_from filter used
+                        my_payment = get_user_payment(participants, filter_value)
                         if not gp_obj.is_public:
                             participants.clear()
                     sort_participants(participants, filter_value)
+
                     new_gp_obj = build_gp_object(gp_obj, participants, my_payment)
                     gp_list.append(new_gp_obj)
-                reorder_group_payment(gp_list, filter_key, filter_value)
+                sort_group_payments(gp_list, filter_key, filter_value)
+
             else:
                 for gp in GroupPaymentModel.objects():
                     gp_list.append(to_json(gp))
             if not gp_list:
                 return make_response("No group payment found by filters", 404)
 
-            return gp_list
+            return jsonify(gp_list)
 
         except DoesNotExist:
             return make_response("No payments available", 404)

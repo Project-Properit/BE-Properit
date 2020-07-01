@@ -14,7 +14,6 @@ from app.models.assetmodel import AssetModel
 from app.resources.documents.documents_doc import document_post_doc
 from app.settings import DBX_ACCESS_TOKEN
 from app.utils.auth_decorators import token_required
-from app.utils.data_manipulation import get_asset_doc
 
 
 class Docs(Resource):
@@ -40,7 +39,7 @@ class Docs(Resource):
                                         'url': url,
                                         'dbx_path': dbx_filepath,
                                         'creation_date': datetime.now().replace(microsecond=0)})
-            #                           'users': data['users']})  # Todo: user permissions
+                #                           'users': data['users']})  # Todo: user permissions
                 uploaded_docs.append(dict(doc_url=url,
                                           doc_id=new_uuid))
             update(asset)

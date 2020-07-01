@@ -20,7 +20,7 @@ class Payment(Resource):
     def patch(self, payment_id):
         try:
             payment = PaymentModel.objects.get(id=ObjectId(payment_id))
-            time.sleep(5)  # pay #
+            time.sleep(4)  # pay #
             payment.is_open = False
             payment.when_payed = datetime.now().replace(microsecond=0)
             update(payment)

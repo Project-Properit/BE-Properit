@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, DateTimeField, EmailField, BooleanField, FloatField
+from mongoengine import Document, StringField, DateTimeField, BooleanField, FloatField
 
 
 class ServiceCallModel(Document):
