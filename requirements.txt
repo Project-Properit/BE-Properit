@@ -1,0 +1,13 @@
+pytest-runner
+cryptography
+pymongo
+mongoengine
+flask
+flask-cors
+flask_restful_swagger_3
+flask_swagger_ui
+jsonschema
+jwt
+werkzeug
+dropbox
+gunicorn
