@@ -34,6 +34,13 @@ group_payments_filter_get_docs = {
             'required': True
         },
         {
+            'name': 'id',
+            'in': 'query',
+            'schema': {'type': 'string'},
+            'required': False,
+            'allowReserved': True
+        },
+        {
             'name': 'pay_to',
             'in': 'query',
             'schema': {'type': 'string'},

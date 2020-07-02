@@ -44,8 +44,8 @@ class Payments(Resource):
                                        pay_to=data['pay_to'],
                                        amount=data['amount'],
                                        method=data['method'])
-            insert(new_payment)
-            return jsonify({"payment_id": str(new_payment.id)})
+            payment_obj = insert(new_payment)
+            return jsonify({"payment_id": str(payment_obj.id)})
         except JSONDecodeError as e:
             return make_response("Invalid JSON: {}".format(e.__str__()), 400)
         except KeyError as e:

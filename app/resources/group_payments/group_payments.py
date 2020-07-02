@@ -35,11 +35,17 @@ class GroupPayments(Resource):
                                                   description=data['description'],
                                                   is_public=data['is_public'],
                                                   amount=data['amount'],
-                                                  payments=data['payments'])
-            group_payment = insert(new_group_payment)
-            asset.group_payments.append(str(group_payment.id))
+                                                  payments=[])
+            # create new payments
+            for payment in data['payments']:
+                new_payment = PaymentModel(**payment)
+                payment_obj = insert(new_payment)
+                new_group_payment.payments.append(str(payment_obj.id))
+
+            group_payment_obj = insert(new_group_payment)
+            asset.group_payments.append(str(group_payment_obj.id))
             update(asset)
-            return jsonify(group_payment_id=str(group_payment.id))
+            return jsonify(group_payment_id=str(group_payment_obj.id))
         except Exception as e:
             return make_response("Internal Server Error: {}".format(e.__str__()), 500)
 
@@ -56,8 +62,14 @@ class GroupPayments(Resource):
                 if filters.__len__() > 1:
                     return make_response("use only one filter", 400)
                 filter_key, filter_value = next(iter(filters.items()))
-                asset_gp_list = asset_obj['group_payments']
 
+                #
+                if filter_key == 'id':
+                    gp_obj = GroupPaymentModel.objects.get(id=filter_value)
+                    return jsonify(to_json(gp_obj))
+                #
+
+                asset_gp_list = asset_obj['group_payments']
                 for gp_id in asset_gp_list:
                     my_payment = None
                     participants = list()

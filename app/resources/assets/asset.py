@@ -41,24 +41,25 @@ class Asset(Resource):
         except Exception as e:
             return make_response("Internal Server Error: {}".format(e.__str__()), 500)
 
-    @token_required(return_user=True)
+    @token_required()
     @swagger.doc(asset_patch_tenants_doc)
-    def patch(self, token_user_id, asset_id):
+    def patch(self, asset_id):
         try:
-            asset = AssetModel.objects.get(id=ObjectId(asset_id))
-            if token_user_id != asset.owner_id:
-                return make_response("Insufficient Permissions", 403)
-
-            # Todo: pending request for user?
-            # Todo: pending approval for owner?
-            # Todo: check if user(s) exist
-            users_list = list()
-            user_id_list = list()
-            data = json.loads(request.data)
-            for email in data['email_list']:
-                users_list.append(get_user_by_filters(dict(email=email)))
-                user_id_list.append(get_user_by_filters(dict(email=email))['id'])
-            asset.tenant_list += user_id_list  # Todo: pending list?
+            return make_response("will be available soon", 200)
+            # asset = AssetModel.objects.get(id=ObjectId(asset_id))
+            # # if token_user_id != asset.owner_id:
+            # #     return make_response("Insufficient Permissions", 403)
+            #
+            # # Todo: pending request for user?
+            # # Todo: pending approval for owner?
+            # # Todo: check if user(s) exist
+            # users_list = list()
+            # user_id_list = list()
+            # data = json.loads(request.data)
+            # for email in data['email_list']:
+            #     users_list.append(get_user_by_filters(dict(email=email)))
+            #     user_id_list.append(get_user_by_filters(dict(email=email))['id'])
+            # asset.tenant_list += user_id_list  # Todo: pending list?
 
         except InvalidId:
             return make_response("Invalid payment ID", 400)

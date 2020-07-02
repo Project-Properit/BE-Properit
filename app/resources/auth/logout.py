@@ -18,6 +18,6 @@ class Logout(Resource):
             token = request.headers['x-access-tokens']
             expired_token = TokenModel(token=token)
             insert(expired_token)
-            return jsonify(message='user registered successfully')
+            return jsonify(message='user logged out successfully')
         except Exception as e:
             return make_response("Internal Server Error: {}".format(e.__str__()), 500)

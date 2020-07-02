@@ -17,7 +17,7 @@ class UserParameters(ValidatedSchema):
         'first_name': {'type': 'string'},
         'last_name': {'type': 'string'},
         'payment_details': {'type': 'object',
-                            'additionalProperties': {'type': 'string'}},
+                            'additionalProperties': True},
         'is_tenant': {'type': 'boolean',
                       'default': False},
         'is_owner': {'type': 'boolean',
@@ -61,7 +61,8 @@ class GroupPaymentsParameters(ValidatedSchema):
         'is_public': {'type': 'boolean'},
         'amount': {'type': 'number'},
         'payments': {'type': 'array',
-                     'items': {'type': 'string'}}
+                     'items': {'type': 'object',
+                               'additionalProperties': True}}
     }
 
 
