@@ -9,7 +9,7 @@ from app.adapters.db_adapter import insert, to_json
 from app.models.assetmodel import AssetModel
 from app.resources.assets.asset_docs import asset_post_doc, asset_get_filters_doc
 from app.utils.auth_decorators import token_required
-from app.utils.manipulator import get_user_by_id
+from app.utils.manipulator import get_user_by_filters
 
 
 class Assets(Resource):
@@ -30,7 +30,7 @@ class Assets(Resource):
                 if token_user_id not in asset.tenant_list and token_user_id != asset.owner_id:
                     continue
                 for tenant_id in asset.tenant_list:
-                    asset_user_list.append(get_user_by_id(tenant_id))
+                    asset_user_list.append(get_user_by_filters(dict(id=tenant_id)))
                 asset.tenant_list = asset_user_list
                 asset_list.append(to_json(asset))
             if not asset_list:

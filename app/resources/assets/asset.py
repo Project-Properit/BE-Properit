@@ -10,8 +10,9 @@ from mongoengine import DoesNotExist, ValidationError
 from app.adapters.db_adapter import delete
 from app.adapters.db_adapter import update
 from app.models.assetmodel import AssetModel
-from app.resources.assets.asset_docs import asset_put_doc, asset_delete_doc
+from app.resources.assets.asset_docs import asset_put_doc, asset_delete_doc, asset_patch_tenants_doc
 from app.utils.auth_decorators import token_required
+from app.utils.manipulator import get_user_by_filters
 
 
 class Asset(Resource):
@@ -37,6 +38,38 @@ class Asset(Resource):
             return make_response("Invalid json parameters: {}".format(e.__str__()), 400)
         except DoesNotExist:
             return make_response("Asset not found", 404)
+        except Exception as e:
+            return make_response("Internal Server Error: {}".format(e.__str__()), 500)
+
+    @token_required(return_user=True)
+    @swagger.doc(asset_patch_tenants_doc)
+    def patch(self, token_user_id, asset_id):
+        try:
+            asset = AssetModel.objects.get(id=ObjectId(asset_id))
+            if token_user_id != asset.owner_id:
+                return make_response("Insufficient Permissions", 403)
+
+            # Todo: pending request for user?
+            # Todo: pending approval for owner?
+            # Todo: check if user(s) exist
+            users_list = list()
+            user_id_list = list()
+            data = json.loads(request.data)
+            for email in data['email_list']:
+                users_list.append(get_user_by_filters(dict(email=email)))
+                user_id_list.append(get_user_by_filters(dict(email=email))['id'])
+            asset.tenant_list += user_id_list  # Todo: pending list?
+
+        except InvalidId:
+            return make_response("Invalid payment ID", 400)
+        except JSONDecodeError as e:
+            return make_response("Invalid JSON: {}".format(e.__str__()), 400)
+        except KeyError as e:
+            return make_response("Missing / Invalid json key: {}".format(e.__str__()), 400)
+        except ValidationError as e:
+            return make_response("Invalid json parameters: {}".format(e.__str__()), 400)
+        except DoesNotExist:
+            return make_response("Payment not found", 404)
         except Exception as e:
             return make_response("Internal Server Error: {}".format(e.__str__()), 500)
 

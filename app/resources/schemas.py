@@ -35,11 +35,21 @@ class AssetParameters(ValidatedSchema):
     }
 
 
+class AssetPatchTenantsParams(ValidatedSchema):
+    type = 'object'
+    properties = {
+        'address': {'type': 'string'},
+        'room_num': {'type': 'number'},
+        'rent_fee': {'type': 'number'},
+        'comments': {'type': 'string'}
+    }
+
+
 class PatchAssetDocument(ValidatedSchema):
     type = 'object'
     properties = {
-        'doc_name': {'type': 'string',
-                     'format': 'binary'},
+        'email_list': {'type': 'array',
+                       'items': {'type': 'string'}}
     }
 
 

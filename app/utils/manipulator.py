@@ -5,15 +5,15 @@ from app.models.assetmodel import AssetModel
 from app.models.usermodel import UserModel
 
 
-def get_user_by_id(user_id):
-    user = UserModel.objects.get(id=user_id)
+def get_user_by_filters(filter_dict):
+    user = UserModel.objects.get(**filter_dict)
     return {'id': str(user.id),
             'first_name': user.first_name,
             'last_name': user.last_name}
 
 
 def build_participants_obj(payment_obj):
-    participant = get_user_by_id(payment_obj.pay_from)
+    participant = get_user_by_filters(dict(id=payment_obj.pay_from))
     participant['amount'] = payment_obj.amount
     participant['is_open'] = payment_obj.is_open
     participant['payment_id'] = str(payment_obj.id)
@@ -27,7 +27,7 @@ def build_gp_object(gp_obj, participants, my_payment):
     gp['participants'] = participants.copy()
     if my_payment:
         gp['my_payment'] = my_payment
-    gp['owner'] = get_user_by_id(gp_obj.owner)
+    gp['owner'] = get_user_by_filters(dict(id=gp_obj.owner))
     return gp
 
 

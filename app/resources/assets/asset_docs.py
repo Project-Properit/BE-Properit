@@ -1,5 +1,5 @@
 from app.consts import ASSETS_SECTION
-from app.resources.schemas import AssetParameters
+from app.resources.schemas import AssetParameters, PatchAssetDocument
 
 asset_get_filters_doc = {
     'tags': [ASSETS_SECTION],
@@ -94,6 +94,31 @@ asset_put_doc = {
         'required': True,
         'content': {
             'application/json': {'schema': AssetParameters}
+        }
+    },
+    'responses': {
+        '200': {'description': 'Object updated successfully'},
+        '400': {'description': 'Missing or invalid parameters in request'},
+        '404': {'description': 'Object not found'},
+        '500': {'description': 'Internal server error'}
+    }
+}
+
+asset_patch_tenants_doc = {
+    'tags': [ASSETS_SECTION],
+    'description': 'Update asset tenants',
+    'parameters': [
+        {
+            'name': 'asset_id',
+            'in': 'path',
+            'required': True,
+            'schema': {'type': 'string'}
+        }
+    ],
+    'requestBody': {
+        'required': True,
+        'content': {
+            'application/json': {'schema': PatchAssetDocument}
         }
     },
     'responses': {
