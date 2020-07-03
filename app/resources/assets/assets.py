@@ -27,6 +27,7 @@ class Assets(Resource):
                 asset_obj_list = AssetModel.objects()
 
             for asset in asset_obj_list:
+                asset_user_list = list()
                 if token_user_id not in asset.tenant_list and token_user_id != asset.owner_id:
                     continue
                 for tenant_id in asset.tenant_list:
@@ -50,7 +51,7 @@ class Assets(Resource):
                                    address=data['address'],
                                    room_num=data['room_num'],
                                    rent_fee=data['rent_fee'],
-                                   tenant_list=[],
+                                       tenant_list=[],
                                    documents=[],
                                    group_payments=[],
                                    service_calls=[],
