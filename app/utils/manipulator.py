@@ -50,12 +50,14 @@ def check_user_in_participants(participants, user_id):
 
 def sort_group_payments(gp_list: List, filter_by, filter_value):
     if filter_by == 'pay_from':
-        gp_list.sort(key=lambda k: (not k['my_payment']['is_open'], k['creation_date']))
+        gp_list.sort(key=lambda k: (k['my_payment']['is_open'], k['creation_date']), reverse=True)
     elif filter_by == 'pay_to':
         gp_copy = gp_list.copy()
         gp_list.clear()
         gp_list += [item for item in gp_copy if item['owner']['id'] == filter_value]
-        gp_list.sort(key=lambda k: (not k['participants'][0]['is_open'] if k['participants'] else bool(k)))
+        gp_list.sort(
+            key=lambda k: (k['participants'][0]['is_open'] if k['participants'] else bool(k), k['creation_date']),
+            reverse=True)
         # gp_list.sort(key=lambda k: (not k['status']))  # Todo: Group payment status ?
 
 
