@@ -12,7 +12,6 @@ from app.adapters.db_adapter import update
 from app.models.assetmodel import AssetModel
 from app.resources.assets.asset_docs import asset_put_doc, asset_delete_doc, asset_patch_tenants_doc
 from app.utils.auth_decorators import token_required
-from app.utils.manipulator import get_user_by_filters
 
 
 class Asset(Resource):
@@ -41,26 +40,21 @@ class Asset(Resource):
         except Exception as e:
             return make_response("Internal Server Error: {}".format(e.__str__()), 500)
 
-    @token_required()
+    @token_required(return_user=True)
     @swagger.doc(asset_patch_tenants_doc)
-    def patch(self, asset_id):
+    def patch(self, token_user_id, asset_id):
         try:
-            return make_response("will be available soon", 200)
-            # asset = AssetModel.objects.get(id=ObjectId(asset_id))
-            # # if token_user_id != asset.owner_id:
-            # #     return make_response("Insufficient Permissions", 403)
-            #
-            # # Todo: pending request for user?
-            # # Todo: pending approval for owner?
-            # # Todo: check if user(s) exist
-            # users_list = list()
-            # user_id_list = list()
-            # data = json.loads(request.data)
-            # for email in data['email_list']:
-            #     users_list.append(get_user_by_filters(dict(email=email)))
-            #     user_id_list.append(get_user_by_filters(dict(email=email))['id'])
-            # asset.tenant_list += user_id_list  # Todo: pending list?
-
+            asset = AssetModel.objects.get(id=ObjectId(asset_id))
+            if token_user_id != asset.owner_id:
+                return make_response("Insufficient Permissions", 403)
+            data = json.loads(request.data)
+            for user_id in data['user_invite']:
+                if user_id in asset.pending_tenants:
+                    continue
+                asset.pending_tenants += user_id
+            update(asset)
+            return jsonify(users=data['user_invite'],
+                           asset=asset_id)
         except InvalidId:
             return make_response("Invalid payment ID", 400)
         except JSONDecodeError as e:

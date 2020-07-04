@@ -66,3 +66,23 @@ user_put_doc = {
         '500': {'description': 'Internal server error'}
     }
 }
+
+user_get_invites_doc = {
+    'tags': [USERS_SECTION],
+    'description': 'get user invites to assets',
+    'parameters': [
+        {
+            'name': 'user_id',
+            'in': 'path',
+            'schema': {'type': 'string'},
+            'required': False,
+            'allowReserved': True
+        }
+    ],
+    'responses': {
+        '200': {'description': 'Object fetched successfully'},
+        '400': {'description': 'Missing or invalid parameters in request'},
+        '404': {'description': 'Object not found'},
+        '500': {'description': 'Internal server error'}
+    }
+}

@@ -18,7 +18,6 @@ class Assets(Resource):
     def get(self, token_user_id):
         try:
             asset_list = list()
-            asset_user_list = list()
             filters = request.args
             if filters:
                 filter_dict = {k: v for k, v in filters.items()}
@@ -51,7 +50,8 @@ class Assets(Resource):
                                    address=data['address'],
                                    room_num=data['room_num'],
                                    rent_fee=data['rent_fee'],
-                                       tenant_list=[],
+                                   tenant_list=[],
+                                   pending_tenants=[],
                                    documents=[],
                                    group_payments=[],
                                    service_calls=[],

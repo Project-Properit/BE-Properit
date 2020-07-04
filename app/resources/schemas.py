@@ -53,6 +53,14 @@ class PatchAssetDocument(ValidatedSchema):
     }
 
 
+class PatchAssetPendingTenants(ValidatedSchema):
+    type = 'object'
+    properties = {
+        'user_invite': {'type': 'array',
+                        'items': {'type': 'string'}}
+    }
+
+
 class GroupPaymentsParameters(ValidatedSchema):
     type = 'object'
     properties = {
