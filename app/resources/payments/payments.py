@@ -27,9 +27,9 @@ class Payments(Resource):
                 if token_user_id not in [payment.pay_to, payment.pay_from]:
                     continue
                 payments_list.append(to_json(payment))
-            if not payments_list:
-                return make_response("No payment found by filters", 200)
-            return payments_list
+            # if not payments_list:
+            #     return make_response("No payment found by filters", 200)
+            return jsonify(payments_list)
         except DoesNotExist:
             return make_response("No payments available", 404)
         except Exception as e:

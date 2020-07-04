@@ -92,8 +92,8 @@ class GroupPayments(Resource):
             else:
                 for gp in GroupPaymentModel.objects():
                     gp_list.append(to_json(gp))
-            if not gp_list:
-                return make_response("No group payment found by filters", 200)
+            # if not gp_list:
+            #     return make_response("No group payment found by filters", 200)
 
             return jsonify(gp_list)
 
