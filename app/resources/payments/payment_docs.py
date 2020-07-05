@@ -74,7 +74,7 @@ payment_get_filters_doc = {
     }
 }
 
-payment_put_doc = {
+payment_patch_doc = {
     'tags': [PAYMENTS_SECTION],
     'description': 'pay method',
     'parameters': [

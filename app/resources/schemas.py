@@ -35,25 +35,22 @@ class AssetParameters(ValidatedSchema):
     }
 
 
-class AssetPatchTenantsParams(ValidatedSchema):
+class AssetTenantsInvites(ValidatedSchema):
     type = 'object'
     properties = {
-        'address': {'type': 'string'},
-        'room_num': {'type': 'number'},
-        'rent_fee': {'type': 'number'},
-        'comments': {'type': 'string'}
+        'asset_id': {'type': 'string'},
     }
 
 
-class PatchAssetDocument(ValidatedSchema):
+class AssetDocuments(ValidatedSchema):
     type = 'object'
     properties = {
-        'email_list': {'type': 'array',
-                       'items': {'type': 'string'}}
+        'doc_name': {'type': 'string',
+                     'format': 'binary'},
     }
 
 
-class PatchAssetPendingTenants(ValidatedSchema):
+class AssetPendingTenants(ValidatedSchema):
     type = 'object'
     properties = {
         'user_invite': {'type': 'array',

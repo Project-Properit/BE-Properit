@@ -1,5 +1,5 @@
 from app.consts import ASSETS_SECTION
-from app.resources.schemas import AssetParameters, PatchAssetPendingTenants
+from app.resources.schemas import AssetParameters, AssetPendingTenants
 
 asset_get_filters_doc = {
     'tags': [ASSETS_SECTION],
@@ -118,7 +118,7 @@ asset_patch_tenants_doc = {
     'requestBody': {
         'required': True,
         'content': {
-            'application/json': {'schema': PatchAssetPendingTenants}
+            'application/json': {'schema': AssetPendingTenants}
         }
     },
     'responses': {

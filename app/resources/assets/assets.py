@@ -24,7 +24,6 @@ class Assets(Resource):
                 asset_obj_list = AssetModel.objects(**filter_dict)
             else:
                 asset_obj_list = AssetModel.objects()
-
             for asset in asset_obj_list:
                 asset_user_list = list()
                 if token_user_id not in asset.tenant_list and token_user_id != asset.owner_id:

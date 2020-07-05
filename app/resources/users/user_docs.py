@@ -1,5 +1,5 @@
 from app.consts import USERS_SECTION
-from app.resources.schemas import UserParameters
+from app.resources.schemas import UserParameters, AssetTenantsInvites
 
 user_get_filters_doc = {
     'tags': [USERS_SECTION],
@@ -79,6 +79,35 @@ user_get_invites_doc = {
             'allowReserved': True
         }
     ],
+    'responses': {
+        '200': {'description': 'Object fetched successfully'},
+        '400': {'description': 'Missing or invalid parameters in request'},
+        '404': {'description': 'Object not found'},
+        '500': {'description': 'Internal server error'}
+    }
+}
+
+user_handle_invites_doc = {
+    'tags': [USERS_SECTION],
+    'description': 'handle user invites to assets',
+    'parameters': [
+        {
+            'name': 'user_id',
+            'in': 'path',
+            'schema': {'type': 'string'},
+            'required': False,
+            'allowReserved': True
+        }
+    ],
+    'requestBody': {
+        'required': True,
+        'content': {
+            'application/json': {
+                'schema': AssetTenantsInvites
+            }
+
+        }
+    },
     'responses': {
         '200': {'description': 'Object fetched successfully'},
         '400': {'description': 'Missing or invalid parameters in request'},

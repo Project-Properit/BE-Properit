@@ -6,6 +6,7 @@ from flask_swagger_ui import get_swaggerui_blueprint
 from app.adapters.db_adapter import mongo_connection
 from app.resources.assets.asset import Asset
 from app.resources.assets.assets import Assets
+from app.resources.assets.tenants import Tenants
 from app.resources.auth.login import Login
 from app.resources.auth.logout import Logout
 from app.resources.auth.register import Register
@@ -13,8 +14,10 @@ from app.resources.documents.doc import Doc
 from app.resources.documents.docs import Docs
 from app.resources.group_payments.group_payment import GroupPayment
 from app.resources.group_payments.group_payments import GroupPayments
+from app.resources.payments.pay import Pay
 from app.resources.payments.payment import Payment
 from app.resources.payments.payments import Payments
+from app.resources.users.invite import UserInvites
 from app.resources.users.user import User
 from app.resources.users.users import Users
 
@@ -46,9 +49,11 @@ api.add_resource(Logout, "/api/logout")
 
 api.add_resource(Users, "/api/users")
 api.add_resource(User, "/api/users/<string:user_id>")
+api.add_resource(UserInvites, "/api/users/<string:user_id>/invites")
 
 api.add_resource(Assets, "/api/assets")
 api.add_resource(Asset, "/api/assets/<string:asset_id>")
+api.add_resource(Tenants, "/api/assets/<string:asset_id>/tenants")
 
 api.add_resource(Docs, "/api/assets/<string:asset_id>/documents")
 api.add_resource(Doc, "/api/assets/<string:asset_id>/documents/<string:doc_id>")
@@ -58,6 +63,7 @@ api.add_resource(GroupPayment, "/api/assets/<string:asset_id>/group-payments/<st
 
 api.add_resource(Payments, "/api/payments")
 api.add_resource(Payment, "/api/payments/<string:payment_id>")
+api.add_resource(Pay, "/api/payments/<string:payment_id>/pay")
 
 # api.add_resource(ServiceCalls, "/api/assets/<string:asset_id>/service-calls")
 # api.add_resource(ServiceCall, "/api/assets/<string:asset_id>/service-calls/<string:service_call_id>")

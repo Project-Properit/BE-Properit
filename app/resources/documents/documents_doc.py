@@ -1,5 +1,5 @@
 from app.consts import DOCUMENTS_SECTION
-from app.resources.schemas import PatchAssetDocument
+from app.resources.schemas import AssetDocuments
 
 document_post_doc = {
     'tags': [DOCUMENTS_SECTION],
@@ -15,7 +15,7 @@ document_post_doc = {
     'requestBody': {
         'required': True,
         'content': {
-            'multipart/form-data:': {'schema': PatchAssetDocument}
+            'multipart/form-data:': {'schema': AssetDocuments}
         }
     },
     'responses': {
