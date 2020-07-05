@@ -46,5 +46,7 @@ def to_json(document):
     for k, v in task_json.items():
         if isinstance(v, (datetime, bson.objectid.ObjectId)):
             task_json[k] = str(v)
+        if k == 'password':
+            del task_json[k]
     task_json['id'] = task_json.pop('_id')
     return task_json
