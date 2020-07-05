@@ -23,8 +23,7 @@ class Users(Resource):
                 user_obj_list = UserModel.objects()
             for user in user_obj_list:
                 users_list.append(to_json(user))
-            # if not users_list:
-            #     return make_response("No users found by filters", 200)
+
             return jsonify(users_list)
         except InvalidId:
             return make_response("Invalid user ID", 400)

@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import Enum
 from urllib.parse import quote_plus
 
 import bson
@@ -10,6 +11,14 @@ mongo_connection = connect(
     host=f'mongodb://{DATABASE_USER}:{quote_plus(DATABASE_PASSWORD)}@{DATABASE_SERVER}:{DATABASE_PORT}/{DATABASE_AUTH}?retryWrites=true&w=majority')
 
 
+class ArchiveCollections(Enum):
+    assets = '_AssetsArchive'
+    group_payments = '_GroupPaymentsArchive'
+    payments = '_PaymentsArchive'
+    service_calls = '_ServiceCallsArchive'
+    users = '_UsersArchive'
+
+
 def update(document):
     return document.save()
 
@@ -18,6 +27,14 @@ def insert(document):
     if not document.creation_date:
         document.creation_date = datetime.now().replace(microsecond=0)
     return document.save()
+
+
+def archive(document, collection):
+    source_collection = document._meta['collection']
+    document.switch_collection(collection.value, keep_created=False)
+    document.save()
+    document.switch_collection(source_collection, keep_created=False)
+    document.delete()
 
 
 def delete(document):

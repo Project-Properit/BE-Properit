@@ -67,7 +67,7 @@ user_put_doc = {
     }
 }
 
-user_get_invites_doc = {
+user_in_path_doc = {
     'tags': [USERS_SECTION],
     'description': 'get user invites to assets',
     'parameters': [

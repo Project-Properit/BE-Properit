@@ -4,11 +4,11 @@ from flask import make_response, jsonify
 from flask_restful_swagger_3 import Resource, swagger
 from mongoengine import DoesNotExist
 
-from app.adapters.db_adapter import delete, update
+from app.adapters.db_adapter import update
 from app.models.assetmodel import AssetModel
 from app.models.grouppaymentmodel import GroupPaymentModel
-from app.models.paymentmodel import PaymentModel
 from app.resources.group_payments.group_payment_docs import group_payments_delete_docs
+from app.utils.archive_manager import archive_group_payment
 from app.utils.auth_decorators import token_required
 
 
@@ -23,17 +23,13 @@ class GroupPayment(Resource):
         except DoesNotExist as e:
             return make_response('Asset not found', 404)
         try:
-            group_payment = GroupPaymentModel.objects.get(id=ObjectId(group_payments_id))
-            if token_user_id != group_payment.owner:
+            group_payment_obj = GroupPaymentModel.objects.get(id=ObjectId(group_payments_id))
+            if token_user_id != group_payment_obj.owner:
                 return make_response("Insufficient Permissions", 403)
-            # Delete all its payments #
-            for payment_id in group_payment.payments:
-                payment = PaymentModel.objects.get(id=ObjectId(payment_id))
-                delete(payment)
-            delete(group_payment)
+            archive_group_payment(group_payment_obj)
             asset.group_payments.remove(group_payments_id)
             update(asset)
-            return jsonify(group_payment_id=str(group_payments_id))
+            return jsonify(archived_group_payment_id=str(group_payments_id))
         except InvalidId:
             return make_response("Invalid group payment ID", 400)
         except DoesNotExist as e:

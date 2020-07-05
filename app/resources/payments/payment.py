@@ -4,7 +4,7 @@ from flask import jsonify, make_response
 from flask_restful_swagger_3 import Resource, swagger
 from mongoengine import DoesNotExist
 
-from app.adapters.db_adapter import delete
+from app.adapters.db_adapter import archive, ArchiveCollections
 from app.models.paymentmodel import PaymentModel
 from app.resources.payments.payment_docs import payment_delete_doc
 from app.utils.auth_decorators import token_required
@@ -18,8 +18,8 @@ class Payment(Resource):
             payment = PaymentModel.objects.get(id=ObjectId(payment_id))
             if token_user_id != payment.pay_to:
                 return make_response("Insufficient Permissions", 403)
-            delete(payment)
-            return jsonify({"deleted payment_id": str(payment_id)})
+            archive(payment, ArchiveCollections.payments)
+            return jsonify(archived_payment_id=str(payment_id))
         except InvalidId:
             return make_response("Invalid payment ID", 400)
         except DoesNotExist:

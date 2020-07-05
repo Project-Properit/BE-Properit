@@ -31,7 +31,7 @@ class Doc(Resource):
             dbx_adapter.delete_file(doc['dbx_path'])
             asset.documents.remove(doc)
             update(asset)
-            return jsonify(document_id=doc_id)
+            return jsonify(deleted_document_id=doc_id)
         except InvalidId:
             return make_response("Invalid asset ID", 400)
         except DoesNotExist:

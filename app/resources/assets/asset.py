@@ -7,10 +7,10 @@ from flask import request, jsonify, make_response
 from flask_restful_swagger_3 import Resource, swagger
 from mongoengine import DoesNotExist, ValidationError
 
-from app.adapters.db_adapter import delete
 from app.adapters.db_adapter import update
 from app.models.assetmodel import AssetModel
 from app.resources.assets.asset_docs import asset_put_doc, asset_delete_doc
+from app.utils.archive_manager import archive_asset
 from app.utils.auth_decorators import token_required
 
 
@@ -44,11 +44,12 @@ class Asset(Resource):
     @swagger.doc(asset_delete_doc)
     def delete(self, token_user_id, asset_id):
         try:
-            asset = AssetModel.objects.get(id=ObjectId(asset_id))
-            if token_user_id != asset.owner_id:
+            asset_obj = AssetModel.objects.get(id=ObjectId(asset_id))
+            if token_user_id != asset_obj.owner_id:
                 return make_response("Insufficient Permissions", 403)
-            delete(asset)
-            return jsonify(asset_id=str(asset_id))
+            archive_asset(asset_obj)
+
+            return jsonify(archived_asset_id=str(asset_id))
         except InvalidId:
             return make_response("Invalid asset ID", 400)
         except DoesNotExist:

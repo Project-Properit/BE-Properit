@@ -8,13 +8,13 @@ from flask_restful_swagger_3 import Resource, swagger
 from mongoengine import DoesNotExist
 
 from app.models.assetmodel import AssetModel
-from app.resources.users.user_docs import user_get_invites_doc, user_handle_invites_doc
+from app.resources.users.user_docs import user_in_path_doc, user_handle_invites_doc
 from app.utils.auth_decorators import token_required
 from app.utils.manipulator import get_user_by_filters
 
 
 class UserInvites(Resource):
-    @swagger.doc(user_get_invites_doc)
+    @swagger.doc(user_in_path_doc)
     @token_required(return_user=True)
     def get(self, token_user_id, user_id):
         try:
