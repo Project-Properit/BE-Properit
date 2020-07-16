@@ -63,7 +63,7 @@ class GroupPayments(Resource):
                     return make_response("use only one filter", 400)
                 filter_key, filter_value = next(iter(filters.items()))
 
-                #
+                # stupid hack
                 if filter_key == 'id':
                     gp_obj = GroupPaymentModel.objects.get(id=filter_value)
                     return jsonify(to_json(gp_obj))
