@@ -54,8 +54,7 @@
 #     #         else:
 #     #             for sc in ServiceCallModel.objects():
 #     #                 json_service_call_list.append(to_json(sc))
-#     #         if not json_service_call_list:
-#     #             return make_response("No assets found by filters", 200)
+
 #     #         return json_service_call_list
 #     #     except DoesNotExist:
 #     #         return make_response("No assets available", 404)

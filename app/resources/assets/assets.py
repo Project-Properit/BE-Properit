@@ -18,14 +18,12 @@ class Assets(Resource):
     def get(self, token_user_id):
         try:
             asset_list = list()
-            asset_user_list = list()
             filters = request.args
             if filters:
                 filter_dict = {k: v for k, v in filters.items()}
                 asset_obj_list = AssetModel.objects(**filter_dict)
             else:
                 asset_obj_list = AssetModel.objects()
-
             for asset in asset_obj_list:
                 asset_user_list = list()
                 if token_user_id not in asset.tenant_list and token_user_id != asset.owner_id:
@@ -34,8 +32,6 @@ class Assets(Resource):
                     asset_user_list.append(get_user_by_filters(dict(id=tenant_id)))
                 asset.tenant_list = asset_user_list
                 asset_list.append(to_json(asset))
-            if not asset_list:
-                return make_response("No assets available for user / filters", 200)
             return jsonify(asset_list)
         except DoesNotExist:
             return make_response("No assets available", 404)

@@ -9,26 +9,28 @@ from mongoengine import DoesNotExist, ValidationError
 
 from app.adapters.db_adapter import update
 from app.models.assetmodel import AssetModel
-from app.resources.assets.asset_docs import asset_put_doc, asset_delete_doc
-from app.utils.archive_manager import archive_asset
+from app.resources.assets.asset_docs import asset_patch_tenants_doc
 from app.utils.auth_decorators import token_required
 
 
-class Asset(Resource):
+class Tenants(Resource):
     @token_required(return_user=True)
-    @swagger.doc(asset_put_doc)
-    def put(self, token_user_id, asset_id):
+    @swagger.doc(asset_patch_tenants_doc)
+    def patch(self, token_user_id, asset_id):
         try:
             asset = AssetModel.objects.get(id=ObjectId(asset_id))
             if token_user_id != asset.owner_id:
                 return make_response("Insufficient Permissions", 403)
             data = json.loads(request.data)
-            for value, key in data.items():
-                asset[value] = key
+            for user_id in data['user_invite']:
+                if user_id in asset.pending_tenants:
+                    continue
+                asset.pending_tenants += user_id
             update(asset)
-            return jsonify(asset_id=str(asset_id))
+            return jsonify(users=data['user_invite'],
+                           asset=asset_id)
         except InvalidId:
-            return make_response("Invalid asset ID", 400)
+            return make_response("Invalid payment ID", 400)
         except JSONDecodeError as e:
             return make_response("Invalid JSON: {}".format(e.__str__()), 400)
         except KeyError as e:
@@ -36,23 +38,6 @@ class Asset(Resource):
         except ValidationError as e:
             return make_response("Invalid json parameters: {}".format(e.__str__()), 400)
         except DoesNotExist:
-            return make_response("Asset not found", 404)
-        except Exception as e:
-            return make_response("Internal Server Error: {}".format(e.__str__()), 500)
-
-    @token_required(return_user=True)
-    @swagger.doc(asset_delete_doc)
-    def delete(self, token_user_id, asset_id):
-        try:
-            asset_obj = AssetModel.objects.get(id=ObjectId(asset_id))
-            if token_user_id != asset_obj.owner_id:
-                return make_response("Insufficient Permissions", 403)
-            archive_asset(asset_obj)
-
-            return jsonify(archived_asset_id=str(asset_id))
-        except InvalidId:
-            return make_response("Invalid asset ID", 400)
-        except DoesNotExist:
-            return make_response("Asset not found", 404)
+            return make_response("Payment not found", 404)
         except Exception as e:
             return make_response("Internal Server Error: {}".format(e.__str__()), 500)
