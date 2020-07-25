@@ -50,7 +50,7 @@ def check_user_in_participants(participants, user_id):
 
 def sort_group_payments(gp_list: List, filter_by, filter_value):
     if filter_by == 'pay_from':
-        for gp in gp_list:
+        for gp in list(gp_list):
             if 'my_payment' not in gp:
                 gp_list.remove(gp)
         gp_list.sort(key=lambda k: (k['my_payment']['is_open'], k['creation_date']), reverse=True)
