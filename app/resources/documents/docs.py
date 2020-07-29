@@ -40,7 +40,8 @@ class Docs(Resource):
                                         'dbx_path': dbx_filepath,
                                         'creation_date': datetime.now().replace(microsecond=0)})
                 #                           'users': data['users']})  # Todo: user permissions
-                uploaded_docs.append(dict(doc_url=url,
+                uploaded_docs.append(dict(url=url,
+                                          doc_name=key,
                                           doc_id=new_uuid))
             update(asset)
             return jsonify(uploaded_docs)
