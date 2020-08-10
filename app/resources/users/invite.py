@@ -7,6 +7,7 @@ from flask import jsonify, make_response, request
 from flask_restful_swagger_3 import Resource, swagger
 from mongoengine import DoesNotExist
 
+from app.adapters.db_adapter import update
 from app.models.assetmodel import AssetModel
 from app.resources.users.user_docs import user_in_path_doc, user_handle_invites_doc
 from app.utils.auth_decorators import token_required
@@ -16,7 +17,7 @@ from app.utils.manipulator import get_user_by_filters
 class UserInvites(Resource):
     @swagger.doc(user_in_path_doc)
     @token_required(return_user=True)
-    def get(self, token_user_id, user_id):
+    def get(self, token_user_id, user_id):  # Get all user invites to assets
         try:
             if token_user_id != user_id:
                 return make_response("Insufficient Permissions", 403)
@@ -26,7 +27,7 @@ class UserInvites(Resource):
                 if user_id in asset.pending_tenants:
                     user_pending_invites.append(dict(asset_id=str(asset.id),
                                                      asset_address=asset.address,
-                                                     asset_owner=get_user_by_filters(dict(id=asset.owner))))
+                                                     asset_owner=get_user_by_filters(dict(id=asset.owner_id))))
             return jsonify(user_pending_invites)
         except InvalidId:
             return make_response("Invalid user ID", 400)
@@ -41,24 +42,25 @@ class UserInvites(Resource):
 
     @swagger.doc(user_handle_invites_doc)
     @token_required(return_user=True)
-    def patch(self, token_user_id, user_id):
+    def patch(self, token_user_id, user_id):  # accept invite to specific asset
         try:
             data = json.loads(request.data)
             asset_id = data['asset_id']
             asset_obj = AssetModel.objects.get(id=ObjectId(asset_id))
-            if token_user_id != asset_obj.owner_id:
+            if token_user_id != user_id:
                 return make_response("Insufficient Permissions", 403)
             if user_id in asset_obj.pending_tenants:
                 asset_obj.pending_tenants.remove(user_id)
                 asset_obj.tenant_list.append(user_id)
             else:
                 return make_response("user not in pending invitations", 404)
-
+            update(asset_obj)
             # remove user invites from other assets
             assets_obj = AssetModel.objects()
             for asset in assets_obj:
                 if user_id in asset.pending_tenants:
                     asset.pending_tenants.remove(user_id)
+                    update(asset_obj)
 
             return jsonify(approved_asset=asset_id,
                            user_id=user_id)
@@ -75,18 +77,18 @@ class UserInvites(Resource):
 
     @swagger.doc(user_handle_invites_doc)
     @token_required(return_user=True)
-    def delete(self, token_user_id, user_id):
+    def delete(self, token_user_id, user_id):  # decline asset invite
         try:
             data = json.loads(request.data)
             asset_id = data['asset_id']
             asset_obj = AssetModel.objects.get(id=ObjectId(asset_id))
-            if token_user_id != asset_obj.owner_id:
+            if token_user_id != user_id:
                 return make_response("Insufficient Permissions", 403)
             if user_id in asset_obj.pending_tenants:
                 asset_obj.pending_tenants.remove(user_id)
             else:
                 return make_response("user not in pending invitations", 404)
-
+            update(asset_obj)
             return jsonify(declined_asset=asset_id,
                            user_id=user_id)
         except InvalidId:

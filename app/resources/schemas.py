@@ -41,6 +41,12 @@ class AssetTenantsInvites(ValidatedSchema):
         'asset_id': {'type': 'string'},
     }
 
+class UserTenantsInvites(ValidatedSchema):
+    type = 'object'
+    properties = {
+        'user_id': {'type': 'string'},
+    }
+
 
 class AssetDocuments(ValidatedSchema):
     type = 'object'
@@ -53,8 +59,9 @@ class AssetDocuments(ValidatedSchema):
 class AssetPendingTenants(ValidatedSchema):
     type = 'object'
     properties = {
-        'user_invite': {'type': 'array',
-                        'items': {'type': 'string'}}
+        # 'user_invite': {'type': 'array',
+        #                 'items': {'type': 'string'}}
+        'user_id': {'type': 'string'}
     }
 
 

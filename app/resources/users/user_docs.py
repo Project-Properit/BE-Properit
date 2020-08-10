@@ -1,4 +1,4 @@
-from app.consts import USERS_SECTION
+from app.consts import USERS_SECTION, INVITES_SECTION
 from app.resources.schemas import UserParameters, AssetTenantsInvites
 
 user_get_filters_doc = {

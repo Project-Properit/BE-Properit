@@ -1,5 +1,5 @@
-from app.consts import ASSETS_SECTION
-from app.resources.schemas import AssetParameters, AssetPendingTenants
+from app.consts import ASSETS_SECTION, INVITES_SECTION
+from app.resources.schemas import AssetParameters, AssetPendingTenants, UserTenantsInvites
 
 asset_get_filters_doc = {
     'tags': [ASSETS_SECTION],
@@ -142,6 +142,55 @@ asset_delete_doc = {
     ],
     'responses': {
         '200': {'description': 'Object deleted successfully'},
+        '400': {'description': 'Missing or invalid parameters in request'},
+        '404': {'description': 'Object not found'},
+        '500': {'description': 'Internal server error'}
+    }
+}
+
+asset_in_path_doc = {
+    'tags': [ASSETS_SECTION],
+    'description': "get asset's user invites",
+    'parameters': [
+        {
+            'name': 'asset_id',
+            'in': 'path',
+            'schema': {'type': 'string'},
+            'required': False,
+            'allowReserved': True
+        }
+    ],
+    'responses': {
+        '200': {'description': 'Object fetched successfully'},
+        '400': {'description': 'Missing or invalid parameters in request'},
+        '404': {'description': 'Object not found'},
+        '500': {'description': 'Internal server error'}
+    }
+}
+
+asset_handle_invites_doc = {
+    'tags': [ASSETS_SECTION],
+    'description': "handle asset's user invites",
+    'parameters': [
+        {
+            'name': 'asset_id',
+            'in': 'path',
+            'schema': {'type': 'string'},
+            'required': False,
+            'allowReserved': True
+        }
+    ],
+    'requestBody': {
+        'required': True,
+        'content': {
+            'application/json': {
+                'schema': UserTenantsInvites
+            }
+
+        }
+    },
+    'responses': {
+        '200': {'description': 'Object fetched successfully'},
         '400': {'description': 'Missing or invalid parameters in request'},
         '404': {'description': 'Object not found'},
         '500': {'description': 'Internal server error'}

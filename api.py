@@ -6,7 +6,7 @@ from flask_swagger_ui import get_swaggerui_blueprint
 from app.adapters.db_adapter import mongo_connection
 from app.resources.assets.asset import Asset
 from app.resources.assets.assets import Assets
-from app.resources.assets.tenants import Tenants
+from app.resources.assets.invites import AssetInvites
 from app.resources.auth.login import Login
 from app.resources.auth.logout import Logout
 from app.resources.auth.register import Register
@@ -53,7 +53,7 @@ api.add_resource(UserInvites, "/api/users/<string:user_id>/invites")
 
 api.add_resource(Assets, "/api/assets")
 api.add_resource(Asset, "/api/assets/<string:asset_id>")
-api.add_resource(Tenants, "/api/assets/<string:asset_id>/tenants")
+api.add_resource(AssetInvites, "/api/assets/<string:asset_id>/invites")
 
 api.add_resource(Docs, "/api/assets/<string:asset_id>/documents")
 api.add_resource(Doc, "/api/assets/<string:asset_id>/documents/<string:doc_id>")
