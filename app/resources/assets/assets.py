@@ -26,11 +26,15 @@ class Assets(Resource):
                 asset_obj_list = AssetModel.objects()
             for asset in asset_obj_list:
                 asset_user_list = list()
+                asset_pending_list = list()
                 if token_user_id not in asset.tenant_list and token_user_id != asset.owner_id:
                     continue
                 for tenant_id in asset.tenant_list:
                     asset_user_list.append(get_user_by_filters(dict(id=tenant_id)))
+                for tenant_id in asset.pending_tenants:
+                    asset_pending_list.append(get_user_by_filters(dict(id=tenant_id)))
                 asset.tenant_list = asset_user_list
+                asset.pending_tenants = asset_pending_list
                 asset_list.append(to_json(asset))
             return jsonify(asset_list)
         except DoesNotExist:

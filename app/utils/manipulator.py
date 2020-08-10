@@ -9,7 +9,9 @@ def get_user_by_filters(filter_dict):
     user = UserModel.objects.get(**filter_dict)
     return {'id': str(user.id),
             'first_name': user.first_name,
-            'last_name': user.last_name}
+            'last_name': user.last_name,
+            'email': user.email,
+            'phone': user.phone}
 
 
 def build_participants_obj(payment_obj):

@@ -43,11 +43,11 @@ class UserInvites(Resource):
     @token_required(return_user=True)
     def patch(self, token_user_id, user_id):
         try:
-            if token_user_id != user_id:
-                return make_response("Insufficient Permissions", 403)
             data = json.loads(request.data)
             asset_id = data['asset_id']
             asset_obj = AssetModel.objects.get(id=ObjectId(asset_id))
+            if token_user_id != asset_obj.owner_id:
+                return make_response("Insufficient Permissions", 403)
             if user_id in asset_obj.pending_tenants:
                 asset_obj.pending_tenants.remove(user_id)
                 asset_obj.tenant_list.append(user_id)
@@ -77,11 +77,11 @@ class UserInvites(Resource):
     @token_required(return_user=True)
     def delete(self, token_user_id, user_id):
         try:
-            if token_user_id != user_id:
-                return make_response("Insufficient Permissions", 403)
             data = json.loads(request.data)
             asset_id = data['asset_id']
             asset_obj = AssetModel.objects.get(id=ObjectId(asset_id))
+            if token_user_id != asset_obj.owner_id:
+                return make_response("Insufficient Permissions", 403)
             if user_id in asset_obj.pending_tenants:
                 asset_obj.pending_tenants.remove(user_id)
             else:

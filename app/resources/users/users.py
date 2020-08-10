@@ -18,6 +18,15 @@ class Users(Resource):
             filters = request.args
             if filters:
                 filter_dict = {k: v for k, v in filters.items()}
+
+                ##
+                for k, v in filter_dict.items():
+                    if v == "False":
+                        filter_dict[k] = False
+                    elif v == "True":
+                        filter_dict[k] = True
+                ##
+
                 user_obj_list = UserModel.objects(**filter_dict)
             else:
                 user_obj_list = UserModel.objects()
