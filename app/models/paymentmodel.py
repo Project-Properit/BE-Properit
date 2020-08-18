@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, DateTimeField, FloatField, BooleanField
+from mongoengine import Document, StringField, DateTimeField, FloatField, BooleanField, IntField
 
 
 class PaymentModel(Document):
@@ -8,5 +8,6 @@ class PaymentModel(Document):
     is_open = BooleanField(default=True)
     method = StringField(default=None)
     when_payed = DateTimeField(default=None)
+    deadline = IntField(default=0)
     creation_date = DateTimeField()
     meta = {'collection': 'Payments'}

@@ -30,22 +30,29 @@ class GroupPayments(Resource):
             if token_user_id not in asset.tenant_list and token_user_id != asset.owner_id:
                 return make_response("Insufficient Permissions", 403)
             data = json.loads(request.data)
-            new_group_payment = GroupPaymentModel(owner=token_user_id,
-                                                  title=data['title'],
-                                                  description=data['description'],
-                                                  is_public=data['is_public'],
-                                                  amount=data['amount'],
-                                                  payments=[])
-            # create new payments
-            for payment in data['payments']:
-                new_payment = PaymentModel(**payment)
-                payment_obj = insert(new_payment)
-                new_group_payment.payments.append(str(payment_obj.id))
 
-            group_payment_obj = insert(new_group_payment)
-            asset.group_payments.append(str(group_payment_obj.id))
-            update(asset)
-            return jsonify(group_payment_id=str(group_payment_obj.id))
+            ###
+            if data['is_periodic']:
+                pass
+
+            else:  # regular gp
+
+                new_group_payment = GroupPaymentModel(owner=token_user_id,
+                                                      title=data['title'],
+                                                      description=data['description'],
+                                                      is_public=data['is_public'],
+                                                      amount=data['amount'],
+                                                      payments=[])
+                # create new payments
+                for payment in data['payments']:
+                    new_payment = PaymentModel(**payment)
+                    payment_obj = insert(new_payment)
+                    new_group_payment.payments.append(str(payment_obj.id))
+
+                group_payment_obj = insert(new_group_payment)
+                asset.group_payments.append(str(group_payment_obj.id))
+                update(asset)
+                return jsonify(group_payment_id=str(group_payment_obj.id))
         except Exception as e:
             return make_response("Internal Server Error: {}".format(e.__str__()), 500)
 
