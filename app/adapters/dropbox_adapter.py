@@ -14,11 +14,13 @@ class DropBoxAdapter:
         if self.check_file_existence(dbx_filepath):  # check if uploading file already exist
             # Update existing file
             self.dbx.files_upload(doc.read(), dbx_filepath, mode=WriteMode.overwrite)
-            return self.dbx.sharing_list_shared_links(dbx_filepath).links[0].url.replace('?dl=0', '?raw=1')
+            return self.dbx.sharing_list_shared_links(
+                dbx_filepath).links[0].url.replace('?dl=0', '?raw=1'), self.dbx.files_get_temporary_link(dbx_filepath)
         else:
             # Upload new file
             self.dbx.files_upload(doc.read(), dbx_filepath)
-            return self.dbx.sharing_create_shared_link_with_settings(dbx_filepath).url.replace('?dl=0', '?raw=1')
+            return self.dbx.sharing_create_shared_link_with_settings(
+                dbx_filepath).url.replace('?dl=0', '?raw=1'), self.dbx.files_get_temporary_link(dbx_filepath)
 
     def delete_file(self, dbx_filepath):
         if self.check_file_existence(dbx_filepath):

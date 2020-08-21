@@ -33,14 +33,16 @@ class Docs(Resource):
                 new_uuid = uuid.uuid1().hex
                 dbx_filename = secure_filename(doc.filename)  # .rsplit(".", 1)[#]
                 dbx_filepath = '/{}/{}'.format(asset_id, dbx_filename)  # dbx_filename can be changed to 'key'
-                url = dbx_adapter.upload_file(doc, dbx_filepath)  # Todo: Check file existence?
+                url, preview_url = dbx_adapter.upload_file(doc, dbx_filepath)
                 asset.documents.append({'doc_id': new_uuid,
                                         'doc_name': key,
                                         'url': url,
+                                        'preview_url': preview_url,
                                         'dbx_path': dbx_filepath,
                                         'creation_date': datetime.now().replace(microsecond=0)})
                 #                           'users': data['users']})  # Todo: user permissions
                 uploaded_docs.append(dict(url=url,
+                                          preview_url=preview_url,
                                           doc_name=key,
                                           doc_id=new_uuid))
             update(asset)

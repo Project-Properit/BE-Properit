@@ -10,7 +10,6 @@ class AssetModel(Document):
     pending_tenants = ListField(default=[])
     documents = ListField(default=[])
     group_payments = ListField(default=[])
-    # periodic_payments = ListField(default=[])
     service_calls = ListField(default=[])
     comments = StringField()
     creation_date = DateTimeField()

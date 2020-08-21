@@ -7,7 +7,7 @@ class GroupPaymentModel(Document):
     description = StringField(required=True)
     amount = FloatField(required=True)
     payments = ListField()
-    is_public = BooleanField()
+    is_public = BooleanField(default=False)
     is_periodic = BooleanField(default=False)
     creation_date = DateTimeField()
     meta = {'collection': 'GroupPayments'}

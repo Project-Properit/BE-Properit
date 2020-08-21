@@ -31,46 +31,37 @@ class GroupPayments(Resource):
                 return make_response("Insufficient Permissions", 403)
             data = json.loads(request.data)
 
-            if data['is_periodic']:
-                pass
-            #     new_periodic_payment = PeriodicPaymentModel(owner=token_user_id,
-            #                                                 title=data['title'],
-            #                                                 description=data['description'],
-            #                                                 amount=data['amount'],
-            #                                                 payments=[],
-            #                                                 is_approved=False)
-            #     # create new payments
-            #     for payment in data['payments']:
-            #         new_payment = PaymentModel(**payment)
-            #         payment_obj = insert(new_payment)
-            #         new_periodic_payment.payments.append(str(payment_obj.id))
-            #
-            #     periodic_payment_obj = insert(new_periodic_payment)
-            #     asset.periodic_payments.append(str(periodic_payment_obj.id))
-            #     update(asset)
-            #     return jsonify(periodic_payment_id=str(periodic_payment_obj.id))
-
-            elif not data['is_periodic']:
-                new_group_payment = GroupPaymentModel(owner=token_user_id,
-                                                      title=data['title'],
-                                                      description=data['description'],
-                                                      is_public=data['is_public'],
-                                                      is_periodic=data['is_periodic'],
-                                                      amount=data['amount'],
-                                                      payments=[])
+            new_group_payment = GroupPaymentModel(owner=token_user_id,
+                                                  title=data['title'],
+                                                  description=data['description'],
+                                                  is_public=data['is_public'],
+                                                  is_periodic=data['is_periodic'],
+                                                  amount=data['amount'],
+                                                  payments=[])
+            if not data['is_periodic']:
                 # create new payments
                 for payment in data['payments']:
                     new_payment = PaymentModel(**payment)
                     payment_obj = insert(new_payment)
                     new_group_payment.payments.append(str(payment_obj.id))
 
-                group_payment_obj = insert(new_group_payment)
-                asset.group_payments.append(str(group_payment_obj.id))
-                update(asset)
-                return jsonify(group_payment_id=str(group_payment_obj.id))
+            elif data['is_periodic']:
+                months = data['months']
+                num_of_months = months[1] - months[0] + 1
+                if num_of_months <= 0:
+                    return jsonify("months error", 404)
+                for month in range(months[0], months[1] + 1):
+                    for payment in data['payments']:
+                        new_payment = PaymentModel(**payment)
+                        new_payment.deadline = month
+                        payment_obj = insert(new_payment)
+                        new_group_payment.payments.append(str(payment_obj.id))
 
-            else:
-                return jsonify("define periodic or not", 404)
+            group_payment_obj = insert(new_group_payment)
+            asset.group_payments.append(str(group_payment_obj.id))
+            update(asset)
+            return jsonify(group_payment_id=str(group_payment_obj.id))
+
         except Exception as e:
             return make_response("Internal Server Error: {}".format(e.__str__()), 500)
 
@@ -90,7 +81,7 @@ class GroupPayments(Resource):
 
                 # stupid hack
                 if filter_key == 'id':
-                    #try:
+                    # try:
                     gp_obj = GroupPaymentModel.objects.get(id=filter_value)
                     return jsonify(to_json(gp_obj))
                     # except:

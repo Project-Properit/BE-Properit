@@ -41,6 +41,7 @@ class AssetTenantsInvites(ValidatedSchema):
         'asset_id': {'type': 'string'},
     }
 
+
 class UserTenantsInvites(ValidatedSchema):
     type = 'object'
     properties = {
@@ -75,7 +76,9 @@ class GroupPaymentsParameters(ValidatedSchema):
         'payments': {'type': 'array',
                      'items': {'type': 'object',
                                'additionalProperties': True}},
-        'is_periodic': {'type': 'boolean'}
+        'is_periodic': {'type': 'boolean'},
+        'months': {'type': 'array',
+                   'items': {'type': 'number'}}
     }
 
 
