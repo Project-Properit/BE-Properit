@@ -56,6 +56,8 @@ class GroupPayments(Resource):
                         new_payment.deadline = month
                         payment_obj = insert(new_payment)
                         new_group_payment.payments.append(str(payment_obj.id))
+            else:
+                return jsonify("define periodic or not", 404)
 
             group_payment_obj = insert(new_group_payment)
             asset.group_payments.append(str(group_payment_obj.id))
@@ -81,13 +83,8 @@ class GroupPayments(Resource):
 
                 # stupid hack
                 if filter_key == 'id':
-                    # try:
                     gp_obj = GroupPaymentModel.objects.get(id=filter_value)
                     return jsonify(to_json(gp_obj))
-                    # except:
-                    #     pp_obj = PeriodicPaymentModel.objects.get(id=filter_value)
-                    #     return jsonify(to_json(pp_obj))
-
                 #
 
                 asset_gp_list = asset_obj['group_payments']
@@ -108,28 +105,6 @@ class GroupPayments(Resource):
 
                     new_gp_obj = build_gp_object(gp_obj, participants, my_payment)
                     gp_list.append(new_gp_obj)
-
-                ###
-                # asset_pp_list = asset_obj['periodic_payments']
-                # for pp_id in asset_pp_list:
-                #     my_payment = None
-                #     participants = list()
-                #     pp_obj = PeriodicPaymentModel.objects.get(id=ObjectId(pp_id))
-                #     pp_payment_list = pp_obj.payments
-                #     for payment_id in pp_payment_list:
-                #         payment_obj = PaymentModel.objects.get(id=ObjectId(payment_id))
-                #         participants.append(build_participants_obj(payment_obj))
-                #
-                #     if check_user_in_participants(participants, filter_value):  # == pay_from filter used
-                #         my_payment = get_user_payment(participants, filter_value)
-                #         # if not pp_obj.is_public:
-                #         #     participants.clear()
-                #     sort_participants(participants, filter_value)
-                #
-                #     new_pp_obj = build_gp_object(pp_obj, participants, my_payment)
-                #     gp_list.append(new_pp_obj)
-                # ###
-
                 sort_group_payments(gp_list, filter_key, filter_value)
             else:
                 for gp in GroupPaymentModel.objects():

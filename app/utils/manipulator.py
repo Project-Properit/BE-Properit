@@ -1,8 +1,12 @@
 from typing import List
 
+from bson import ObjectId
+
 from app.adapters.db_adapter import to_json
 from app.models.assetmodel import AssetModel
+from app.models.paymentmodel import PaymentModel
 from app.models.usermodel import UserModel
+from operator import attrgetter
 
 
 def get_user_by_filters(filter_dict):
@@ -19,6 +23,7 @@ def build_participants_obj(payment_obj):
     participant['amount'] = payment_obj.amount
     participant['is_open'] = payment_obj.is_open
     participant['payment_id'] = str(payment_obj.id)
+    participant['deadline'] = payment_obj.deadline
     if not payment_obj.is_open:
         participant['when_payed'] = str(payment_obj.when_payed)
     return participant
@@ -30,6 +35,18 @@ def build_gp_object(gp_obj, participants, my_payment):
     if my_payment:
         gp['my_payment'] = my_payment
     gp['owner'] = get_user_by_filters(dict(id=gp_obj.owner))
+    gp['is_periodic'] = gp_obj.is_periodic
+
+    if gp_obj.is_periodic:
+        payment_obj_list = list()
+        for payment_id in gp_obj.payments:
+            payment_obj = PaymentModel.objects.get(id=ObjectId(payment_id))
+            payment_obj_list.append(payment_obj)
+        min_deadline = min(payment_obj_list, key=attrgetter('deadline'))
+        if not my_payment:
+            # if not str(min_deadline.id) == my_payment['payment_id']:
+            gp['participants'].clear()
+            gp['participants'].append(build_participants_obj(min_deadline))
     return gp
 
 
