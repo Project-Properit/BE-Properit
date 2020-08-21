@@ -74,7 +74,8 @@ class GroupPaymentsParameters(ValidatedSchema):
         'amount': {'type': 'number'},
         'payments': {'type': 'array',
                      'items': {'type': 'object',
-                               'additionalProperties': True}}
+                               'additionalProperties': True}},
+        'is_periodic': {'type': 'boolean'}
     }
 
 

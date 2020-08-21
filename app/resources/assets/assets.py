@@ -51,11 +51,12 @@ class Assets(Resource):
                                    address=data['address'],
                                    room_num=data['room_num'],
                                    rent_fee=data['rent_fee'],
-                                   tenant_list=[],
-                                   pending_tenants=[],
-                                   documents=[],
-                                   group_payments=[],
-                                   service_calls=[],
+                                   # tenant_list=[],
+                                   # pending_tenants=[],
+                                   # documents=[],
+                                   # group_payments=[],
+                                   # periodic_payments=[],
+                                   # service_calls=[],
                                    comments=data['comments'])
             insert(new_asset)
             return jsonify(asset_id=str(new_asset.id))

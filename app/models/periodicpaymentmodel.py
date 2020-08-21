@@ -7,6 +7,6 @@ class PeriodicPaymentModel(Document):
     description = StringField(required=True)
     amount = FloatField(required=True)
     payments = ListField()
-    is_approved = BooleanField()
+    is_approved = BooleanField(default=False)
     creation_date = DateTimeField()
-    meta = {'collection': 'GroupPayments'}
+    meta = {'collection': 'PeriodicPayments'}
