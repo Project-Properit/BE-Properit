@@ -92,6 +92,13 @@ class PaymentParameters(ValidatedSchema):
     }
 
 
+class PayParameters(ValidatedSchema):
+    type = 'object'
+    properties = {
+        'is_periodic': {'type': 'boolean'}
+    }
+
+
 class ServiceCallParameters(ValidatedSchema):
     type = 'object'
     properties = {

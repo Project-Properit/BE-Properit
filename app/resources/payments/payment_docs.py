@@ -1,5 +1,5 @@
 from app.consts import PAYMENTS_SECTION
-from app.resources.schemas import PaymentParameters
+from app.resources.schemas import PaymentParameters, PayParameters
 
 payment_post_doc = {
     'tags': [PAYMENTS_SECTION],
@@ -85,6 +85,12 @@ payment_patch_doc = {
             'schema': {'type': 'string'}
         }
     ],
+    'requestBody': {
+        'required': False,
+        'content': {
+            'application/json': {'schema': PayParameters}
+        }
+    },
     'responses': {
         '200': {'description': 'Payment payed successfully'},
         '400': {'description': 'Missing or invalid parameters in request'},
