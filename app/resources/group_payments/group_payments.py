@@ -10,7 +10,6 @@ from app.adapters.db_adapter import insert, update, to_json
 from app.models.assetmodel import AssetModel
 from app.models.grouppaymentmodel import GroupPaymentModel
 from app.models.paymentmodel import PaymentModel
-from app.models.periodicpaymentmodel import PeriodicPaymentModel
 from app.resources.group_payments.group_payment_docs import group_payments_post_docs, group_payments_filter_get_docs
 from app.utils.auth_decorators import token_required
 from app.utils.manipulator import build_participants_obj, sort_group_payments, \
@@ -33,22 +32,23 @@ class GroupPayments(Resource):
             data = json.loads(request.data)
 
             if data['is_periodic']:
-                new_periodic_payment = PeriodicPaymentModel(owner=token_user_id,
-                                                            title=data['title'],
-                                                            description=data['description'],
-                                                            amount=data['amount'],
-                                                            payments=[],
-                                                            is_approved=False)
-                # create new payments
-                for payment in data['payments']:
-                    new_payment = PaymentModel(**payment)
-                    payment_obj = insert(new_payment)
-                    new_periodic_payment.payments.append(str(payment_obj.id))
-
-                periodic_payment_obj = insert(new_periodic_payment)
-                asset.periodic_payments.append(str(periodic_payment_obj.id))
-                update(asset)
-                return jsonify(periodic_payment_id=str(periodic_payment_obj.id))
+                pass
+            #     new_periodic_payment = PeriodicPaymentModel(owner=token_user_id,
+            #                                                 title=data['title'],
+            #                                                 description=data['description'],
+            #                                                 amount=data['amount'],
+            #                                                 payments=[],
+            #                                                 is_approved=False)
+            #     # create new payments
+            #     for payment in data['payments']:
+            #         new_payment = PaymentModel(**payment)
+            #         payment_obj = insert(new_payment)
+            #         new_periodic_payment.payments.append(str(payment_obj.id))
+            #
+            #     periodic_payment_obj = insert(new_periodic_payment)
+            #     asset.periodic_payments.append(str(periodic_payment_obj.id))
+            #     update(asset)
+            #     return jsonify(periodic_payment_id=str(periodic_payment_obj.id))
 
             elif not data['is_periodic']:
                 new_group_payment = GroupPaymentModel(owner=token_user_id,
@@ -89,12 +89,12 @@ class GroupPayments(Resource):
 
                 # stupid hack
                 if filter_key == 'id':
-                    try:
-                        gp_obj = GroupPaymentModel.objects.get(id=filter_value)
-                        return jsonify(to_json(gp_obj))
-                    except:
-                        pp_obj = PeriodicPaymentModel.objects.get(id=filter_value)
-                        return jsonify(to_json(pp_obj))
+                    #try:
+                    gp_obj = GroupPaymentModel.objects.get(id=filter_value)
+                    return jsonify(to_json(gp_obj))
+                    # except:
+                    #     pp_obj = PeriodicPaymentModel.objects.get(id=filter_value)
+                    #     return jsonify(to_json(pp_obj))
 
                 #
 
@@ -118,25 +118,25 @@ class GroupPayments(Resource):
                     gp_list.append(new_gp_obj)
 
                 ###
-                asset_pp_list = asset_obj['periodic_payments']
-                for pp_id in asset_pp_list:
-                    my_payment = None
-                    participants = list()
-                    pp_obj = PeriodicPaymentModel.objects.get(id=ObjectId(pp_id))
-                    pp_payment_list = pp_obj.payments
-                    for payment_id in pp_payment_list:
-                        payment_obj = PaymentModel.objects.get(id=ObjectId(payment_id))
-                        participants.append(build_participants_obj(payment_obj))
-
-                    if check_user_in_participants(participants, filter_value):  # == pay_from filter used
-                        my_payment = get_user_payment(participants, filter_value)
-                        # if not pp_obj.is_public:
-                        #     participants.clear()
-                    sort_participants(participants, filter_value)
-
-                    new_pp_obj = build_gp_object(pp_obj, participants, my_payment)
-                    gp_list.append(new_pp_obj)
-                ###
+                # asset_pp_list = asset_obj['periodic_payments']
+                # for pp_id in asset_pp_list:
+                #     my_payment = None
+                #     participants = list()
+                #     pp_obj = PeriodicPaymentModel.objects.get(id=ObjectId(pp_id))
+                #     pp_payment_list = pp_obj.payments
+                #     for payment_id in pp_payment_list:
+                #         payment_obj = PaymentModel.objects.get(id=ObjectId(payment_id))
+                #         participants.append(build_participants_obj(payment_obj))
+                #
+                #     if check_user_in_participants(participants, filter_value):  # == pay_from filter used
+                #         my_payment = get_user_payment(participants, filter_value)
+                #         # if not pp_obj.is_public:
+                #         #     participants.clear()
+                #     sort_participants(participants, filter_value)
+                #
+                #     new_pp_obj = build_gp_object(pp_obj, participants, my_payment)
+                #     gp_list.append(new_pp_obj)
+                # ###
 
                 sort_group_payments(gp_list, filter_key, filter_value)
             else:
