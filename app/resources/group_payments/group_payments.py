@@ -55,6 +55,7 @@ class GroupPayments(Resource):
                                                       title=data['title'],
                                                       description=data['description'],
                                                       is_public=data['is_public'],
+                                                      is_periodic=data['is_periodic'],
                                                       amount=data['amount'],
                                                       payments=[])
                 # create new payments
