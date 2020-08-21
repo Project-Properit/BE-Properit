@@ -9,5 +9,7 @@ class GroupPaymentModel(Document):
     payments = ListField()
     is_public = BooleanField(default=False)
     is_periodic = BooleanField(default=False)
+    is_approved = BooleanField(default=False)
+    when_approved = DateTimeField(default=None)
     creation_date = DateTimeField()
     meta = {'collection': 'GroupPayments'}

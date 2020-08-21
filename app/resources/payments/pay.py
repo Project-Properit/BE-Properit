@@ -1,3 +1,4 @@
+import json
 import time
 from datetime import datetime
 from json.decoder import JSONDecodeError
@@ -9,9 +10,11 @@ from flask_restful_swagger_3 import Resource, swagger
 from mongoengine import DoesNotExist, ValidationError
 
 from app.adapters.db_adapter import update
+from app.models.grouppaymentmodel import GroupPaymentModel
 from app.models.paymentmodel import PaymentModel
 from app.resources.payments.payment_docs import payment_patch_doc
 from app.utils.auth_decorators import token_required
+from flask import request
 
 
 class Pay(Resource):
@@ -19,11 +22,18 @@ class Pay(Resource):
     @swagger.doc(payment_patch_doc)
     def patch(self, payment_id):
         try:
-            payment = PaymentModel.objects.get(id=ObjectId(payment_id))
-            time.sleep(4)  # pay #
-            payment.is_open = False
-            payment.when_payed = datetime.now().replace(microsecond=0)
-            update(payment)
+            data = json.loads(request.data)
+            if data['is_periodic']:
+                gp = GroupPaymentModel.objects.get(id=ObjectId(payment_id))
+                gp.is_approved = True
+                gp.when_approved = datetime.now().replace(microsecond=0)
+                update(gp)
+            else:
+                payment = PaymentModel.objects.get(id=ObjectId(payment_id))
+                time.sleep(4)  # pay #
+                payment.is_open = False
+                payment.when_payed = datetime.now().replace(microsecond=0)
+                update(payment)
             return jsonify({"payment_id": str(payment_id)})
         except InvalidId:
             return make_response("Invalid payment ID", 400)
