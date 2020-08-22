@@ -1,3 +1,4 @@
+from operator import attrgetter
 from typing import List
 
 from bson import ObjectId
@@ -6,7 +7,6 @@ from app.adapters.db_adapter import to_json
 from app.models.assetmodel import AssetModel
 from app.models.paymentmodel import PaymentModel
 from app.models.usermodel import UserModel
-from operator import attrgetter
 
 
 def get_user_by_filters(filter_dict):
@@ -29,6 +29,14 @@ def build_participants_obj(payment_obj):
     return participant
 
 
+def get_remain_payments(payment_obj_list):
+    counter = 0
+    for payment in payment_obj_list:
+        if payment.is_open:
+            counter += 1
+    return counter
+
+
 def build_gp_object(gp_obj, participants, my_payment):
     gp = to_json(gp_obj)
     gp['participants'] = participants.copy()
@@ -43,6 +51,7 @@ def build_gp_object(gp_obj, participants, my_payment):
             payment_obj = PaymentModel.objects.get(id=ObjectId(payment_id))
             payment_obj_list.append(payment_obj)
         min_deadline = min(payment_obj_list, key=attrgetter('deadline'))
+        gp['remain_payments'] = get_remain_payments(payment_obj_list)
         if not my_payment:
             # if not str(min_deadline.id) == my_payment['payment_id']:
             gp['participants'].clear()

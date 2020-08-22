@@ -16,7 +16,7 @@ from app.utils.auth_decorators import token_required
 class AssetInvites(Resource):
     @token_required(return_user=True)
     @swagger.doc(asset_patch_tenants_doc)
-    def patch(self, token_user_id, asset_id):
+    def patch(self, token_user_id, asset_id):  # invite user to asset
         try:
             asset = AssetModel.objects.get(id=ObjectId(asset_id))
             if token_user_id != asset.owner_id:
@@ -48,7 +48,7 @@ class AssetInvites(Resource):
 
     @swagger.doc(asset_handle_invites_doc)
     @token_required(return_user=True)
-    def delete(self, token_user_id, asset_id):  # send tenant invitation to user
+    def delete(self, token_user_id, asset_id):  # delete user invite to asset
         try:
             asset = AssetModel.objects.get(id=ObjectId(asset_id))
             if token_user_id != asset.owner_id:

@@ -17,7 +17,7 @@ from app.utils.manipulator import get_user_by_filters
 class UserInvites(Resource):
     @swagger.doc(user_in_path_doc)
     @token_required(return_user=True)
-    def get(self, token_user_id, user_id):  # Get all user invites to assets
+    def get(self, token_user_id, user_id):  # get all user's invites to assets
         try:
             if token_user_id != user_id:
                 return make_response("Insufficient Permissions", 403)
@@ -55,6 +55,7 @@ class UserInvites(Resource):
             else:
                 return make_response("user not in pending invitations", 404)
             update(asset_obj)
+
             # remove user invites from other assets
             assets_obj = AssetModel.objects()
             for asset in assets_obj:
