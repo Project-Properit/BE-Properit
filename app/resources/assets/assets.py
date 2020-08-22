@@ -9,7 +9,7 @@ from app.adapters.db_adapter import insert, to_json
 from app.models.assetmodel import AssetModel
 from app.resources.assets.asset_docs import asset_post_doc, asset_get_filters_doc
 from app.utils.auth_decorators import token_required
-from app.utils.manipulator import get_user_by_filters
+from app.utils.manipulator import get_user_by_filters, check_doc_permissions
 
 
 class Assets(Resource):
@@ -35,6 +35,7 @@ class Assets(Resource):
                     asset_pending_list.append(get_user_by_filters(dict(id=tenant_id)))
                 asset.tenant_list = asset_user_list
                 asset.pending_tenants = asset_pending_list
+                asset.documents = check_doc_permissions(token_user_id, asset)
                 asset_list.append(to_json(asset))
             return jsonify(asset_list)
         except DoesNotExist:

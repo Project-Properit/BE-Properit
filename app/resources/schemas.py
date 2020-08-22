@@ -54,6 +54,7 @@ class AssetDocuments(ValidatedSchema):
     properties = {
         'doc_name': {'type': 'string',
                      'format': 'binary'},
+        'permission': {'type': 'string'}
     }
 
 

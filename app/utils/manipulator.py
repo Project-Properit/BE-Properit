@@ -76,6 +76,16 @@ def check_user_in_participants(participants, user_id):
     return False
 
 
+def check_doc_permissions(user_id, asset_obj):
+    asset_docs = asset_obj.documents.copy()
+    for doc in asset_obj.documents:
+        if not (user_id in doc['permission'] or doc['permission'] == 'everyone'):
+            asset_docs.remove(doc)
+    return asset_docs
+
+
+
+
 def sort_group_payments(gp_list: List, filter_by, filter_value):
     if filter_by == 'pay_from':
         for gp in list(gp_list):

@@ -1,3 +1,4 @@
+import json
 import uuid
 from datetime import datetime
 
@@ -21,13 +22,14 @@ class Docs(Resource):
     @swagger.doc(document_post_doc)
     def patch(self, token_user_id, asset_id):
         try:
-            # data = json.loads(request.data)
             uploaded_docs = list()
             asset = AssetModel.objects.get(id=ObjectId(asset_id))
             if token_user_id != asset.owner_id:
                 return make_response("Insufficient Permissions", 403)
             if not request.files:
                 return make_response("Upload at least 1 file", 200)
+
+            data = json.loads(request.data)
             dbx_adapter = DropBoxAdapter(DBX_ACCESS_TOKEN)
             for key, doc in request.files.items():  # Todo: Multi-select file upload (FE)
                 new_uuid = uuid.uuid1().hex
@@ -39,12 +41,13 @@ class Docs(Resource):
                                         'url': url,
                                         'preview_url': preview_url,
                                         'dbx_path': dbx_filepath,
-                                        'creation_date': datetime.now().replace(microsecond=0)})
-                #                           'users': data['users']})  # Todo: user permissions
+                                        'creation_date': datetime.now().replace(microsecond=0),
+                                        'permission': data['permission'].lower()})  # Todo: user permissions
                 uploaded_docs.append(dict(url=url,
                                           preview_url=preview_url,
                                           doc_name=key,
-                                          doc_id=new_uuid))
+                                          doc_id=new_uuid,
+                                          permission=data['permission'].lower()))
             update(asset)
             return jsonify(uploaded_docs)
         except InvalidId:

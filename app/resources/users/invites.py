@@ -50,7 +50,15 @@ class UserInvites(Resource):
             asset_obj = AssetModel.objects.get(id=ObjectId(asset_id))
             if token_user_id != user_id:
                 return make_response("Insufficient Permissions", 403)
+
+            # check if user already tenant in other asset
+            all_assets = AssetModel.objects()
+            for asset in all_assets:
+                if user_id in asset.tenant_list:
+                    return make_response("You are already tenant in other asset", 404)
+
             if user_id in asset_obj.pending_tenants:
+
                 asset_obj.pending_tenants.remove(user_id)
                 asset_obj.tenant_list.append(user_id)
             else:
