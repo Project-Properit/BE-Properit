@@ -17,7 +17,7 @@ from app.resources.group_payments.group_payments import GroupPayments
 from app.resources.payments.pay import Pay
 from app.resources.payments.payment import Payment
 from app.resources.payments.payments import Payments
-from app.resources.users.invite import UserInvites
+from app.resources.users.invites import UserInvites
 from app.resources.users.user import User
 from app.resources.users.users import Users
 

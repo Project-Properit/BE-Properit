@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from json.decoder import JSONDecodeError
 
 from bson import ObjectId
@@ -27,7 +28,9 @@ class AssetInvites(Resource):
             #         asset.pending_tenants += user_id
             user_id = data['user_id']
             if user_id not in asset.pending_tenants:
-                asset.pending_tenants.append(user_id)
+                # asset.pending_tenants.append(dict(user_id=user_id,
+                #                                   invite_date=datetime.now().replace(microsecond=0)))
+                asset.pending_tenants[user_id] = datetime.now().replace(microsecond=0)
             else:
                 return make_response("User already invited to asset", 200)
             update(asset)

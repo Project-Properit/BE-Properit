@@ -27,6 +27,7 @@ class UserInvites(Resource):
                 if user_id in asset.pending_tenants:
                     user_pending_invites.append(dict(asset_id=str(asset.id),
                                                      asset_address=asset.address,
+                                                     invite_date=asset.pending_tenants[user_id],
                                                      asset_owner=get_user_by_filters(dict(id=asset.owner_id))))
             return jsonify(user_pending_invites)
         except InvalidId:

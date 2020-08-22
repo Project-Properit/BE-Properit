@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, DateTimeField, ListField, FloatField
+from mongoengine import Document, StringField, DateTimeField, ListField, FloatField, DictField
 
 
 class AssetModel(Document):
@@ -7,7 +7,7 @@ class AssetModel(Document):
     room_num = FloatField(required=True)
     rent_fee = FloatField(required=True)
     tenant_list = ListField(default=[])
-    pending_tenants = ListField(default=[])
+    pending_tenants = DictField(default=[])
     documents = ListField(default=[])
     group_payments = ListField(default=[])
     service_calls = ListField(default=[])
