@@ -53,7 +53,13 @@ class AssetDocuments(ValidatedSchema):
     type = 'object'
     properties = {
         'doc_name': {'type': 'string',
-                     'format': 'binary'},
+                     'format': 'binary'}
+    }
+
+
+class AssetDocumentsPermission(ValidatedSchema):
+    type = 'object'
+    properties = {
         'permission': {'type': 'string'}
     }
 

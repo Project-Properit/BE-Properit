@@ -79,7 +79,9 @@ def check_user_in_participants(participants, user_id):
 def check_doc_permissions(user_id, asset_obj):
     asset_docs = asset_obj.documents.copy()
     for doc in asset_obj.documents:
-        if not (user_id in doc['permission'] or doc['permission'] == 'everyone'):
+        if user_id == asset_obj.owner_id:
+            return asset_docs
+        elif not (user_id in doc['permission'] or doc['permission'] == 'everyone'):
             asset_docs.remove(doc)
     return asset_docs
 

@@ -1,5 +1,5 @@
 from app.consts import DOCUMENTS_SECTION
-from app.resources.schemas import AssetDocuments
+from app.resources.schemas import AssetDocuments, AssetDocumentsPermission
 
 document_post_doc = {
     'tags': [DOCUMENTS_SECTION],
@@ -15,8 +15,9 @@ document_post_doc = {
     'requestBody': {
         'required': True,
         'content': {
-            'multipart/form-data:': {'schema': AssetDocuments}
-        }
+            'multipart/form-data:': {'schema': AssetDocuments},
+            'application/json': {'schema': AssetDocumentsPermission}
+        },
     },
     'responses': {
         '200': {'description': 'Object added successfully'},
