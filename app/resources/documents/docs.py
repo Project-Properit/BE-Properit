@@ -29,7 +29,7 @@ class Docs(Resource):
             if not request.files:
                 return make_response("Upload at least 1 file", 200)
 
-            data = json.loads(request.data)
+            permission = request.form['permission'].lower()
             dbx_adapter = DropBoxAdapter(DBX_ACCESS_TOKEN)
             for key, doc in request.files.items():  # Todo: Multi-select file upload (FE)
                 new_uuid = uuid.uuid1().hex
@@ -42,12 +42,12 @@ class Docs(Resource):
                                         'preview_url': preview_url,
                                         'dbx_path': dbx_filepath,
                                         'creation_date': datetime.now().replace(microsecond=0),
-                                        'permission': data['permission'].lower()})  # Todo: user permissions
+                                        'permission': permission})  # Todo: user permissions
                 uploaded_docs.append(dict(url=url,
                                           preview_url=preview_url,
                                           doc_name=key,
                                           doc_id=new_uuid,
-                                          permission=data['permission'].lower()))
+                                          permission=permission))
             update(asset)
             return jsonify(uploaded_docs)
         except InvalidId:
