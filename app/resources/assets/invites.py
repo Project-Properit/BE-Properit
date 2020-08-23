@@ -27,6 +27,12 @@ class AssetInvites(Resource):
             #     if user_id not in asset.pending_tenants:
             #         asset.pending_tenants += user_id
             user_id = data['user_id']
+
+            all_assets = AssetModel.objects()
+            for asset in all_assets:
+                if user_id in asset.tenant_list:
+                    return make_response("user already tenant in other asset", 400)
+
             if user_id not in asset.pending_tenants:
                 # asset.pending_tenants.append(dict(user_id=user_id,
                 #                                   invite_date=datetime.now().replace(microsecond=0)))
