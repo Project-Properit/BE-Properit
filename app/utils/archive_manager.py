@@ -36,7 +36,7 @@ def archive_user(user):
         if user_id in asset_obj.tenant_list:
             asset_obj.tenant_list.remove(user_id)
         elif user_id in asset_obj.pending_tenants:
-            asset_obj.pending_tenants.remove(user_id)
+            del asset_obj.pending_tenants[user_id]
         elif user_id == asset_obj.owner_id:
             archive_asset(asset_obj)
     for gp_obj in all_group_payments:

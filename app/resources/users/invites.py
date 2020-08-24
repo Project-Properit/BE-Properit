@@ -58,8 +58,7 @@ class UserInvites(Resource):
                     return make_response("You are already tenant in other asset", 404)
 
             if user_id in asset_obj.pending_tenants:
-
-                asset_obj.pending_tenants.remove(user_id)
+                del asset_obj.pending_tenants[user_id]
                 asset_obj.tenant_list.append(user_id)
             else:
                 return make_response("user not in pending invitations", 404)
@@ -69,7 +68,7 @@ class UserInvites(Resource):
             assets_obj = AssetModel.objects()
             for asset in assets_obj:
                 if user_id in asset.pending_tenants:
-                    asset.pending_tenants.remove(user_id)
+                    del asset.pending_tenants[user_id]
                     update(asset_obj)
 
             return jsonify(approved_asset=asset_id,
@@ -95,7 +94,7 @@ class UserInvites(Resource):
             if token_user_id != user_id:
                 return make_response("Insufficient Permissions", 403)
             if user_id in asset_obj.pending_tenants:
-                asset_obj.pending_tenants.remove(user_id)
+                del asset_obj.pending_tenants[user_id]
             else:
                 return make_response("user not in pending invitations", 404)
             update(asset_obj)

@@ -65,7 +65,7 @@ class AssetInvites(Resource):
             data = json.loads(request.data)
             user_id = data['user_id']
             if user_id in asset.pending_tenants:
-                asset.pending_tenants.remove(user_id)
+                del asset.pending_tenants[user_id]
             else:
                 return make_response("user not in pending tenants", 404)
             update(asset)
