@@ -7,7 +7,7 @@ class AssetModel(Document):
     room_num = FloatField(required=True)
     rent_fee = FloatField(required=True)
     tenant_list = ListField(default=[])
-    pending_tenants = DictField(default=[])
+    pending_tenants = DictField(default={})
     documents = ListField(default=[])
     group_payments = ListField(default=[])
     service_calls = ListField(default=[])
